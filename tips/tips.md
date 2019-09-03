@@ -45,7 +45,7 @@
     “\9″ IE6/IE7/IE8/IE9/IE10都生效
     “\0″ IE8/IE9/IE10都生效，是IE8/9/10的hack
     “\9\0″ 只对IE9/IE10生效，是IE9/10的hack
-  * **eg**:min-width: auto\0;*
+  **eg:** *min-width: auto\0;*
 
   ### el-element 对ie的兼容性问题
 
@@ -54,3 +54,7 @@
   _eg：el-radio-group在ie9中使用会导致文字不显示，可能是font-size：0导致_
   *tips: 常见将li标签设置为display:inline-block/inline后，两个li标签之间会有空白，使用font-size： 0设置ul的属性可以去除这些空白，但是会导致ul中的文字不显示，因此需要设置li标签的font-size为需要的文字大小*
 
+## 阿里巴巴矢量图
+
+  图片加入到项目中后，在线修改图片颜色，可能会导致文件下载后页面中不显示对应的样式
+  *比如下载了✅样式的图片，但是之前修改了图片的颜色，项目中可能只显示一个绿色的方框，里面的对号并不显示（记录）*
