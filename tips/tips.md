@@ -34,7 +34,7 @@
 ***
 ## 5. ie兼容性问题
 
-  ### 由于不同的浏览器，比如Internet Explorer 6,Internet Explorer 7,Mozilla Firefox等，对CSS的解析认识不一样，因此会导致生成的页面效果不一样，得不到我们所需要的页面效果。这个时候我们就需要针对不同的浏览器去写不同的CSS，让它能够同时兼容不同的浏览器，能在不同的浏览器中也能得到我们想要的页面效果。<u>这个针对不同的浏览器写不同的CSS code的过程，就叫CSS hack,也叫写CSS hack</u>
+  由于不同的浏览器，比如Internet Explorer 6,Internet Explorer 7,Mozilla Firefox等，对CSS的解析认识不一样，因此会导致生成的页面效果不一样，得不到我们所需要的页面效果。这个时候我们就需要针对不同的浏览器去写不同的CSS，让它能够同时兼容不同的浏览器，能在不同的浏览器中也能得到我们想要的页面效果。<u>这个针对不同的浏览器写不同的CSS code的过程，就叫CSS hack,也叫写CSS hack</u>
 
   ### 常用的css hack
     “\9″ IE6/IE7/IE8/IE9/IE10都生效
@@ -44,6 +44,6 @@
 
   ### el-element 对ie的兼容性问题
     多是因为ie不兼容flex布局导致，有些可以使用display：inline-block解决
-    *eg：el-radio-group在ie9中使用会导致文字不显示，可能是font-size：0导致*
+    _eg：el-radio-group在ie9中使用会导致文字不显示，可能是font-size：0导致_
     *tips: 常见将li标签设置为display:inline-block/inline后，两个li标签之间会有空白，使用font-size： 0设置ul的属性可以去除这些空白，但是会导致ul中的文字不显示，因此需要设置li标签的font-size为需要的文字大小*
 
