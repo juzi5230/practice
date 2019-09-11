@@ -96,9 +96,23 @@
     word-break:break-all;
 
 ## 10.数组内容发生改变，view未重新渲染？
-    this.$set(target, key, value)
+  this.$set(target, key, value)
 
     target：要更改的数据源(可以是对象或者数组)
     key：要更改的具体数据(可以是字符串和数字)
     value ：重新赋的值
     另外，vue重写了数组的push、pop等方法，使这些操作下的变动可以被监听到。
+
+  使用中间变量逐个接收数组内容，然后在逐个赋值给原来的数组，可以实现view重新渲染的效果，但是需要用到多行代码
+  ```
+    origin: 原数组
+    temp: 中间数组
+    let temp = []
+    origin.forEach(item => {
+      temp.push(item)
+    })
+    origin = []
+    temp.forEach(item => {
+      origin.push(item)
+    })
+  ```
