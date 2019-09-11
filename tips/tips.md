@@ -81,7 +81,7 @@
 *词汇： 停机问题；P问题； NP问题； NPC问题*
 ***
 
-## -webkit-line-clamp （限制在一个块元素显示的文本的行数）
+## 9.-webkit-line-clamp （限制在一个块元素显示的文本的行数）
     限制在一个块元素显示的文本的行数。
     -webkit-line-clamp 是一个不规范的属性（unsupported WebKit property），它没有出现在 CSS 规范草案中。
 
@@ -92,17 +92,18 @@
     text-overflow，可以用来多行文本的情况下，用省略号“...”隐藏超出范围的文本
 
   *eg:*
-  *overflow : hidden; //超出部分隐藏*   
-  *text-overflow: ellipsis;  //内容超出显示为省略号*    
-  *display: -webkit-box;  //必要的属性*   
-  *-webkit-line-clamp: 2;  //显示为两行内容*    
-  *-webkit-box-orient: vertical;  //设置或检索伸缩盒对象的子元素的排列方式*     
-
+  ```
+      *overflow : hidden; //超出部分隐藏*   
+      *text-overflow: ellipsis;  //内容超出显示为省略号*    
+      *display: -webkit-box;  //必要的属性*   
+      *-webkit-line-clamp: 2;  //显示为两行内容*    
+      *-webkit-box-orient: vertical;  //设置或检索伸缩盒对象的子元素的排列方式*     
+  ```
     如果你标签内的是英文，英文是不会自动换行的，所以你需要让他自动换行添加如下代码即可:
     word-wrap:break-word;
     word-break:break-all;
 
-## 数组内容发生改变，view未重新渲染？
+## 10.数组内容发生改变，view未重新渲染？
     this.$set(target, key, value)
     target：要更改的数据源(可以是对象或者数组)
 
