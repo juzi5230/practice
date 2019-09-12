@@ -116,7 +116,7 @@
       origin.push(item)
     })
   ```
-  11. Element UI 的el-input同时绑定@keyup.enter.native和@blur冲突
+## 11. Element UI 的el-input同时绑定@keyup.enter.native和@blur冲突
       解决方法：使用keyup事件触发blur事件: $event.target.blur
   ```
     <div class="keyword-content">
@@ -130,3 +130,37 @@
             @blur="handleInputConfirm">
         </el-input>
     </div>
+  ```
+  >vue函数中使用event
+  > + 使用不带圆括号的形式，event 对象将被自动当做实参传入；
+  > + 使用带圆括号的形式，我们需要使用 $event 变量显式传入 event 对象。
+
+使用不带圆括号的形式：
+  ```
+  <div id="app">
+    <button v-on:click="click">click me</button>
+  </div>
+
+  var app = new Vue({
+    el: '#app',
+    methods: {
+        click(event) {
+            console.log(typeof event);    // object
+        }
+    }
+  });
+  ```
+  使用带圆括号的形式：
+  ```
+  <div id="app">
+    <button v-on:click="click($event, 233)">click me</button>
+  </div>
+  var app = new Vue({
+    el: '#app',
+    methods: {
+        click(event, val) {
+            console.log(typeof event);    // object
+        }
+    }
+  });
+  ```
