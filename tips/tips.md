@@ -116,3 +116,17 @@
       origin.push(item)
     })
   ```
+  11. Element UI 的el-input同时绑定@keyup.enter.native和@blur冲突
+      解决方法：使用keyup事件触发blur事件: $event.target.blur
+  ```
+    <div class="keyword-content">
+        <el-input
+            class="input-new-tag"
+            v-if="inputVisible"
+            v-model="inputValue"
+            ref="saveTagInput"
+            size="small"
+            @keyup.enter.native="$event.target.blur"
+            @blur="handleInputConfirm">
+        </el-input>
+    </div>
