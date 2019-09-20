@@ -46,6 +46,33 @@
 
   由于不同的浏览器，比如Internet Explorer 6, Internet Explorer 7, Mozilla Firefox等，对CSS的解析认识不一样，因此会导致生成的页面效果不一样，得不到我们所需要的页面效果。这个时候我们就需要针对不同的浏览器去写不同的CSS，让它能够同时兼容不同的浏览器，能在不同的浏览器中也能得到我们想要的页面效果。<u>这个针对不同的浏览器写不同的CSS code的过程，就叫CSS hack, 也叫写**CSS hack**</u>
 
+### html条件注释判断ie
+
+  html5shiv：解决ie9以下浏览器对html5新增标签的不识别，并导致CSS不起作用的问题。
+
+  respond.min:让不支持css3 Media Query的浏览器包括IE6-IE8等其他浏览器支持查询。
+
+```javascript
+  <!--[if !IE]><!--> 除IE外都可识别 <!--<![endif]-->
+  <!--[if IE]> 所有的IE可识别 <![endif]-->
+  <!--[if IE 6]> 仅IE6可识别 <![endif]-->
+  <!--[if lt IE 6]> IE6以及IE6以下版本可识别 <![endif]-->
+  <!--[if gte IE 6]> IE6以及IE6以上版本可识别 <![endif]-->
+  <!--[if IE 7]> 仅IE7可识别 <![endif]-->
+  <!--[if lt IE 7]> IE7以及IE7以下版本可识别 <![endif]-->
+  <!--[if gte IE 7]> IE7以及IE7以上版本可识别 <![endif]-->
+```
+
+```javascript
+  <!--[if lt IE 9]>
+
+　 <script src="//cdn.bootcss.com/respond.js/1.4.2/      respond.js"></script>
+
+ 　<script src="http://cdn.bootcss.com/html5shiv/       3.7.2/html5shiv.min.js"></script>
+
+  <![endif]—>
+```
+
 ### 常用的css hack
 
     “\9″ IE6/IE7/IE8/IE9/IE10都生效
@@ -272,3 +299,19 @@
   在table标签中引入组件的三种方法，代码对应页面显示如下，或者将honor中标签tr修改为其他标签名称，比如div或者aaaa，页面显示如下图所示
   *<font color=#aaa size=0.5 face="黑体">如果使用了未定义的标签aaaa，页面会显示对应内容，但是会报错，did you register the component correctly</font>*
   ![alt vue-is 代码属性效果](images/vue-is.jpg)
+
+  + es6中pad的使用
+    padStart()用于头部补全，padEnd()用于尾部补全， 接收两个参数，第一个参数为字符串的最小长度，第二个参数为补全的字符串。
+    比如月份前面补全0，1月可补全为01，保持月份始终是两位
+
+    ```javascript
+    let s = "1"
+    let t = s.padStart(2, '0)
+    console.log(t) // 01
+    console.log(s) // 1
+    ```
+
+  + Content-disposition 
+
+  是 MIME 协议的扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。Content-disposition其实可以控制用户请求所得的内容存为一个文件的时候提供一个默认的文件名，文件直接在浏览器上显示或者在访问时弹出文件下载对话框。
+
