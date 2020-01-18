@@ -29,3 +29,21 @@ path_provider.dart 库屏蔽了 Android 和 iOS 两个平台上文件存储路�
 + getApplicationDocumentsDirectory()：获取 Document 文件夹，针对 Android 设备的 AppDate 目录，iOS 设备的 NSDocumentDirectory 目录
 
 + getExternalStorageDirectory()： 获取存储卡目录，只有 Android 设备可用
+
+## dio
+
++ dio是一个强大的Dart Http请求库，支持Restful API、FormData、拦截器、请求取消、Cookie管理、文件上传/下载、超时等... 参考文件： https://www.jianshu.com/p/1352351c7d08
+
+  ```javascript
+  dependencies:
+  dio: ^x.x.x  // 请使用pub上的最新版本
+  ```
+
+  ```dart
+  import 'package:dio/dio.dart';
+  Dio dio = new Dio();
+  Response response=await dio.get("https://www.google.com/");
+  print(response.data);
+  ```
+
+## cookie_jar
