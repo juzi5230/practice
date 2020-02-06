@@ -6,9 +6,16 @@
 
       pwa的基础是https ， 如果使用pwa的话，需要将自己的网站设置成https协议才能继续。
 pwa文档查看： [pwa文档](https://lavas.baidu.com/pwa)
+
 pwa兼容性查看网址： [pwa兼容性查看](https://lavas.baidu.com/ready)
 
 Webapp 和nativeapp 的区别比较： [Webapp 和nativeapp 的区别比较](https://www.cnblogs.com/famensaodiseng/p/10763592.html)
+
+## 主要特性：
+
++ 快速，提升加载速度，减少白屏时间，实现快速加载；
++ 可靠，允许webapp在离线时也能访问，而不是返回404 报错页面
++ 粘性：  允许用户直接将站点添加到首屏，从而解决webapp 打开入口过深的问题
 
 ## 具体主要用到的技术
 
@@ -74,36 +81,33 @@ Manifest.json的具体代码, 举例如下：
     但是在service-worker-allowed允许的最大范围内， 注册将会成功
   */
   if('serviceWorker' in navigator) {
- window.addEventListener('load', function() { // 页面资源加载结束后，调用， 避免  与其他资源征用带宽，从而导致页面性能下降
- navigator.serviceWorker.register('/static/sw-demo.js', {scope: '/ static/  '}) // 具体路径根据实际情况，有可能放到ngix中，则写对应的路径
- .then(function() { // 注册成功后，返回promise 对象 login was successful ，    Return promise object
-  
-  })
-  .catch(function(err) { // 注册失败 login has failed
-  
-  })
-  })
+     window.addEventListener('load', function() { // 页面资源加载结束后，调用， 避免  与其他资源征用带宽，从而导致页面性能下降
+     navigator.serviceWorker.register('/static/sw-demo.js', {scope: '/ static/  '}) // 具体路径根据实际情况，有可能放到ngix中，则写对应的路径
+     .then(function() { // 注册成功后，返回promise 对象 login was successful ，Return promise object
+     })
+     .catch(function(err) { // 注册失败 login has failed
+     })
+    })
   }
 ```
 > service worker 安装
 
 ```
   this.addEventListener('install', function(event) {
-event.waitUntil( // 控制以下代码的流程，只有以下代码resolve了，安装过程才能结束
-// 安装过程中开辟一个跟service worker所对应的缓存区域， 并命名为my-cache-v1
-caches.open('my-cache-v1').then(function(cache) { // 获取到缓存区域， 并命名为cache
-// 调用catch.addAll 方法来缓存我们指定的文件列表
-// addAll 是一个原始操作，如果所有指定的资源都缓存成功，则安装成功，否则安装失败
-// 如果预缓存的文件列表过长就会增加失败的几率
-return cache.addAll([
-'/',
-'/test.js',
-'/test.css'
-])
-})
-)
-
-})
+    event.waitUntil( // 控制以下代码的流程，只有以下代码resolve了，安装过程才能结束
+      // 安装过程中开辟一个跟service worker所对应的缓存区域， 并命名为my-cache-v1
+      caches.open('my-cache-v1').then(function(cache) { // 获取到缓存区域， 并命名为cache
+      // 调用catch.addAll 方法来缓存我们指定的文件列表
+      // addAll 是一个原始操作，如果所有指定的资源都缓存成功，则安装成功，否则安装失败
+      // 如果预缓存的文件列表过长就会增加失败的几率
+        return cache.addAll([
+          '/',
+          '/test.js',
+          '/test.css'
+        ])
+      })
+    )
+  })
 ```
 
 > service worker 激活
@@ -141,8 +145,3 @@ this.addEventListener('activate', function (event) {
 + Background Sync 后台同步
 + 响应式设计
 
-主要特性：
-
-+ 快速，提升加载速度，减少白屏时间，实现快速加载；
-+ 可靠，允许webapp在离线时也能访问，而不是返回404 报错页面
-+ 粘性：  允许用户直接将站点添加到首屏，从而解决webapp 打开入口过深的问题
