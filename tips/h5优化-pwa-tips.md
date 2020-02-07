@@ -23,19 +23,19 @@
       loadImg()
       document.addEventListener('scroll', function (e) {
       // 跟着滚动，继续加载剩下的图片
-      loadImg()
+        loadImg()
       })
       function loadImg () {
       // slice可以将类数组转化成数组对象
-      [].slice.call(document.querySelectorAll('[data-src]')      ).forEach(function (item) {
-      // 判断元素是否已经进入视野
-      if (item.getBoundingClientRect().y <= innerHeight) {
-      // 设置src
-      item.src = item.getAttribute('data-src')
-      // 删除data-src属性，可以减少querySelectorAll的查询次数
-      item.removeAttribute('data-src')
-      }
-      })
+        [].slice.call(document.querySelectorAll('[data-src]')).forEach(function (item) {
+          // 判断元素是否已经进入视野
+          if (item.getBoundingClientRect().y <= innerHeight) {
+            // 设置src
+            item.src = item.getAttribute('data-src')
+            // 删除data-src属性，可以减少querySelectorAll的查询次数
+            item.removeAttribute('data-src')
+          }
+        })
       }
       <img data-src="xxx"></img>
   ```
@@ -50,7 +50,7 @@
 
 + Media Query（响应式加载）
 
-      通过这项技术，我们能够方便地控制资源的加载与显示。
+      通过这项技术，我们能够方便地控制资源的加载与显示。响应式网站在加载图片时，能自动识别智能终端图片，根据浏览设备做到自动加载响应图片。平均节省图片流量80%以上，下载速度更是可以提高5倍以上，网络响应高速，搜索引擎更喜欢。
 
 + 第三方资源异步加载
 
@@ -72,6 +72,10 @@
 
       格式选择。显示效果较好的图片格式中，有webp、jpg和png24/32这几种常见的图片格式。一般来说，webp的图片最小，但在iOS或者android4.0以下的系统中可能会有兼容性问题需要解决；Jpg是我们最常使用的方案，大小适中，解码速度快，兼容性问题也基本不存在，是我们在H5的应用中使用起来性价比最高的方案；Png24或png32，一般来说，显示效果肯定会比jpg更好，但是实际上人眼很难感知出来，所以在H5应用中要避免这种格式的大图片。对于少量的图片，推荐用智图或者tinypng等工具来帮助自己选择合适的大小、格式。
 
+  智能PNG和JPEG压缩: [https://tinypng.com/](https://tinypng.com/)
+
+  PNG压缩与格式转换工具: [https://isparta.github.io/](https://isparta.github.io/)
+
 + 像素控制
 
       在H5应用中，图片的像素要严格控制，一般来说不建议宽度超过640px
@@ -86,7 +90,21 @@
 
 + Gzip
 
-      服务端要开启Gzip压缩。
+      服务端要开启Gzip压缩。对用户请求的页面进行压缩处理，以达到节省网络带宽，提高网站速度的作用
+
+      Nginx如何开启GZIP功能
+
+      相对apache 和 IIS nginx开启GZIP简单很多，只需要打开配置文件 nginx.conf找到gzip on 把前面的注释符号#去掉即可开启GZIP服务。然后配置GZIP即可。
+
+      下面是一个相对优化不错的配置，DNSLA建议使用。
+      
+      Gzip on;
+      
+      gzip_min_length 1024;
+      
+      gzip_buffers   4  8k;
+      
+      gzip_types   text/plain application/x-javascript text/css  application/xml;
 
 + 资源缓存，长cache
 
