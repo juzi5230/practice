@@ -304,14 +304,43 @@
     padStart()用于头部补全，padEnd()用于尾部补全， 接收两个参数，第一个参数为字符串的最小长度，第二个参数为补全的字符串。
     比如月份前面补全0，1月可补全为01，保持月份始终是两位
 
-    ```javascript
-    let s = "1"
-    let t = s.padStart(2, '0)
-    console.log(t) // 01
-    console.log(s) // 1
-    ```
+```javascript
+let s = "1"
+let t = s.padStart(2, '0)
+console.log(t) // 01
+console.log(s) // 1
+```
 
-  + Content-disposition 
+  + Content-disposition
 
   是 MIME 协议的扩展，MIME 协议指示 MIME 用户代理如何显示附加的文件。Content-disposition其实可以控制用户请求所得的内容存为一个文件的时候提供一个默认的文件名，文件直接在浏览器上显示或者在访问时弹出文件下载对话框。
 
+  + webpack 相关
+
+
+  >如何利用webpack来优化前端性能？（提高性能和体验）
+  >> 用webpack优化前端性能是指优化webpack的输出结果，让打包的最终结果在浏览器运行快速高效。压缩代码。删除多余的代码、注释、简化代码的写法等等方式。可以利用webpack的UglifyJsPlugin和ParallelUglifyPlugin来压缩JS文件， 利用cssnano（css-loader?minimize）来压缩css。利用CDN加速。在构建过程中，将引用的静态资源路径修改为CDN上对应的路径。可以利用webpack对于output参数和各loader的publicPath参数来修改资源路径；删除死代码（Tree Shaking）。将代码中永远不会走到的片段删除掉。可以通过在启动webpack时追加参数--optimize-minimize来实现提取公共代码。
+
+> 使用vendor配置
+>> 其依赖的第三方模块将会被抽取出来生成一个新的bundle，这也就达到了我们提取vendor的目标。由于vendor仅仅包含第三方模块，这部分不会经常变动，因此可以有效地利用客户端缓存，在用户后续请求页面时会加快整体的渲染速度。可以采用optimization.splitChunks。将app与vendor这两个chunk中的公共模块提取出来。当第三方依赖较多时，我们可以用提取vendor的方法将这些模块打包到一个单独的bundle中，以更有效地利用客户端缓存，加快页面渲染速度。
+
+> webpack output配置。
+>>[hash]和[chunkhash]都与chunk内容直接相关，在filename中使用了这些变量后，当chunk的内容改变时，可以同时引起资源文件名的更改，从而使用户在下一次请求资源文件时会立即下载新的版本而不会使用本地缓存。[query]也可以起到类似的效果，只不过它与chunk内容无关，要由开发者手动指定。在实际工程中，我们使用比较多的是[name]，它与chunk是一一对应的关系，并且可读性较高。如果要控制客户端缓存，最好还要加上[chunkhash]，因为每个chunk所产生的[chunkhash]只与自身内容有关，单个chunk内容的改变不会影响其他资源，可以最精确地让客户端缓存得到更新。
+
+![alt webpack 参数展示](images/webpack-params.jpg)
+
+> SourceMap 一个存储源代码与编译代码对应位置映射的信息文件
+>>在前端的工作中主要是用来解决以下三个方面出现的 debug 问题  a. 代码压缩混淆后  
+b. 利用 sass 、typeScript 等其他语言编译成 css 或 JS 后  
+c. 利用 webpack 等打包工具进行多文件合并后  
+
+> 在计算机科学中，抽象语法树（Abstract Syntax Tree，AST），或简称语法树（Syntax tree），是源代码语法结构的一种抽象表示。
+
+> 什么是Tree-shaking
+>>Tree-shaking原始的本意
+通过工具"摇"我们的JS文件，将其中用不到的代码"摇"掉，是一个性能优化的范畴
+具体来说，在 webpack 项目中，有一个入口文件，相当于一棵树的主干，入口文件有很多依赖的模块，相当于树枝。实际情况中，虽然依赖了某个模块，但其实只使用其中的某些功能。通过 tree-shaking，将没有使用的模块摇掉，这样来达到删除无用代码的目的
+
+> Handlebars 是 JavaScript 一个语义模板库，通过对view和data的分离来快速构建Web模板。
+
+![alt handlebars](images/handler.jpg)
