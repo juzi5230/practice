@@ -23,9 +23,9 @@
 + 实现效果
 
 ```result
-this is some Implementation content1
-here is some description
-this is some Implementation content1
+1、this is some Implementation content1
+2、here is some description
+3、this is some Implementation content1
 ```
 
 > 1、注意插槽名称的唯一性
@@ -55,7 +55,7 @@ blablabla。。。。。
 + component1 布局组件
 
 ```vue
-<template></>
+<template></template>
 <script>
 export default {
     mounted () {
@@ -70,7 +70,6 @@ export default {
 ```js
 {title: "Blogging Like a Hacker", lang: "en-US", lala: "123"}
 ```
-
 
 ## 样式文件
 
