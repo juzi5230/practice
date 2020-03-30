@@ -4,7 +4,7 @@
 
 > 使用插槽可以根据页面布局需要定义页面显示
 
-+ 定义插槽
++ 在md文件中定义插槽
 
 ```md
 ::: slot name11
@@ -28,7 +28,7 @@
 3、this is some Implementation content1
 ```
 
-> 1、注意插槽名称的唯一性
+> 1、注意插槽名称的唯一性  
 > 2、插槽的位置就是插槽内容在布局组件中显示的位置，可以灵活修改
 
 *开发项目时时间稍紧，没有细读vuepress文档，直接使用vuepress， 没有注意到插槽的使用，而是在md文件中引入vue组件时， 通过传递的参数判断页面显示的内容（类似vue中父组件多次调用子组件的方式），虽然也可以实现相关的布局，但是在md文档中需要多次调用组件，在组件中也需要接收props参数并在页面中作出判断，显然不如直接使用插槽更为方便*
@@ -73,5 +73,5 @@ export default {
 
 ## 样式文件
 
-> .vuepress/styles/palette.styl 建议只定义变量
+> .vuepress/styles/palette.styl 建议只定义变量  
 > 额外添加样式的简便方法， 创建样式文件.vuepress/styles/index.styl， 就可以在这个文件里面添加正常的css样式了

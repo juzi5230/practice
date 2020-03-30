@@ -66,9 +66,9 @@
 ```javascript
   <!--[if lt IE 9]>
 
-　 <script src="//cdn.bootcss.com/respond.js/1.4.2/      respond.js"></script>
+　 <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
 
- 　<script src="http://cdn.bootcss.com/html5shiv/       3.7.2/html5shiv.min.js"></script>
+ 　<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
 
   <![endif]—>
 ```

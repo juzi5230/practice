@@ -6,7 +6,7 @@
  + https://github.com/teamStuq/skill-map
  + https://github.com/trending
 
- * 生成特殊字体，并可console打印
+ * 生成特殊字体，并可console打印，打印前需要清除换行并使用 \n 标注换行
 
  + http://patorjk.com/
  + http://patorjk.com/software/taag/#p=display&f=Graffiti&t=Type%20Something%20
