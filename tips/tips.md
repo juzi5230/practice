@@ -344,3 +344,36 @@ c. 利用 webpack 等打包工具进行多文件合并后
 > Handlebars 是 JavaScript 一个语义模板库，通过对view和data的分离来快速构建Web模板。
 
 ![alt handlebars](images/handler.jpg)
+
+## 13. 单点登录
+
++ 单点登录（Single Sign On），简称为 SSO，是目前比较流行的企业业务整合的解决方案之一。SSO的定义是在多个应用系统中，用户只需要登录一次就可以访问所有相互信任的应用系统。
+
++ 一般来说，Web应用需要SSO的功能，应该通过以下的交互过程来调用身份认证服务的提供的认证服务：Web应用中每一个需要安全保护的URL在访问以前，都需要进行安全检查，如果发现没有登录（没有发现认证之后所带的cookie），就重新定向到SSOAuth中的login.jsp进行登录。
+登录成功后，系统会自动给你的浏览器设置cookie，证明你已经登录过了。
+当你再访问这个应用的需要保护的URL的时候，系统还是要进行安全检查的，但是这次系统能够发现相应的cookie。
+有了这个cookie，还不能证明你就一定有权限访问。因为有可能你已经logout,或者cookie已经过期了，或者身份认证服务重起过，这些情况下，你的cookie都可能无效。应用系统拿到这个cookie，还需要调用身份认证的服务，来判断cookie时候真的有效，以及当前的cookie对应的用户是谁。
+如果cookie效验成功，就允许用户访问当前请求的资源
+这里我们需要注意的是：你每次关闭一个浏览器，cookie就失效了。
+
++ 如何拿到cookie
+
+```js
+function getCookie(cookieName) {
+    var strCookie = document.cookie;
+    var arrCookie = strCookie.split("; ");
+    for(var i = 0; i < arrCookie.length; i++){
+        var arr = arrCookie[i].split("=");
+        if(cookieName == arr[0]){
+            return arr[1];
+        }
+    }
+    return "";
+}
+var user_id = getCookie("uid");//拿到名字为uid的cookie值
+c_start=document.cookie.indexOf("uid=");//取得这个cookie名在整个cookie中的位置
+//判断cookie是否有uid
+if(c_start == -1){
+     //没有uid的时候
+}
+```

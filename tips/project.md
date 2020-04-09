@@ -34,6 +34,16 @@
 
 + 在npm中安装固定的版本号package，只需要在其后加 ‘@版本号’
 
-  ```node
+  ```js
     npm install  --save  esri-loader@1.0.0
   ```
+
+## git 中tag的使用
+
+tag是git版本库的一个标记，指向某个commit的指针。
+
+tag主要用于发布版本的管理，一个版本发布之后，我们可以为git打上 v.1.0.1 v.1.0.2 ...这样的标签。
+
+      git tag <tagName> //创建本地tag
+
+      git push origin <tagName> //推送到远程仓库
