@@ -1,100 +1,13 @@
 
-# vue项目中......
+# vue项目中
 
-## 1. 处理ie9中调用el-select中显示光标的问题.............................
-
-    document.querySelector('.el-input__inner').setAttribute('unselectable','on');
-
-## 2.calc() 函数用于动态计算长度值。........
-
-    需要注意的是，运算符前后都需要保留一个空格，例如：width: calc(100% - 10px)；
-
-    任何长度值都可以使用calc()函数进行计算；.....
-
-    calc()函数支持 "+", "-", "*", "/" 运算；
-    calc()函数使用标准的数学运算优先级规则； 
-
-## 3. 光标和文字样式分开修改
-
-``` css
-    textarea {
-        color: black; // 文字和光标颜色均为黑色
-        text-shadow: 0px 0px 0px rgba(255, 0, 0, 1); //文字阴影的方式显示文字内容，为红色，光标未选中textarea时的样式
-        -webkit-text-fill-color: transparent; // 文字设置透明填充色
-        background-color: rgba(0, 0, 0, 0); // 背景色为透明色
-    }
-
-    /*textarea:focus{
-      text-shadow:0px 0px 0px rgba(255, 0, 0, 1);// 用于修改光标选中textarea时的文字颜色显示
-    }*/
-```
-
-## 4./deep/  >>>  
-
-    vue引用了第三方组件，需要在组件中局部修改第三方组件的样式，而有不想去除scoped属性造成组件之间的样式污染，此时可使用>>>，穿透scoped，有些sass之类的预处理器无法正确解析>>>, keyi shiyong /deep/操作符
-    外层 >>> 第三方组件 {
-       样式
-
-    }
-
-    /deep/ 第三方组件 {
-       样式
-
-    }
-
-## 5.ie兼容性问题
-
-  由于不同的浏览器，比如Internet Explorer 6, Internet Explorer 7, Mozilla Firefox等，对CSS的解析认识不一样，因此会导致生成的页面效果不一样，得不到我们所需要的页面效果。这个时候我们就需要针对不同的浏览器去写不同的CSS，让它能够同时兼容不同的浏览器，能在不同的浏览器中也能得到我们想要的页面效果。<u>这个针对不同的浏览器写不同的CSS code的过程，就叫CSS hack, 也叫写**CSS hack**</u>
-
-### html条件注释判断ie
-
-  html5shiv：解决ie9以下浏览器对html5新增标签的不识别，并导致CSS不起作用的问题。
-
-  respond.min:让不支持css3 Media Query的浏览器包括IE6-IE8等其他浏览器支持查询。
-
-```javascript
-  <!--[if !IE]><!--> 除IE外都可识别 <!--<![endif]-->
-  <!--[if IE]> 所有的IE可识别 <![endif]-->
-  <!--[if IE 6]> 仅IE6可识别 <![endif]-->
-  <!--[if lt IE 6]> IE6以及IE6以下版本可识别 <![endif]-->
-  <!--[if gte IE 6]> IE6以及IE6以上版本可识别 <![endif]-->
-  <!--[if IE 7]> 仅IE7可识别 <![endif]-->
-  <!--[if lt IE 7]> IE7以及IE7以下版本可识别 <![endif]-->
-  <!--[if gte IE 7]> IE7以及IE7以上版本可识别 <![endif]-->
-```
-
-```javascript
-  <!--[if lt IE 9]>
-
-　 <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
-
- 　<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-
-  <![endif]—>
-```
-
-### 常用的css hack
-
-    “\9″ IE6/IE7/IE8/IE9/IE10都生效
-    “\0″ IE8/IE9/IE10都生效，是IE8/9/10的hack
-    “\9\0″ 只对IE9/IE10生效，是IE9/10的hack
-  **eg:** *min-width: auto\0; *
-
-### el-element 对ie的兼容性问题
-
-    多是因为ie不兼容flex布局导致，有些可以使用display：inline-block解决
-
-  _eg：el-radio-group在ie9中使用会导致文字不显示，可能是font-size：0导致_
-
-  *tips: 常见将li标签设置为display:inline-block/inline后，两个li标签之间会有空白，使用font-size： 0设置ul的属性可以去除这些空白，但是会导致ul中的文字不显示，因此需要设置li标签的font-size为需要的文字大小*
-
-## 6. 阿里巴巴矢量图
+##  阿里巴巴矢量图
 
     图片加入到项目中后，在线修改图片颜色，可能会导致文件下载后页面中不显示对应的样式
 
   *eg: 下载了✅样式的图片，但是之前修改了图片的颜色，项目中可能只显示一个绿色的方框，里面的对号并不显示（记录）*
 
-## 7. Window self 属性
+## Window self 属性
 
     
 
@@ -102,7 +15,7 @@
     self 属性是只读的。
   注：window、self、window.self 是等价的
 
-## 8. 图灵机
+##  图灵机
 
     图灵机 (Turing machine, TM) 是由图灵在1936年提出的，它是一种精确的通用计算机模型，能模拟实际计算机的所有计算行为。
 
@@ -111,35 +24,7 @@
 
 *词汇： 停机问题；P问题； NP问题； NPC问题*
 
-## 9.-webkit-line-clamp （限制在一个块元素显示的文本的行数）
-
-    限制在一个块元素显示的文本的行数。
-
-    -webkit-line-clamp 是一个不规范的属性（unsupported WebKit property），它没有出现在 CSS 规范草案中。
-
-    为了实现该效果，它需要组合其他外来的WebKit属性。常见结合属性：
-
-    display: -webkit-box; 必须结合的属性 ，将对象作为弹性伸缩盒子模型显示
-    -webkit-box-orient 必须结合的属性 ，设置或检索伸缩盒对象的子元素的排列方式
-
-    text-overflow，可以用来多行文本的情况下，用省略号“...”隐藏超出范围的文本
-
-  *eg:*
-  
-
-``` 
-    *overflow : hidden; //超出部分隐藏*   
-    *text-overflow: ellipsis;  //内容超出显示为省略号*    
-    *display: -webkit-box;  //必要的属性*   
-    *-webkit-line-clamp: 2;  //显示为两行内容*    
-    *-webkit-box-orient: vertical;  //设置或检索伸缩盒对象的子元素的排列方式*     
-  ```
-
-    如果你标签内的是英文，英文是不会自动换行的，所以你需要让他自动换行添加如下代码即可:
-    word-wrap:break-word;
-    word-break:break-all;
-
-## 10. 数组内容发生改变，view未重新渲染？
+## 数组内容发生改变，view未重新渲染？
 
   this.$set(target, key, value)
 
@@ -166,7 +51,7 @@
     })
   ```
 
-## 11.vue中event的使用
+## vue中event的使用
 
  + ### Element UI 的el-input同时绑定@keyup.enter.native和@blur冲突
   > 解决方法：使用keyup事件触发blur事件: $event.target.blur
@@ -224,13 +109,13 @@
   });
 ```
 
-## 12. 环境变量配置
+## 环境变量配置
 
 > $HOME是一个环境变量，它代表当前登录的用户的主文件夹
 > $HOME/bin当然就是主文件夹下的bin子目录
 > PATH=$PATH:$HOME/bin这句是设置PATH环境变量（设置环境变量用等号），首先: 冒号是分割符（记得Windows上面也有PATH环境变量，Windows的路径之间的分隔符是; 分号），$PATH:$HOME/bin表示在保留原来的$PATH环境变量的基础上，再增加$HOME/bin这个路径作为新的$PATH环境变量。
 
-## 13. Deepen memory , some tips
+## Deepen memory , some tips
 
 + CSS background-blend-mode 属性
 
@@ -345,7 +230,7 @@ c. 利用 webpack 等打包工具进行多文件合并后
 
 ![alt handlebars](images/handler.jpg)
 
-## 13. 单点登录
+## 单点登录
 
 + 单点登录（Single Sign On），简称为 SSO，是目前比较流行的企业业务整合的解决方案之一。SSO的定义是在多个应用系统中，用户只需要登录一次就可以访问所有相互信任的应用系统。
 

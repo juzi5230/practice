@@ -111,3 +111,31 @@
       [adgk] 查找给定集合内的任何字符。
       [^adgk] 查找给定集合外的任何字符。
       (red|blue|green) 查找任何指定的选项
+
+### html条件注释判断ie
+
+  html5shiv：解决ie9以下浏览器对html5新增标签的不识别，并导致CSS不起作用的问题。
+
+  respond.min:让不支持css3 Media Query的浏览器包括IE6-IE8等其他浏览器支持查询。
+
+```javascript
+  <!--[if !IE]><!--> 除IE外都可识别 <!--<![endif]-->
+  <!--[if IE]> 所有的IE可识别 <![endif]-->
+  <!--[if IE 6]> 仅IE6可识别 <![endif]-->
+  <!--[if lt IE 6]> IE6以及IE6以下版本可识别 <![endif]-->
+  <!--[if gte IE 6]> IE6以及IE6以上版本可识别 <![endif]-->
+  <!--[if IE 7]> 仅IE7可识别 <![endif]-->
+  <!--[if lt IE 7]> IE7以及IE7以下版本可识别 <![endif]-->
+  <!--[if gte IE 7]> IE7以及IE7以上版本可识别 <![endif]-->
+```
+
+```javascript
+  <!--[if lt IE 9]>
+
+　 <script src="//cdn.bootcss.com/respond.js/1.4.2/respond.js"></script>
+
+ 　<script src="http://cdn.bootcss.com/html5shiv/3.7.2/html5shiv.min.js"></script>
+
+  <![endif]—>
+```
+
