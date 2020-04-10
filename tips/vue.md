@@ -284,3 +284,43 @@ mounted() {        // 监听sendtoTwo, 事件监听也可以写到created钩子�
    })
 }
 ```
+
+## vue的双向绑定与vuex之间的冲突解决
+
+ 参考网址： https://vuex.vuejs.org/zh/guide/forms.html
+
+有两种方式， 其中第二种方法更为简洁，*<font color=red>平时遇到这种问题均是使用第一种方法， 以后注意使用第二种～</font>*：
+
+tips: Vuex 是一个专为 Vue.js 应用程序开发的状态管理模式。Vuex 可以帮助我们管理共享状态，并附带了更多的概念和框架,  如果不打算开发大型单页应用的话，不建议使用，可能会造成项目代码繁琐冗余
+
++ 监听双向绑定的值， 并将值赋给vux中的state属性
+
++ 双向绑定计算属性，使用带有 setter 的双向绑定计算属性
+
+```vue
+<input v-model="message">
+```
+
+```vue
+// ...
+computed: {
+  message: {
+    get () {
+      return this.$store.state.obj.message
+    },
+    set (value) {
+      this.$store.commit('updateMessage', value)
+    }
+  }
+}
+```
+
+## vue mvvm
+
+参考网址： https://blog.csdn.net/qq_41761591/article/details/87621440
+
+MVVM拆开来即为Model-View-ViewModel，有View，ViewModel，Model三部分组成。View层代表的是视图、模版，负责将数据模型转化为UI展现出来。Model层代表的是模型、数据，可以在Model层中定义数据修改和操作的业务逻辑。ViewModel层连接Model和View。
+
+示例图片：
+
+![alt mvvm示例图片](images/mvvm.png)
