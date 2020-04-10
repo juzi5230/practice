@@ -65,7 +65,7 @@ export default {
 }
 ```
 
-## 3. 监听多个变量
+### 3. 监听多个变量
 
 watch本身无法监听多个变量。但我们可以将需要监听的多个变量通过计算属性返回对象，再监听这个对象来实现“监听多个变量”
 
@@ -101,7 +101,8 @@ export default {
     }
 }
 ```
-### 使用 @hook 即可监听组件生命周期，组件内无需做任何改变
+
+### 4. 使用 @hook 即可监听组件生命周期，组件内无需做任何改变
 
 通常我们监听组件生命周期会使用 $emit ，父组件接收事件来进行通知
 子组件
@@ -192,4 +193,94 @@ let messageInstance = new MessageConstructor()
 messageInstance.$mount()
 // messageInstance.$el获取的是dom元素
 document.body.appendChild(messageInstance.$el)
+```
+
+## vue组件之间传值
+
++ 父组件向子组件传值
+
+父组件传递参数
+
+```vu
+<template>
+  <div :param="something"></div>
+</template>
+```
+
+子组件接收参数:
+
+```vue
+export default {
+    props: {
+        param: {
+            type: String,
+            default: function () {
+                return ''
+            }
+        }
+    }
+}
+```
+
++ 子组件向父组件传值
+
+子组件传递参数
+
+```vue
+<template>
+  <div @click="triggerDeliver"></div>
+</template>
+export default {
+  methods: {
+      triggerDeliver () {
+          this.$emit('deliver', 'deliverSomething')
+      }
+  }
+}
+```
+
+父组件接收参数:
+
+```vue
+<template>
+  <div @deliver="getDeliver"></div>
+</template>
+export default {
+  data() {
+      return {
+          param: ''
+      }
+  },
+  methods: {
+      deliver (param) {
+        this.param = param // 接收参数
+      }
+  }
+}
+```
+
++ 非父子组件之间的传值
+
+非父子组件之间传递值可以使用eventbus作为中间代理人。并使用bus.$emit和bus.$on传值和接收值
+
+创建bus总线
+
+```vue
+var bus = new Vue()
+```
+
+组件传递值
+
+```vue
+bus.$emit('sendtoTwo', this.one)
+```
+
+组件接收值
+
+```vue
+mounted() {        // 监听sendtoTwo, 事件监听也可以写到created钩子函数
+   bus.$on('sendtoTwo', (data) => {
+       this.two = data;
+   })
+}
 ```
