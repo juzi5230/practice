@@ -14,7 +14,7 @@ console.log(process.argv)
 let num1 = parseInt(process.argv[2])
 let num2 = parseInt(process.argv[3])
 
-console.log(num1 + num2)
+console.log(num1 + num2)  // 运行命令： node globalConfigMod.js 1 2， 会打印出结果： 3
 
 
 console.log(__dirname)

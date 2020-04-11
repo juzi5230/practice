@@ -69,9 +69,11 @@ npm update xx
 
 ## node 模块
 
+具体示例可以参考demo目录下 node-test 示例
+
 ### 全局模块
 
-+ 定义： 何时何地都能访问， 不需要引用, 具体示例可以参考demo目录下 npm-test 示例
++ 定义： 何时何地都能访问， 不需要引用
 
 + process.env
 
@@ -87,4 +89,42 @@ npm update xx
 
 ### 系统模块
 
++ 定义： 需要require(), 但不需要单独下载
+
++ path: 用于处理文件路径和目录路径的实用工具
+
++ fs: 用于文件读写操作
+
 ### 自定义模块
+
++ 定义： require 自己封装的模块
+
++ expors
+
++ module
+
++ require
+  
+  + 如果有路径，则从路径中找
+  + 如果没有路径则从node_modules中找
+  + 如果再没有，则从node的安装目录中去找
+
+### http模块
+
++ http.createSever
+
+## node 中的数据交互
+
+### get
+
++ url?user=xxx&pass=xxx
++ < 32k
++ url 模块
++ url.parse(req.url, true)
+
+### post
+
++ 参数放在body中
++ < 2G
++ querystring
++ querystring.parse(data)
