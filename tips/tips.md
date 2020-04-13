@@ -135,7 +135,7 @@
 
   实现组件的异步加载
 
-```javascript
+```vue
   <template>
     <div class="hello">
       <table>
@@ -168,7 +168,7 @@
 
   _honor组件内容_
 
-```
+```vue
     <template>
       <tr>
           <td>11222</td>
