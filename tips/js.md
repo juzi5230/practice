@@ -112,7 +112,7 @@
       [^adgk] 查找给定集合外的任何字符。
       (red|blue|green) 查找任何指定的选项
 
-### html条件注释判断ie
+## html条件注释判断ie
 
   html5shiv：解决ie9以下浏览器对html5新增标签的不识别，并导致CSS不起作用的问题。
 
@@ -139,3 +139,40 @@
   <![endif]—>
 ```
 
+## 变量提升
+
++ 不管条件是否成立，判断体中出现的var/function都会进行变量提升
+
+```js
+var myname = "小明";
+function showName(){ 
+  console.log(myname); // undefined
+  if(0){ var myname = "小红" }
+  console.log(myname); // undefined 
+}
+showName();
+```
+
+## this指向
+
+```js
+<body>
+  <button id="btn1">箭头函数this</button>
+<script>
+  let btn1 = document.getElementById('btn1');
+  a = 1
+  let obj = {
+    name: 'kobe',
+    age: 39,
+    getName: function () {
+      btn1.onclick = () => {
+        console.log(this);//obj
+        console.log(this.a)
+      };
+    }
+  };
+  // obj.getName.call(window);
+  obj.getName()
+</script>
+</body>
+```
