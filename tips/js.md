@@ -142,6 +142,7 @@
 ## 变量提升
 
 + 不管条件是否成立，判断体中出现的var/function都会进行变量提升
++ 在 JavaScript 中，函数声明（function aa(){}）与变量声明（var）经常被 JavaScript 引擎隐式地提升到当前作用域的顶部。函数声明的优先级高于变量，如果变量名跟函数名相同且未赋值，则函数声明会覆盖变量声明。声明语句中的赋值部分并不会被提升，只有变量的名称被提升
 
 ```js
 var myname = "小明";
@@ -166,8 +167,9 @@ showName();
     age: 39,
     getName: function () {
       btn1.onclick = () => {
+        // btn1.onclick = function (){ // 指向 btn1
         console.log(this);//obj
-        console.log(this.a)
+        console.log(this.age)
       };
     }
   };
@@ -176,3 +178,105 @@ showName();
 </script>
 </body>
 ```
+### 箭头函数
+
+```js
+function a() {
+  return () => {
+    return () => {
+      console.log(this)
+    }
+  }
+}
+a()()()        //Window
+```
+
+首先箭头函数其实是没有 this 的，箭头函数中的 this 只取决包裹箭头函数的第一个普通函数的 this。在这个例子中，因为包裹箭头函数的第一个普通函数是 a，所以此时的 this 是 window。另外对箭头函数使用 bind这类函数是无效的。
+
+## call、apply、bind
+
++ call、apply和bind是Function对象自带的三个方法，都是为了改变函数体内部 this 的指向。
++ apply 、 call 、bind 三者第一个参数都是 this 要指向的对象，也就是想指定的上下文；
++ apply 、 call 、bind 三者都可以利用后续参数传参；
++ bind 是返回对应 函数，便于稍后调用；apply 、call 则是立即调用 。
+
+```js
+function fruits() {}
+
+fruits.prototype = {
+ color: 'red',
+ say: function() {
+  console.log(this.color);
+ }
+};
+
+var apple = new fruits();
+
+apple.say();   // red, 此时方法里面的this 指的是fruits
+
+banana = {color: 'yellow'};
+apple.say.call(banana); //yellow,此时的this的指向已经通过call（）方法改变了，指向的是banana，this.color就是banana.color='yellow';
+
+apple.say.apply(banana);//yellow,同理，此时的this的指向已经通过apply（）方法改变了，指向的是banana，this.color就是banana.color ='yellow';
+
+apple.say.apply(null); //undefined, null是window下的，此时，this 就指向了window ，但是window下并没有clolr这个属性，因此this.clolr就是window.color=undefined;
+```
+
+```js
+var bar = function(){
+ console.log(this.x);
+};
+var foo = {
+ x:3
+};
+bar();    // undefined
+var func = bar.bind(foo); 
+
+func(); // 3
+```
+
+## 宏任务/微任务
+
++ 宏任务：当前调用栈中执行的任务称为宏任务。（主代码快，定时器等等）。
++ .微任务： 当前（此次事件循环中）宏任务执行完，在下一个宏任务开始之前需要执行的任务为微任务。（可以理解为回调事件，promise.then，proness.nextTick等等）。
++ 宏任务中的事件放在callback queue中，由事件触发线程维护；微任务的事件放在微任务队列中，由js引擎线程维护。
+
+微任务：process.nextTick、MutationObserver、Promise.then catch finally
+
+宏任务：I/O、setTimeout、setInterval、setImmediate、requestAnimationFrame
+
+
+### 运行机制
+
+> 1. 在执行栈中执行一个宏任务。
+
+> 2. 执行过程中遇到微任务，将微任务添加到微任务队列中。
+
+> 3. 当前宏任务执行完毕，立即执行微任务队列中的任务。
+
+> 4. 当前微任务队列中的任务执行完毕，检查渲染，GUI线程接管渲染。
+
+> 5. 渲染完毕后，js线程接管，开启下一次事件循环，执行下一次宏任务（事件队列中取）。
+
+## Event Loop
+
+主线程运行的时候会生成堆（heap）和栈（stack）；
+js 从上到下解析方法，将其中的同步任务按照执行顺序排列到执行栈中；
+当程序调用外部的 API 时（比如 ajax、setTimeout 等），会将此类异步任务挂起，继续执行执行栈中的任务。等异步任务返回结果后，再按照顺序排列到事件队列中；
+主线程先将执行栈中的同步任务清空，然后检查事件队列中是否有任务，如果有，就将第一个事件对应的回调推到执行栈中执行，若在执行过程中遇到异步任务，则继续将这个异步任务排列到事件队列中。
+主线程每次将执行栈清空后，就去事件队列中检查是否有任务，如果有，就每次取出一个推到执行栈中执行，这个循环往复的过程被称为“Event Loop 事件循环”
+浏览器页面渲染过程
+
+浏览器渲染页面的一般过程：
+
++ 1.浏览器解析html源码，然后创建一个 DOM树。并行请求 css/image/js在DOM树中，每一个HTML标签都有一个对应的节点，并且每一个文本也都会有一个对应的文本节点。DOM树的根节点就是 documentElement，对应的是html标签。
+
++ 2.浏览器解析CSS代码，计算出最终的样式数据。构建CSSOM树。对CSS代码中非法的语法它会直接忽略掉。解析CSS的时候会按照如下顺序来定义优先级：浏览器默认设置 < 用户设置 < 外链样式 < 内联样式 < html中的style。
+
++ 3.DOM Tree + CSSOM --> 渲染树（rendering tree）。渲染树和DOM树有点像，但是是有区别的。
+
+DOM树完全和html标签一一对应，但是渲染树会忽略掉不需要渲染的元素，比如head、display:none的元素等。而且一大段文本中的每一个行在渲染树中都是独立的一个节点。渲染树中的每一个节点都存储有对应的css属性。
+
++ 4.一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。
+
+以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。

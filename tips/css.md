@@ -361,3 +361,10 @@ module.exports = {
     如果你标签内的是英文，英文是不会自动换行的，所以你需要让他自动换行添加如下代码即可:
     word-wrap:break-word;
     word-break:break-all;
+
+## 水平居中
+
++ 行内元素: text-align: center
++ 块级元素: margin: 0 auto
++ position:absolute +left:50%+ transform:translateX(-50%)
++ display:flex + justify-content: center
