@@ -280,3 +280,21 @@ DOM树完全和html标签一一对应，但是渲染树会忽略掉不需要渲�
 + 4.一旦渲染树创建好了，浏览器就可以根据渲染树直接把页面绘制到屏幕上。
 
 以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。
+
+## typeof
+
+```js
+var f = function a() { return 'lllallala' }
+typeof f // "function"
+typeof f() // "string"
+typeof a // undefined
+typeof a() // VM937:1 Uncaught ReferenceError: a is not defined
+f.name // "a", a 作为函数f的name属性而存在
+```
+
+## requestAnimationFrame
+
+  优势：
+  由系统决定回调函数的执行时机。60Hz的刷新频率，那么每次刷新的间隔中会执行一次回调函数，不会引起丢帧，不会卡顿
+  CPU节能：使用setTimeout实现的动画，当页面被隐藏或最小化时，setTimeout 仍然在后台执行动画任务，由于此时页面处于不可见或不可用状态，刷新动画是没有意义的，完全是浪费CPU资源。而requestAnimationFrame则完全不同，当页面处理未激活的状态下，该页面的屏幕刷新任务也会被系统暂停，因此跟着系统步伐走的requestAnimationFrame也会停止渲染，当页面被激活时，动画就从上次停留的地方继续执行，有效节省了CPU开销。
+  函数节流：在高频率事件(resize,scroll等)中，为了防止在一个刷新间隔内发生多次函数执行，使用requestAnimationFrame可保证每个刷新间隔内，函数只被执行一次，这样既能保证流畅性，也能更好的节省函数执行的开销。
