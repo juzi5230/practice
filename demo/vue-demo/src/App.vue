@@ -2,14 +2,12 @@
 <template>
   <div id="app">
     <router-view></router-view>
-    <div>22222</div>
   </div>
 </template>
 
-
 <script>
 export default {
-  data () {
+  data() {
     return {
     }
   }

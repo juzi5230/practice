@@ -5,6 +5,7 @@ module.exports = {
         sourceType: 'module',
         "allowImportExportEverywhere": true //ignore eslint error: 'import' and 'export' may only appear at the top level
     },
+    parser: "vue-eslint-parser",
     env: {
         browser: true,
         node: true,
@@ -18,7 +19,7 @@ module.exports = {
     ],
     // add your custom rules here
     //it is base on https://github.com/vuejs/eslint-config-vue
-    'rules': {
+    rules: {
         'accessor-pairs': 2,
         'arrow-spacing': [2, {
             'before': true,

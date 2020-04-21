@@ -1,8 +1,137 @@
+
 <template>
-  <div>1111</div>
+  <div>
+    <div class="animater-container">
+      <div class="js-animater animater" ref="animateObject"></div>
+      <div class="css-animater animater"></div>
+    </div>
+    <el-button type="primary">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+  </div>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      startL: '',
+      startT: '',
+      progressL: '',
+      progressT: '',
+      element: '',
+      timestamp: '',
+      left: 0,
+      top: 0
+    }
+  },
+  methods: {
+    step() {
+      this.timestamp = new Date().getTime()
+      if (this.progressL / 10 >= 200) {
+        this.left = 1
+        this.startL = ''
+      }
+      if (this.progressT / 10 >= 200) {
+        this.top = 1
+        this.startT = ''
+      }
+      if (this.top === 1 && this.left === 2) {
+        this.startT = this.startT ? this.startT : this.timestamp
+        this.progressT = this.timestamp - this.startT
+        if (200 - this.progressT / 10 > 0) {
+          this.element.style.top = 200 - this.progressT / 10 + 'px'
+          window.requestAnimationFrame(this.step)
+        } else {
+          this.top = 0
+          this.left = 0
+          this.startT = ''
+          this.startL = ''
+          this.progressL = ''
+          this.progressT = ''
+        }
+      }
+      if (this.progressL / 10 < 200 && this.left === 0) {
+        if (!this.startL) {
+          this.startL = this.timestamp
+        }
+        this.progressL = this.timestamp - this.startL
+        window.requestAnimationFrame(this.step)
+        this.element.style.left = Math.min(this.progressL / 10, 200) + 'px'
+      }
+      if (this.progressT / 10 < 300 && this.progressL / 10 >= 200 && this.top === 0) {
+        this.startT = this.startT ? this.startT : this.timestamp
+        this.progressT = this.timestamp - this.startT
+        window.requestAnimationFrame(this.step)
+        this.element.style.top = Math.min(this.progressT / 10, 200) + 'px'
+      }
+      if (this.top === 1 && this.left === 1) {
+        this.startL = this.startL ? this.startL : this.timestamp
+        if ((200 - (this.timestamp - this.startL) / 10) > 0) {
+          this.progressL = this.timestamp - this.startL
+          window.requestAnimationFrame(this.step)
+          this.element.style.left = 200 - this.progressL / 10 + 'px'
+        } else {
+          this.left = 2
+        }
+      }
+    }
+  },
+  mounted() {
+    this.element = this.$refs.animateObject
+    window.requestAnimationFrame(this.step)
+  }
 }
 </script>
+
+<style scoped>
+.animater {
+  position: absolute;
+  background: linear-gradient(lightblue, blue);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+}
+.animater-container {
+  position: relative;
+  height: 220px;
+  width: 220px;
+  border: 1px solid lightgray;
+  background: white;
+  background-image:
+    linear-gradient(
+      90deg,
+      rgba(200, 0, 0, .5) 50%,
+      transparent 0
+    ),
+    linear-gradient(
+      rgba(200, 0, 0, .5) 50%,
+      transparent 0
+    );
+  background-size: 30px 30px;
+}
+.css-animater {
+  animation: round 10s infinite;
+}
+
+@keyframes round {
+  0% {
+    top: 0;
+    left: 0;
+  }
+  25% {
+    top: 0;
+    left: 200px;
+  }
+  50% {
+    top: 200px;
+    left: 200px;
+  }
+  75% {
+    top: 200px;
+    left: 0;
+  }
+  100% {
+    top: 0;
+    left: 0;
+  }
+}
+</style>
