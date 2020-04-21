@@ -6,6 +6,7 @@
       <div class="css-animater animater"></div>
     </div>
     <el-button type="primary">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+    <div class="bg-image-set"></div>
   </div>
 </template>
 
@@ -24,6 +25,7 @@ export default {
     }
   },
   methods: {
+    // 使用js和requestAnimationFrame实现动画效果， 使得动画效果的刷新频率和页面刷新频率同步，减少不必要的刷新（与使用setTimeout相比，使用setTimeout时，可能运行函数时，页面没有刷新，浪费cpu资源）
     step() {
       this.timestamp = new Date().getTime()
       if (this.progressL / 10 >= 200) {
@@ -108,6 +110,8 @@ export default {
     );
   background-size: 30px 30px;
 }
+
+/* 使用css3实现动画效果 */
 .css-animater {
   animation: round 10s infinite;
 }
@@ -133,5 +137,14 @@ export default {
     top: 0;
     left: 0;
   }
+}
+
+/*  使用background-image： liner-gradient 可以实现很多复杂的背景图片，可以有效减少图片的引入，减少http请求及请求大小，优化页面效果 */
+.bg-image-set {
+  width: 320px;
+  height: 260px;
+  background-color: #fff;
+  background-image: linear-gradient(to right, lightgrey 20%, transparent 0), linear-gradient(to bottom, lightgrey 20%, transparent 0), linear-gradient(to bottom right, #ef0000 60%, #ca0000 0);
+  background-size: 100px 50px;
 }
 </style>

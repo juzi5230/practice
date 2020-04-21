@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 200px;
+            height: 3000px;
+            background: lightcyan;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+    <script>
+        function debounce(fn, wait) {
+          var timer = null
+          console.log('llllll')
+          return function () {
+            if(timer !== null) {
+              console.log(1)
+              clearTimeout(timer)
+            }
+            setTimeout(fn, wait)
+          }
+        }
+        function test() {
+          console.log('函数被调用了～～～～～')
+        }
+        // 滚动事件
+        window.addEventListener('scroll', debounce(test, 5000));
+    </script>
+</body>
+</html>

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .container {
+            width: 200px;
+            height: 3000px;
+            background: lightcyan;
+        }
+    </style>
+</head>
+<body>
+    <div class="container"></div>
+    <script>
+        // 节流throttle代码（定时器）：
+        var throttle = function(func, delay) {            
+            var timer = null;            
+            return function() {                
+                var context = this;               
+                var args = arguments;                
+                if (!timer) {                    
+                    timer = setTimeout(function() {                        
+                        func.apply(context, args);                        
+                        timer = null;                    
+                    }, delay);                
+                }            
+            }        
+        }        
+        function handle() {            
+            console.log(Math.random());        
+        }        
+        window.addEventListener('scroll', throttle(handle, 1000));
+    </script>
+</body>
+</html>
