@@ -315,3 +315,78 @@ f.name // "a", a 作为函数f的name属性而存在
   
   window.requestAnimationFrame(step);
   ```
+
+## Object.create()
+
++ Object.create()方法创建一个新对象，使用现有的对象来提供新创建的对象的__proto__
+
+```js
+  function Parent(name) {
+    this.name = [name]
+  }
+  Parent.prototype.getName = function() {
+    return this.name
+  }
+  function Child() {
+    // 构造函数继承
+    Parent.call(this, 'zhangsan')
+  }
+  //原型链继承
+  // Child.prototype = new Parent()
+  Child.prototype = Object.create(Parent.prototype)  //将`指向父类实例`改为`指向父类原型`
+  Child.prototype.constructor = Child
+  
+  //测试
+  const child = new Child()
+  const parent = new Parent()
+  child.getName()                  // ['zhangsan']
+  parent.getName()  
+```
+
+## prototype
+
+![alt prototype](images/prototype.jpg)
+
+## js中数据存储
+
++ javascript的基本类型：Undefined，Null，Boolean，Number，String
++ 引用类型：Object，Array，Function
+
+数据类型直接存储在栈（stack）中的简单数据段，占据空间小，大小固定，属于被频繁使用数据，所以放入栈中存储。引用数据类型存储在堆 (heap) 中的对象,占据空间大、大小不固定,如果存储在栈中，将会影响程序运行的性能；引用数据类型在栈中存储了指针，该指针指向堆中该实体的起始地址。当解释器寻找引用值时，会首先检索其在栈中的地址，取得地址后从堆中获得实体。即： 引用类型的地址存放在栈中，具体内容存放在堆中。
+
+## 数据类型检测
+
++ typeof： typeof 返回一个表示数据类型的字符串，返回结果包括： number， boolean，string， symbol，object， undefined， function 7种数据类型 ，但是不能判断 null 和 array, 他们均返回 object
++ 判断数组，可以使用ES6方法： Array.isArray(obj)
+
+```js
+typeof Symbol(); // symbol
+typeof ''; // string
+typeof 1; // number
+typeof true; //boolean
+typeof undefined; //undefined
+typeof new Function(); // function
+ typeof null; //object
+typeof [] ; //object
+typeof new Date(); //object
+typeof new RegExp(); //object
+```
+
++ Object.prototype.toString.call() 是检测类型最准确的常用方法
+
+```js
+Object.prototype.toString.call('') ; // [object String]
+Object.prototype.toString.call(1) ; // [object Number]
+Object.prototype.toString.call(true) ; // [object Boolean] Object.prototype.toString.call(undefined) ; // [object Undefined] Object.prototype.toString.call(null) ; // [object Null]
+Object.prototype.toString.call(new Function()) ; // [object Function] Object.prototype.toString.call(new Date()) ; // [object Date]
+Object.prototype.toString.call([]) ; // [object Array]
+Object.prototype.toString.call(new RegExp()) ; // [object RegExp]
+Object.prototype.toString.call( newError()) ; // [object Error]
+Object.prototype.toString.call( document) ; // [object HTMLDocument]
+Object.prototype.toString.call( window) ; //[object global] window是全局对象global的引用
+```
+
+## defer、async
+
++ defer： 如果script标签设置了该属性，则浏览器会异步的下载该文件并且不会影响到后续DOM的渲染；如果有多个设置了defer的script标签存在，则会按照顺序执行所有的script；defer脚本会在文档渲染完毕后，DOMContentLoaded事件调用前执行。
++ async： async的设置，会使得script脚本异步的加载并在允许的情况下执行。async的执行，并不会按着script在页面中的顺序来执行，而是谁先加载完谁执行

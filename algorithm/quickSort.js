@@ -77,10 +77,6 @@ function quickSort(arr, start, end) {
         }
     }
     arr[mid] = temp
-    // console.log(arr)
-    // console.log(mid)
-    console.log(arr[mid])
-    // console.log(start, end)
     if(mid > 0) {
       quickSort(arr, start, mid-1)
     }
@@ -89,3 +85,5 @@ function quickSort(arr, start, end) {
 let s = [5,8, 9, 3, 2, 6, 90, 12]
 quickSort(s, 0, s.length-1)
 console.log(s)
+
+//// 有问题。。。。。。。。。。。。。。。。。。。。。。。。。。。。。。
