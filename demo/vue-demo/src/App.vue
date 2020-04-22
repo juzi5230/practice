@@ -10,6 +10,11 @@ export default {
   data() {
     return {
     }
+  },
+  mounted() {
+    // setTimeout(function() {
+    document.querySelector('#loading-iframe').style.display = 'none'
+    // }, 3000)
   }
 }
 </script>

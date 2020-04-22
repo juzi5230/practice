@@ -3,10 +3,12 @@ import Vue from 'vue'
 
 Vue.use(VueRouter)
 
-const Foo = () => import('@/components/Foo.vue')
+const Animater = () => import('@/components/Animater.vue')
+const ImageShow = () => import('@/components/ImageShow.vue')
 const router = {
   routes: [
-    { path: '/', component: Foo }
+    { path: '/', component: Animater },
+    { path: '/ImageShow', name: 'ImageShow', component: ImageShow }
   ]
 }
 export default new VueRouter(router)

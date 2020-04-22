@@ -5,7 +5,7 @@
       <div class="js-animater animater" ref="animateObject"></div>
       <div class="css-animater animater"></div>
     </div>
-    <el-button type="primary">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
+    <el-button type="primary" @click="changeRoute" class="next-page">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
     <div class="bg-image-set"></div>
   </div>
 </template>
@@ -75,6 +75,14 @@ export default {
           this.left = 2
         }
       }
+    },
+    changeRoute() {
+      console.log(this.$router)
+      console.log(this.$route)
+      this.$router.push({
+        name: 'ImageShow',
+        path: '/ImageShow'
+      })
     }
   },
   mounted() {
@@ -146,5 +154,10 @@ export default {
   background-color: #fff;
   background-image: linear-gradient(to right, lightgrey 20%, transparent 0), linear-gradient(to bottom, lightgrey 20%, transparent 0), linear-gradient(to bottom right, #ef0000 60%, #ca0000 0);
   background-size: 100px 50px;
+}
+.next-page {
+  position: absolute;
+  right: 25px;
+  bottom: 35px;
 }
 </style>

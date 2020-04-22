@@ -6,6 +6,12 @@
     <meta name="viewport" content="width=device-width,initial-scale=1.0">
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <title><%= htmlWebpackPlugin.options.title %></title>
+    <style>
+      #loading-iframe {
+        margin-left:  calc(50% - 120px);
+        margin-top:  200px;
+      }
+    </style>
   </head>
   <body>
     <noscript>
@@ -13,5 +19,6 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
+    <iframe src="loading.svg" frameborder="0" id="loading-iframe"></iframe>
   </body>
 </html>

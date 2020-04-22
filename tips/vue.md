@@ -324,3 +324,13 @@ MVVM拆开来即为Model-View-ViewModel，有View，ViewModel，Model三部分�
 示例图片：
 
 ![alt mvvm示例图片](images/mvvm.png)
+
+## router, route
+
+1. this.$router：
+
+    表示全局路由器对象，项目中通过router路由参数注入路由之后，在任何一个页面都可以通过此方法获取到路由器对象，并调用其push(), go()等方法；
+
+2. this.$route:
+
+    表示当前正在用于跳转的路由器对象，可以调用其name、path、query、params等方法；
