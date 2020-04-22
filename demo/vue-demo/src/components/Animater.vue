@@ -121,6 +121,7 @@ export default {
 
 /* 使用css3实现动画效果 */
 .css-animater {
+  will-change: left, top;
   animation: round 10s infinite;
 }
 
