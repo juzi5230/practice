@@ -24,18 +24,16 @@ export default {
   font-family: Avenir, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
-  /* text-align: center; */
   color: #2c3e50;
-
-  /* margin-top: 60px; */
-  background-image: linear-gradient(to right, lightgrey 1px, transparent 0), linear-gradient(to bottom, lightgrey 1px, transparent 0);
-  background-size: 10px 10px;
 }
 .inblock {
   display: inline-block;
 }
 .mg20 {
   margin: 20px;
+}
+body {
+  background-image: linear-gradient(to right, lightgrey 1px, transparent 0), linear-gradient(to bottom, lightgrey 1px, transparent 0);
+  background-size: 10px 10px;
 }
 </style>
