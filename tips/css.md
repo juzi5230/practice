@@ -368,3 +368,21 @@ module.exports = {
 + 块级元素: margin: 0 auto
 + position:absolute +left:50%+ transform:translateX(-50%)
 + display:flex + justify-content: center
+
+## img的srcset
+
++ srcset属性允许作者根据不同分辨率或不同的视窗尺寸提多个不同分辨图像。用户代理会根据之前获取的任何资源做选择，从而避免多个资源加载浪费带宽和相关性能问题
++ 属性格式：图片地址 宽度描述w 像素密度描述x。 多个资源时，使用逗号分割
+
+```html
+<img srcset="banner-360w.jpg, banner-720w.jpg 2x, banner-1080w.jpg 3x" src="720.jpg"></img>
+<img src="small.jpg " srcset="big.jpg 1920w, middle.jpg 800w, small.jpg 1x" />
+```
+
+## dpr
+
+DPR:
+　　设备像素比DPR(devicePixelRatio)是默认缩放为100%的情况下，设备像素和CSS像素的比值
+　　dpr，也被成为device pixel ratio，即物理像素与逻辑像素的比，那也就不难理解：iphone6下dpr=2，iphone6+下dpr=3（考虑的是栅格化时的像素，并非真实的物理像素）;
+　　
+      DPR = 设备像素 / CSS像素(某一方向上)

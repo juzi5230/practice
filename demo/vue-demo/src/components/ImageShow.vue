@@ -6,6 +6,7 @@
       <img src="../assets/images/prototype.jpg" alt="" width="200" height="216">
       <img src="../assets/images/prototype1.png" alt="">
       <img src="../assets/images/prototype2.png" alt="">
+      <img srcset="../assets/images/prototype.jpg, ../assets/images/prototype1.png 2x, ../assets/images/prototype2.png 3x" src="prototype.jpg" />
   </div>
 </template>
 
@@ -19,9 +20,19 @@ export default {
 <style scoped>
 .image-container {
   text-align: center;
+  width: 100%;
+  box-sizing: border-box;
+  margin: 20px;
 }
 .image-container img {
   margin-top: 10px;
+}
+.lazy-container {
+  width: 200px;
+  height: 100px;
+  border-width: 10px;
+  border-style: dashed;
+  border-image: linear-gradient(pink, yellow) 10;
 }
 </style>
 

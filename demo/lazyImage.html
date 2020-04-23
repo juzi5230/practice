@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .placeholder {
+            width: 200px;
+            height: 1000px;
+            background: blueviolet;
+        }
+    </style>
+</head>
+<body>
+    <div class="placeholder"></div>
+    <div class="lazy-container">
+        <img src="./vue-demo/src/assets/images/logo.png" data-src="./vue-demo/src/assets/images/prototype.jpg" alt="" width="200" height="216">
+        <img src="./vue-demo/src/assets/images/logo.png" data-src="./vue-demo/src/assets/images/prototype1.png" alt="">
+        <img src="./vue-demo/src/assets/images/logo.png" data-src="./vue-demo/src/assets/images/prototype2.png" alt="">
+    </div>
+    <script>
+        var count = []
+        function scrolls() {
+          const s = document.querySelector('.lazy-container').getElementsByTagName('img')
+          for (let i = 0; i < s.length; i++) {
+            if (count[i] !== 1 && s[i].offsetTop > document.documentElement.scrollTop && s[i].offsetTop <= document.documentElement.scrollTop + window.innerHeight) {
+              s[i].src = s[i].getAttribute('data-src')
+              count[i] = 1
+            }
+          }
+        }
+        window.addEventListener('scroll', scrolls)
+    </script>
+</body>
+</html>
