@@ -79,8 +79,7 @@ export default {
     },
     changeRoute() {
       this.$router.push({
-        name: 'ImageShow',
-        path: '/ImageShow'
+        path: '/ImageShow/123'
       })
     }
   },
@@ -120,7 +119,7 @@ export default {
 
 /* 使用css3实现动画效果 */
 .css-animater {
-  will-change: left, top, transform;
+  /* will-change: left, top, transform; */
 
   /* animation: revolution 10s infinite; */
   animation: revolution 10s ease-out infinite, rotation 2s linear infinite;

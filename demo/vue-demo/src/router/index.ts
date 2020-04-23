@@ -8,7 +8,7 @@ const ImageShow = () => import('@/components/ImageShow.vue')
 const router = {
   routes: [
     { path: '/', component: Animater },
-    { path: '/ImageShow', name: 'ImageShow', component: ImageShow }
+    { path: '/ImageShow/:id', name: 'ImageShow/:id', component: ImageShow }
   ]
 }
 export default new VueRouter(router)

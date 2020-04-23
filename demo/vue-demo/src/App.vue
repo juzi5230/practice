@@ -1,7 +1,9 @@
 
 <template>
   <div id="app">
-    <router-view></router-view>
+    <transition name="slide-fade">
+      <router-view></router-view>
+    </transition>
   </div>
 </template>
 
@@ -35,5 +37,18 @@ export default {
 body {
   background-image: linear-gradient(to right, lightgrey 1px, transparent 0), linear-gradient(to bottom, lightgrey 1px, transparent 0);
   background-size: 10px 10px;
+}
+.slide-fade-enter-active {
+  transition: all .5s;
+}
+.slide-fade-leave-active {
+  transition: all .2s;
+}
+.slide-fade-leave-to {
+  transform: translateX(100px);
+  opacity: 0;
+}
+.slide-fade-enter {
+  transform: translateX(-1000px);
 }
 </style>

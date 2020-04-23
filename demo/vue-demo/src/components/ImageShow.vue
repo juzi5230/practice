@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="image-container">
       <!--修改网速为mid-tier mobile， 可以查看图片加载的过程，从上到下， fadeIn方式显示等-->
       <!-- 显示方式，可以使用ps在保存图片时， 保存为web应用格式类型， 然后修改相关配置实现， 转换为srgb， 透明度、交错 -->
       <!-- prototype1， prototype2 首先使用了ps修改了图片的尺寸，然后使用tiny进行了压缩， 减小图片的大小 -->
@@ -11,6 +11,17 @@
 
 <script>
 export default {
+  mounted() {
+    console.log(this.$route.params)
+  }
 }
 </script>
+<style scoped>
+.image-container {
+  text-align: center;
+}
+.image-container img {
+  margin-top: 10px;
+}
+</style>
 
