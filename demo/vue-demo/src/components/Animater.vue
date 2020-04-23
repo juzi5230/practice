@@ -1,12 +1,13 @@
 
 <template>
   <div>
-    <div class="animater-container">
+    <div class="animater-container inblock mg20">
       <div class="js-animater animater" ref="animateObject"></div>
       <div class="css-animater animater"></div>
     </div>
     <el-button type="primary" @click="changeRoute" class="next-page">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
-    <div class="bg-image-set"></div>
+    <div class="bg-image-set inblock mg20"></div>
+    <!-- <div class="square"></div> -->
   </div>
 </template>
 
@@ -77,8 +78,6 @@ export default {
       }
     },
     changeRoute() {
-      console.log(this.$router)
-      console.log(this.$route)
       this.$router.push({
         name: 'ImageShow',
         path: '/ImageShow'
@@ -121,11 +120,13 @@ export default {
 
 /* 使用css3实现动画效果 */
 .css-animater {
-  will-change: left, top;
-  animation: round 10s infinite;
+  will-change: left, top, transform;
+
+  /* animation: revolution 10s infinite; */
+  animation: revolution 10s ease-out infinite, rotation 2s linear infinite;
 }
 
-@keyframes round {
+@keyframes revolution {
   0% {
     top: 0;
     left: 0;
@@ -148,14 +149,30 @@ export default {
   }
 }
 
+@keyframes rotation {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /*  使用background-image： liner-gradient 可以实现很多复杂的背景图片，可以有效减少图片的引入，减少http请求及请求大小，优化页面效果 */
 .bg-image-set {
   width: 320px;
   height: 260px;
   background-color: #fff;
-  background-image: linear-gradient(to right, lightgrey 20%, transparent 0), linear-gradient(to bottom, lightgrey 20%, transparent 0), linear-gradient(to bottom right, #ef0000 60%, #ca0000 0);
+  background-image: linear-gradient(to right, lightgrey 20%, transparent 0), linear-gradient(to bottom, lightgrey 20%, transparent 0), linear-gradient(to bottom right, #00efb8 60%, #3ba089 0);
   background-size: 100px 50px;
 }
+
+/* .square {
+  width: 200px;
+  height: 200px;
+  background-image: linear-gradient(to right, lightgrey 1px, transparent 0), linear-gradient(to bottom, lightgrey 1px, transparent 0);
+  background-size: 10px 10px;
+} */
 .next-page {
   position: absolute;
   right: 25px;
