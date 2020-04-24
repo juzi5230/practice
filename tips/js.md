@@ -453,6 +453,6 @@ Object.prototype.toString.call( window) ; //[object global] window是全局对�
 ## load、DOMContentLoaded
 
 ```js
-window.addEventListener('load',function( ){...})//页面所有资源全部加载完才执行
+window.addEventListener('load',function(){...})//页面所有资源全部加载完才执行
 document.addEventListener('DOMContentLoaded',function( ){...})//DOM渲染完即可执行，此时图片视频可能没加载完
 ```

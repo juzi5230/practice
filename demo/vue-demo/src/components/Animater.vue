@@ -4,10 +4,19 @@
     <div class="animater-container inblock mg20">
       <div class="js-animater animater" ref="animateObject"></div>
       <div class="css-animater animater"></div>
+      <div class="center"></div>
     </div>
     <el-button type="primary" @click="changeRoute" class="next-page">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
     <div class="bg-image-set inblock mg20"></div>
     <!-- <div class="square"></div> -->
+    <div class="face-container">
+      <div class="face face1"></div>
+      <div class="face face2"></div>
+      <div class="face face3"></div>
+      <div class="face face4"></div>
+      <div class="face face5"></div>
+      <div class="face face6"></div>
+    </div>
   </div>
 </template>
 
@@ -116,6 +125,14 @@ export default {
     );
   background-size: 30px 30px;
 }
+.center {
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(45deg, #f00, #ff0);
+  margin: 0 auto;
+  margin-top: 85px;
+  border-radius: 50%;
+}
 
 /* 使用css3实现动画效果 */
 .css-animater {
@@ -150,6 +167,7 @@ export default {
 
 @keyframes rotation {
   from {
+    /* transform: rotate3d(1, 1, 1, 45deg) */
     transform: rotate(0deg);
   }
   to {
@@ -176,5 +194,34 @@ export default {
   position: absolute;
   right: 25px;
   bottom: 35px;
+}
+.face-container {
+  margin: 30px;
+}
+.face {
+  width: 100px;
+  height: 100px;
+
+  /* background: chartreuse; */
+}
+.face1 {
+  background: lightblue;
+  transform: rotateX(60deg) rotateY(0deg) rotateZ(-30deg);
+}
+.face2 {
+  background: lightcoral;
+  transform: rotateX(60deg) rotateY(0deg) rotateZ(-30deg);
+}
+.face3 {
+  background: lightgoldenrodyellow;
+}
+.face4 {
+  background: lightpink;
+}
+.face5 {
+  background: lightskyblue;
+}
+.face6 {
+  background: magenta;
 }
 </style>

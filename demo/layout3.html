@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+          min-width: 500px;
+        }
+        
+        #container {
+          width: 100%;
+        }
+        
+        .column {
+          float: left;
+          height: 200px;
+        }
+                
+        #center {
+          margin-left: 200px;
+          margin-right: 150px;
+          height: 200px;
+          background: mediumorchid;
+        }
+                
+        #left {
+          width: 200px; 
+          margin-left: -100%;
+          background: limegreen;
+        }
+                
+        #right {
+          width: 150px; 
+          margin-left: -150px;
+          background: magenta;
+        }
+                
+        #footer {
+          clear: both;
+        }
+    </style>
+</head>
+<body>
+    <div id="container" class="column">
+        <div id="center"></div>
+    </div>
+    <div id="left" class="column"></div>
+    <div id="right" class="column"></div>
+</body>
+</html>
