@@ -386,3 +386,75 @@ DPR:
 　　dpr，也被成为device pixel ratio，即物理像素与逻辑像素的比，那也就不难理解：iphone6下dpr=2，iphone6+下dpr=3（考虑的是栅格化时的像素，并非真实的物理像素）;
 　　
       DPR = 设备像素 / CSS像素(某一方向上)
+
+## 清浮动
+
++ 1. 在最后一个浮动元素后面添加新标签， 设置clear： both
+
+```html
+  <div class="fahter clearfix">
+  <div class="big">big</div>
+  <div class="small">small</div>
+  <div class="clear">额外标签法</div>
+  </div>
+```
+
+```css
+  .fahter{
+  width: 400px;
+  border: 1px solid deeppink;
+  }
+  .big{
+  width: 200px;
+  height: 200px;
+  background: darkorange;
+  float: left;
+  }
+  .small{
+  width: 120px;
+  height: 120px;
+  background: darkmagenta;
+  float: left;
+  }
+```
+
++ 父级添加overflow属性
+
+```css
+  .fahter{
+    width: 400px;
+    border: 1px solid deeppink;
+    overflow: hidden;
+  }
+```
+
++ 为父元素使用after伪元素清浮动
+
+```css
+  .clearfix:after{/*伪元素是行内元素 正常浏览器清除浮动方法*/
+    content: "";
+    display: block;
+    height: 0;
+    clear:both;
+    visibility: hidden;
+  }
+  .clearfix{
+    *zoom: 1;/*ie6清除浮动的方式 *号只有IE6-IE7执行，其他浏览器不执行*/
+  }
+```
+
+## @media
+
+```css
+@media screen and (max-width: 400px) {
+    body {
+        background-color:lightblue;
+    }
+}
+```
+
+## flex布局
+
++ 项目开发中经常使用第三方组件库， 如element、vant来实现页面布局，平时比较少使用纯flex布局开发， 还是需要熟悉下的，万一哪天有的布局不能很好的复用第三方库的效果呢～
+
+参考网址： http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html

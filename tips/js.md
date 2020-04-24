@@ -143,6 +143,9 @@
 
 + 不管条件是否成立，判断体中出现的var/function都会进行变量提升
 + 在 JavaScript 中，函数声明（function aa(){}）与变量声明（var）经常被 JavaScript 引擎隐式地提升到当前作用域的顶部。函数声明的优先级高于变量，如果变量名跟函数名相同且未赋值，则函数声明会覆盖变量声明。声明语句中的赋值部分并不会被提升，只有变量的名称被提升
++ var存在变量提升，let和const不会
+
+<font color="red">var在函数内部同一个变量可以重复声明，而在同一个块级作用域内部，let和const只能声明一次，并且const声明的是个常量，不能修改；var 声明的变量属于函数作用域，let 和 const 声明的变量属于块级作用域</font>
 
 ```js
 var myname = "小明";
@@ -180,6 +183,14 @@ showName();
 ```
 ### 箭头函数
 
++ 箭头函数不会创建自己的this
++ 箭头函数继承而来的this指向永远不变
++ call、apply、bind无法改变箭头函数中this的指向
++ 不能作为构造哈拿书使用
++ 没有自己的arguments
++ 没有原型prototype
++ 不能用作generator函数，不能使用yeild关键字
+
 ```js
 function a() {
   return () => {
@@ -192,6 +203,7 @@ a()()()        //Window
 ```
 
 首先箭头函数其实是没有 this 的，箭头函数中的 this 只取决包裹箭头函数的第一个普通函数的 this。在这个例子中，因为包裹箭头函数的第一个普通函数是 a，所以此时的 this 是 window。另外对箭头函数使用 bind这类函数是无效的。
+
 
 ## call、apply、bind
 
@@ -281,15 +293,53 @@ DOM树完全和html标签一一对应，但是渲染树会忽略掉不需要渲�
 
 以上四个步骤并不是一次性顺序完成的。如果DOM或者CSSOM被修改，以上过程会被重复执行。实际上，CSS和JavaScript往往会多次修改DOM或者CSSOM。
 
-## typeof
+### 宏任务、微任务
+
+参考网址： https://juejin.im/post/59e85eebf265da430d571f89
+
++ 宏任务： I/O、setTimeout、setInterval、requestAnimationFrame、script、
++ 微任务： process.nextTick、MultationObserver、Promise.then、Promise.catch、Promise.finally
+
+遇到console.log、Promise、new Promis直接执行，输出对应内容， 遇到process.nextTick()、then、catch、finall将任务放到微任务队列
 
 ```js
-var f = function a() { return 'lllallala' }
-typeof f // "function"
-typeof f() // "string"
-typeof a // undefined
-typeof a() // VM937:1 Uncaught ReferenceError: a is not defined
-f.name // "a", a 作为函数f的name属性而存在
+console.log('1');
+
+setTimeout(function() {
+    console.log('2');
+    process.nextTick(function() {
+        console.log('3');
+    })
+    new Promise(function(resolve) {
+        console.log('4');
+        resolve();
+    }).then(function() {
+        console.log('5')
+    })
+})
+process.nextTick(function() {
+    console.log('6');
+})
+new Promise(function(resolve) {
+    console.log('7');
+    resolve();
+}).then(function() {
+    console.log('8')
+})
+
+setTimeout(function() {
+    console.log('9');
+    process.nextTick(function() {
+        console.log('10');
+    })
+    new Promise(function(resolve) {
+        console.log('11');
+        resolve();
+    }).then(function() {
+        console.log('12')
+    })
+}
+
 ```
 
 ## requestAnimationFrame
@@ -360,13 +410,22 @@ f.name // "a", a 作为函数f的name属性而存在
 + 判断数组，可以使用ES6方法： Array.isArray(obj)
 
 ```js
+var f = function a() { return 'lllallala' }
+typeof f // "function"
+typeof f() // "string"
+typeof a // undefined
+typeof a() // VM937:1 Uncaught ReferenceError: a is not defined
+f.name // "a", a 作为函数f的name属性而存在
+```
+
+```js
 typeof Symbol(); // symbol
 typeof ''; // string
 typeof 1; // number
 typeof true; //boolean
 typeof undefined; //undefined
 typeof new Function(); // function
- typeof null; //object
+typeof null; //object
 typeof [] ; //object
 typeof new Date(); //object
 typeof new RegExp(); //object
@@ -390,3 +449,10 @@ Object.prototype.toString.call( window) ; //[object global] window是全局对�
 
 + defer： 如果script标签设置了该属性，则浏览器会异步的下载该文件并且不会影响到后续DOM的渲染；如果有多个设置了defer的script标签存在，则会按照顺序执行所有的script；defer脚本会在文档渲染完毕后，DOMContentLoaded事件调用前执行。
 + async： async的设置，会使得script脚本异步的加载并在允许的情况下执行。async的执行，并不会按着script在页面中的顺序来执行，而是谁先加载完谁执行
+
+## load、DOMContentLoaded
+
+```js
+window.addEventListener('load',function( ){...})//页面所有资源全部加载完才执行
+document.addEventListener('DOMContentLoaded',function( ){...})//DOM渲染完即可执行，此时图片视频可能没加载完
+```

@@ -8,23 +8,24 @@
      <title>Title Page</title>
    </head>
    <body>
-     <h1 class="text-center">Hello World</h1>
-     <!--使用谷歌浏览器查看js heap ，查看内存泄漏问题-->
-     <script>
-       function test(){
-        var arr = [];
-        for(var i = 0; i < 10; i++){
-          arr[i] = function(){
-            console.log(i);
-          }
-        }
-        return arr;
-       }
-       var myArr = test();
-       for(var j = 0;j<10;j++){
-        myArr[j]();
-       }
-     </script>
+    <h1 class="text-center">Hello World</h1>
+    <!--使用谷歌浏览器查看js heap ，查看内存泄漏问题-->
+    <script>
+     function test(){
+      var arr = [];
+      for(var i = 0; i < 10; i++){
+        arr[i] = (function(i){
+          return i
+        }(i))
+      }
+      document.querySelector('.text-center').innerHTML = arr
+      return arr;
+     }
+     var myArr = test();
+     for(var j = 0;j<10;j++){
+      myArr[j];
+     }
+    </script>
    </body>
  </html>
  
