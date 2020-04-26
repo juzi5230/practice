@@ -19,11 +19,13 @@
           var timer = null
           console.log('llllll')
           return function () {
+            console.log('........')
+            console.log(timer)
             if(timer !== null) {
               console.log(1)
               clearTimeout(timer)
             }
-            setTimeout(fn, wait)
+            timer = setTimeout(fn, wait)
           }
         }
         function test() {

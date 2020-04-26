@@ -1,5 +1,13 @@
 # js tips
 
+## js引擎
+
+参考网址： https://www.jianshu.com/p/81f6ded64ab2
+
++ JavaScript引擎是执行JavaScript代码的程序或解释器。javaScript引擎可以实现为标准解释器或即时编译器，它以某种形式将JavaScript编译为字节码。
++ v8引擎是一种js引擎的实现
++ V8是被设计用来提高网页浏览器内部JavaScript执行的性能
+
 ## 闭包
 
 闭包就是能够读取其他函数内部变量的函数
@@ -54,6 +62,8 @@
 ```
 
 ## 内存泄漏
+
+不再用到的内存，没有及时释放，就叫做内存泄漏（memory leak）
 
 ### 谷歌浏览器中查看内容泄漏
 
@@ -455,4 +465,27 @@ Object.prototype.toString.call( window) ; //[object global] window是全局对�
 ```js
 window.addEventListener('load',function(){...})//页面所有资源全部加载完才执行
 document.addEventListener('DOMContentLoaded',function( ){...})//DOM渲染完即可执行，此时图片视频可能没加载完
+```
+
+## @param
+
++ 标签提供了对某个函数的参数的各项说明，包括参数名、参数数据类型、描述等。
+
+```js
+/**
+ * @param {string} somebody - Somebody's name.
+ */
+ function sayHello(somebody) {
+    alert('Hello ' + somebody);
+}
+```
+
+```js
+/**
+ * Assign the project to an employee.
+ * @param {Object} employee - The employee who is responsible for the project.
+ * @param {string} employee.name - The name of the employee.
+ * @param {string} employee.department - The employee's department.
+ */
+ Project.prototype.assign = function(employee) {    // ...};
 ```

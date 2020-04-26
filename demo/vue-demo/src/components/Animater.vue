@@ -22,6 +22,7 @@
 
 <script>
 export default {
+  name: 'Animater',
   data() {
     return {
       startL: '',
@@ -214,6 +215,7 @@ export default {
 }
 .face3 {
   background: lightgoldenrodyellow;
+  transform: rotateX(23deg) rotateY(-8deg) rotateZ(-14deg) translateY(-131px) translateX(72px);
 }
 .face4 {
   background: lightpink;

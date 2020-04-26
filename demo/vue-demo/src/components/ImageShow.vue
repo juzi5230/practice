@@ -12,6 +12,7 @@
 
 <script>
 export default {
+  name: 'ImageShow',
   mounted() {
     console.log(this.$route.params)
   }
