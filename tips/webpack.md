@@ -31,3 +31,23 @@ resolve {Function} -接受一个参数request,request为test文件夹下面匹�
 keys {Function} -返回匹配成功模块的名字组成的数组
 
 id {String} -执行环境的id,返回的是一个字符串,主要用在module.hot.accept,应该是热加载
+
+## 打包速度
+
+```js
+  config.plugins.push(
+    new UglifyJsPlugin({ // 用来压缩js文件
+      uglifyOptions: {
+        compress: {
+          // warnings: false,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          drop_debugger: true,
+          // eslint-disable-next-line @typescript-eslint/camelcase
+          drop_console: true
+        }
+      },
+      sourceMap: false,
+      parallel: true // 加快打包速度,//使用多进程并行运行来提高构建速度
+    })
+  )
+```

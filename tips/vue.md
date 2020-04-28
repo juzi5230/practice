@@ -1,6 +1,7 @@
 # vue 问题累计
 
-参考网址： https://juejin.im/post/5e8a9b1ae51d45470720bdfa
+参考网址1： https://juejin.im/post/5e8a9b1ae51d45470720bdfa
+参考网址2:  https://juejin.im/post/5d59f2a451882549be53b170
 
 ## watch
 
@@ -285,6 +286,50 @@ mounted() {        // 监听sendtoTwo, 事件监听也可以写到created钩子�
 }
 ```
 
+## vuex的使用
+
+```vue
+// store中
+import Vue from 'vue'
+import Vuex from 'vuex'
+Vue.use(Vuex) //挂载Vuex
+
+export default new Vuex.Store({
+    state: {
+        testA: '123'
+    },
+    mutations: {
+        CHANGEA(state, newValue) {
+            state.testA = newValue
+        }
+    },
+    action: {
+        ayncChangeA () {
+            commit('CHANGEA', '123...') // action中调用commit， 提交mutation
+        }
+    }
+})
+
+// 将store挂载到Vue实例中， main.ts文件中
+
+import Vue from 'vue'
+import App from './App.vue'
+import router from './router'
+import store from './store'
+
+new Vue({
+  router,
+  store,
+  render: h => h(App)
+}).$mount('#app')
+
+/// 在组件中
+
+this.$store.commit(''CHANGEA', '123...'')
+```
+
+对于store中状态的改变可以使用action，调用对应的commit修改参数值，也可以在组件中使用this.$store.commit(mutationsMethod, newValue)。在action中一般调用异步操作。
+
 ## vue的双向绑定与vuex之间的冲突解决
 
  参考网址： https://vuex.vuejs.org/zh/guide/forms.html
@@ -334,3 +379,9 @@ MVVM拆开来即为Model-View-ViewModel，有View，ViewModel，Model三部分�
 2. this.$route:
 
     表示当前正在用于跳转的路由器对象，可以调用其name、path、query、params等方法；
+
+## 生命周期
+
+参考网址： https://juejin.im/post/5d59f2a451882549be53b170
+
+<img src="images/vueLive.jpg">

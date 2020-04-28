@@ -17,6 +17,9 @@
       <div class="face face5"></div>
       <div class="face face6"></div>
     </div>
+    <div>
+      <div class="border-type inblock lightblue"></div>
+    </div>
   </div>
 </template>
 
@@ -96,6 +99,9 @@ export default {
   mounted() {
     this.element = this.$refs.animateObject
     window.requestAnimationFrame(this.step)
+    console.log('........................')
+    console.log(this.$children)
+    console.log(this.$parent)
   }
 }
 </script>
@@ -198,32 +204,79 @@ export default {
 }
 .face-container {
   margin: 30px;
+  width: 300px;
+  height: 300px;
 }
 .face {
   width: 100px;
   height: 100px;
+  position: absolute;
 
   /* background: chartreuse; */
 }
-.face1 {
+
+/* .face1 {
   background: lightblue;
-  transform: rotateX(60deg) rotateY(0deg) rotateZ(-30deg);
 }
 .face2 {
   background: lightcoral;
-  transform: rotateX(60deg) rotateY(0deg) rotateZ(-30deg);
+  transform: translateY(-50px);
 }
 .face3 {
   background: lightgoldenrodyellow;
-  transform: rotateX(23deg) rotateY(-8deg) rotateZ(-14deg) translateY(-131px) translateX(72px);
+  transform: rotateY(90deg) translateZ(50px);
 }
 .face4 {
   background: lightpink;
+  transform: rotateY(-90deg) translateZ(-50px);
 }
 .face5 {
   background: lightskyblue;
+  transform: rotateX(90deg);
 }
 .face6 {
   background: magenta;
+  transform: rotateX(-90deg);
+} */
+.lightblue {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+  box-shadow: 0 0 0 100px rgb(0, 0, 255);
+  border-radius: 50% 50% 50% 50%;
+  background-color: transparent;
+}
+.border-type {
+  width: 100px;
+  height: 100px;
+}
+.face1 {
+  border: none;
+  background: rgba(0, 0, 0, .3);
+  -webkit-transform: translateZ(50px);
+  transform: translateZ(50px);
+}
+.face2 {
+  background: rgba(0, 255, 0, 1);
+  -webkit-transform: translateZ(-50px);
+  transform: translateZ(-50px);
+}
+.face3 {
+  background: rgba(196, 0, 0, .7);
+  -webkit-transform: rotateY(90deg) translateZ(50px);
+  transform: rotateY(90deg) translateZ(50px);
+}
+.face4 {
+  background: rgba(0, 0, 196, .7);
+  -webkit-transform: rotateY(-90deg) translateZ(50px);
+  transform: rotateY(-90deg) translateZ(50px);
+}
+.face5 {
+  background: rgba(196, 196, 0, .7);
+  -webkit-transform: rotateX(90deg) translateZ(50px);
+  transform: rotateX(90deg) translateZ(50px);
+}
+.face6 {
+  background: rgba(196, 0, 196, .7);
+  -webkit-transform: rotateX(-90deg) translateZ(50px);
+  transform: rotateX(-90deg) translateZ(50px);
 }
 </style>

@@ -489,3 +489,17 @@ document.addEventListener('DOMContentLoaded',function( ){...})//DOM渲染完即�
  */
  Project.prototype.assign = function(employee) {    // ...};
 ```
+
+## 缓存
+
++ 离线缓存允许我们在没网的时候通过读取离线文件进行站点的访问，而浏览器缓存即使浏览器又对资源文件的缓存也必须在有网的情况下读取缓存文件以提高文件加载速度，没网的时候依然显示网络断开的错误。
+
+## trim
+
++ trim() 方法用于删除字符串的头尾空格
+
+```js
+let s = '  333 444 55  '
+let t = s.trim(s)
+console.log(t) // "333 444 55"
+```
