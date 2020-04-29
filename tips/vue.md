@@ -385,3 +385,64 @@ MVVM拆开来即为Model-View-ViewModel，有View，ViewModel，Model三部分�
 参考网址： https://juejin.im/post/5d59f2a451882549be53b170
 
 <img src="images/vueLive.jpg">
+
+## vue中native修饰符的使用
+
+```javascript
+  在某个组件的根元素上监听一个原生事件。可以使用 v-on 的修饰符 .native
+  就是在父组件中给子组件绑定一个原生的事件，就将子组件变成了普通的HTML标签，不加'.native'事件是无法触发的
+```
+
+## vue 中is的使用
+
+  实现组件的异步加载
+
+```vue
+  <template>
+    <div class="hello">
+      <table>
+        <tr is="honor"></tr>
+        <honor></honor>
+        <tr :is="currcomp.component"></tr>
+      </table>
+    </div>
+  </template>
+  <script>
+  import honor from '@/components/honor'
+  export default {
+    name: 'HelloWorld',
+    data () {
+      return {
+        currcomp: {
+          name: 'honors',
+          component: resolve => require(['@/components/honor'], resolve)
+        }
+      }
+    },
+    methods: {
+    },
+    components: {
+      honor
+    }
+  }
+  </script>
+```
+
+  _honor组件内容_
+
+```vue
+    <template>
+      <tr>
+          <td>11222</td>
+          <td>11222</td>
+          <td>11222</td>
+          <td>11222</td>
+          <td>11222</td>
+          <td>11222</td>
+      </tr>
+    </template>
+  ```
+
+  在table标签中引入组件的三种方法，代码对应页面显示如下，或者将honor中标签tr修改为其他标签名称，比如div或者aaaa，页面显示如下图所示
+  *<font color=#aaa size=0.5 face="黑体">如果使用了未定义的标签aaaa，页面会显示对应内容，但是会报错，did you register the component correctly</font>*
+  ![alt vue-is 代码属性效果](images/vue-is.jpg)

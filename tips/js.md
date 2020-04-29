@@ -503,3 +503,45 @@ let s = '  333 444 55  '
 let t = s.trim(s)
 console.log(t) // "333 444 55"
 ```
+
+## 数组扁平化
+
+参考网址： https://juejin.im/post/59716f15f265da6c4c500fc7
+
++ 使用for循环
+
+```js
+let result = [];
+function flattern(arr) {
+  for(let i =0;i<arr.length; i++) {
+    if(Array.isArray(arr[i])) {
+      flattern(arr[i])
+    } else {
+      result.push(arr[i])
+    }
+  }
+  return result
+}
+```
+
++ 使用toString
+
+```js
+let t = ['1', '2', ['3', '5']]
+t.toString().split(',')
+```
+
++ 使用flat方法
+
+```js
+let t = ['1', '2', ['3', '5']]
+t.flat(Infinity)
+```
+
+## 不同刷新的请求执行过程
+
+参考网址： https://juejin.im/post/5a1d4e546fb9a0450f21af23
+
++ 浏览器地址栏中写入URL，回车浏览器发现缓存中有这个文件了，不用继续请求了，直接去缓存拿。（最快）
++ F5, F5就是告诉浏览器，别偷懒，好歹去服务器看看这个文件是否有过期了。于是浏览器就胆胆襟襟的发送一个请求带上If-Modify-since。
++ Ctrl+F5 告诉浏览器，你先把你缓存中的这个文件给我删了，然后再去服务器请求个完整的资源文件下来。于是客户端就完成了强行更新的操作.
