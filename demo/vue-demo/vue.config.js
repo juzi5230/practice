@@ -38,4 +38,14 @@ module.exports = {
       // etc...
     }
   },
+  devServer: {
+    proxy: {
+      '/leave': {
+        target: 'http://ux.lezhixing.com.cn/mock/295/',
+        changeOrigin: true
+      }
+    },
+    // vue项目启动时自动打开浏览器
+    open: true
+  }
 }

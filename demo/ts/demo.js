@@ -1,3 +1,4 @@
+// import { Interface } from "readline";
 var __extends = (this && this.__extends) || (function () {
     var extendStatics = function (d, b) {
         extendStatics = Object.setPrototypeOf ||
@@ -68,13 +69,24 @@ greet2.getGreeting();
 function getS() {
     var s;
     s = ['1', '2', '3'];
-    console.log('mmmmmm');
-    console.log(Object.prototype.toString.call(s));
+    // es6 语法中 Array.isArray(s) 可以用来判断是否为数组
     if (Object.prototype.toString.call(s) === '[object Array]') {
-        console.log("\u6570\u7EC4s\u4E3A" + s);
+        console.log("\u6570\u7EC4s\u4E3A: " + s);
     }
     else {
-        console.log(s);
+        console.log("\u5B57\u7B26\u4E32s\u4E3A\uFF1A " + s);
     }
 }
 getS();
+var name1;
+var name2;
+name1 = {
+    name: '2222',
+    age: '22'
+};
+name2 = {
+    name: 222,
+    age: 12
+};
+console.log(name1);
+console.log(name2);

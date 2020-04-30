@@ -1,4 +1,6 @@
 
+// import { Interface } from "readline";
+
 // 控制台输入tsc demo.ts 编译生成js文件, node demo.js 运行js代码，查看效果
 interface parent {
     name: string,
@@ -101,3 +103,33 @@ function getS() {
     }
 }
 getS()
+
+/**
+ * 
+ * 命名空间
+ * 命名空间一个最明确的目的就是解决重名问题
+ * */ 
+namespace str {
+    export interface nameContainer {
+        name: string,
+        age: string
+    }
+}
+namespace num {
+    export interface nameContainer {
+        name: number,
+        age: number
+    }
+}
+let name1:str.nameContainer
+let name2:num.nameContainer
+name1 = {
+  name: '2222',
+  age: '22'
+}
+name2 = {
+    name: 222,
+    age: 12
+}
+console.log(name1)
+console.log(name2)
