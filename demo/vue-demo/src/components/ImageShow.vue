@@ -1,12 +1,13 @@
 <template>
   <div class="image-container">
-      <!--修改网速为mid-tier mobile， 可以查看图片加载的过程，从上到下， fadeIn方式显示等-->
-      <!-- 显示方式，可以使用ps在保存图片时， 保存为web应用格式类型， 然后修改相关配置实现， 转换为srgb， 透明度、交错 -->
-      <!-- prototype1， prototype2 首先使用了ps修改了图片的尺寸，然后使用tiny进行了压缩， 减小图片的大小 -->
-      <img src="../assets/images/prototype.jpg" alt="" width="200" height="216">
-      <img src="../assets/images/prototype1.png" alt="">
-      <img src="../assets/images/prototype2.png" alt="">
-      <img srcset="../assets/images/prototype.jpg, ../assets/images/prototype1.png 2x, ../assets/images/prototype2.png 3x" src="prototype.jpg" />
+    <!--修改网速为mid-tier mobile， 可以查看图片加载的过程，从上到下， fadeIn方式显示等-->
+    <!-- 显示方式，可以使用ps在保存图片时， 保存为web应用格式类型， 然后修改相关配置实现， 转换为srgb， 透明度、交错 -->
+    <!-- prototype1， prototype2 首先使用了ps修改了图片的尺寸，然后使用tiny进行了压缩， 减小图片的大小 -->
+    <img src="../assets/images/prototype.jpg" alt="" width="200" height="216">
+    <img src="../assets/images/prototype1.png" alt="">
+    <img src="../assets/images/prototype2.png" alt="">
+    <img srcset="../assets/images/prototype.jpg, ../assets/images/prototype1.png 2x, ../assets/images/prototype2.png 3x" src="prototype.jpg" />
+    <el-button type="primary" @click="changeRoute" class="next-page">下一页<i class="el-icon-arrow-right el-icon--right"></i></el-button>
   </div>
 </template>
 
@@ -15,6 +16,13 @@ export default {
   name: 'ImageShow',
   mounted() {
     console.log(this.$route.params)
+  },
+  methods: {
+    changeRoute() {
+      this.$router.push({
+        path: '/keyIndex'
+      })
+    }
   }
 }
 </script>

@@ -238,16 +238,6 @@ export default {
   background: magenta;
   transform: rotateX(-90deg);
 } */
-.lightblue {
-  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
-  box-shadow: 0 0 0 100px rgb(0, 0, 255);
-  border-radius: 50% 50% 50% 50%;
-  background-color: transparent;
-}
-.border-type {
-  width: 100px;
-  height: 100px;
-}
 .face1 {
   border: none;
   background: rgba(0, 0, 0, .3);

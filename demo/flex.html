@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+      * {
+          padding: 0;
+          margin: 0;
+      }
+      .container1 .left {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 200px;
+          background: blue;
+          height: 200px;
+      }
+      .container1 .right {
+          position: absolute;
+          top: 0;
+          right: 0;
+          width: 200px;
+          background: lightblue;
+          height: 200px;
+      }
+      .container1 .main {
+          margin: 0 200px;
+          /* position: absolute; */
+          /* top: 0px; */
+          height: 200px;
+          background: lightcoral;
+      }
+      .container2 {
+          display: flex;
+      }
+      .container2 .left {
+          width: 200px;
+          height: 200px;
+          background: lightcoral;
+      }
+      .container2 .main {
+          flex: 1;
+          background: lightgoldenrodyellow;
+      }
+      .container2 .right {
+          width: 200px;
+          background: lightcyan;
+      }
+      .container3 {
+          width: 100%;
+          /* background: lightgoldenrodyellow; */
+          height: 200px;
+          padding: 0 200px;
+          box-sizing: border-box;
+      }
+      .container3 .left {
+          width: 200px;
+          height: 200px;
+          background: lightsalmon;
+          float: left;
+          margin-left: -200px;
+          margin-top: -200px;
+      }
+      .container3 .right {
+          width: 200px;
+          height: 200px;
+          background: lightseagreen;
+          float: right;
+          margin-right: -200px;
+          margin-top: -200px;
+      }
+      .container3 .main {
+          width: 100%;
+          height: 100%;
+          background-color: lightskyblue;
+      }
+      .container4 {
+          width: 100%;
+      }
+      .container4 .main-container {
+          float: left;
+          width: 100%;
+      }
+      .container4 .main-container .main {
+          background: lightyellow;
+          margin: 0 200px;
+          height: 200px;
+      }
+      .container4 .left {
+          float: left;
+          width: 200px;
+          height: 200px;
+          background: magenta;
+          margin-left: -100%;
+      }
+      .container4 .right {
+          float: left;
+          width: 200px;
+          height: 200px;
+          background: mediumorchid;
+          margin-left: -200px;
+      }
+    </style>
+</head>
+<body>
+    <!-- 绝对定位 -->
+    <div class="container1">
+        <div class="left"></div>
+        <div class="right"></div>
+        <div class="main"></div>
+    </div>
+    <!-- flex布局 -->
+    <div class="container2">
+        <div class="left"></div>
+        <div class="main"></div>
+        <div class="right"></div>
+    </div>
+    <!-- 圣杯布局 -->
+    <div class="container3">
+        <div class="main"></div>
+        <div class="left"></div>
+        <div class="right"></div>
+    </div>
+    <!-- 双飞翼布局 -->
+    <div class="container4">
+        <div class="main-container">
+            <div class="main"></div>
+        </div>
+        <div class="left"></div>
+        <div class="right"></div>
+    </div>
+</body>
+</html>
