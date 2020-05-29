@@ -545,3 +545,32 @@ t.flat(Infinity)
 + 浏览器地址栏中写入URL，回车浏览器发现缓存中有这个文件了，不用继续请求了，直接去缓存拿。（最快）
 + F5, F5就是告诉浏览器，别偷懒，好歹去服务器看看这个文件是否有过期了。于是浏览器就胆胆襟襟的发送一个请求带上If-Modify-since。
 + Ctrl+F5 告诉浏览器，你先把你缓存中的这个文件给我删了，然后再去服务器请求个完整的资源文件下来。于是客户端就完成了强行更新的操作.
+
+## 跨域
+
+参考网址： https://juejin.im/post/59c132415188256bb018e825
+
++ JSONP, jquery中的ajax可以实现跨域， dataType： jsonp
+
+```js
+  $.ajax({
+    url: xxx,
+    type: "GET",
+    dataType: "jsonp",
+    jsonp: "callback",
+    crossDomain: true,
+    cache: false,
+    data: {
+      xx: xx
+    },
+    success: function (res) {
+      resolve(res)
+    },
+    error: function(err) {
+      reject(err)
+    }
+  })
+```
+
++ CORS
++ postMessage

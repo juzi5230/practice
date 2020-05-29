@@ -23,15 +23,15 @@
                 var args = arguments;                
                 if (!timer) {                    
                     timer = setTimeout(function() {                        
-                        func.apply(context, args);                        
-                        timer = null;                    
-                    }, delay);                
-                }            
-            }        
-        }        
-        function handle() {            
+                        func.apply(context, args);                   
+                        timer = null;
+                    }, delay);
+                }
+            }
+        }
+        function handle() {  
             console.log(Math.random());        
-        }        
+        }
         window.addEventListener('scroll', throttle(handle, 1000));
     </script>
 </body>

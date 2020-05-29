@@ -311,3 +311,11 @@
 + 避免强制同步布局
 
       在js对元素几何属性、样式等进行修改后，紧接着进行这些属性的读取操作时， 浏览器为了拿到正确的值，会提前进行一次布局，这就是所谓的强制同步布局
+
+> 可以使用httpEquiv设置页面的缓存信息，相当于http的文件头作用，它可以向浏览器传回一些有用的信息，以帮助正确和精确地显示网页内容，与之对应的属性值为content，content中的内容其实就是各个参数的变量值。
+
+参考链接： https://www.runoob.com/jsref/prop-meta-httpequiv.html
+
+      httpEquiv 属性可设置或者返回 content 属性中HTTP 头部信息
+      http-equiv 属性可以使用伪装 HTTP 响应头部信息
+      http-equiv 属性值依赖 content属性的值
