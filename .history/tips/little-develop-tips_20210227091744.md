@@ -54,21 +54,13 @@ eg： http://www.baidu.com/js/a.js
 
 ## lighthouse
 
-### 功能
-
-Lighthouse 是一个开源的自动化工具，根据lighthouse生成的报告来改进网络应用的质量。
-
-
 ### 使用方式
 
 + 打开devtool，点击audit后点击generate report即可，但是可能会经常碰到 卡顿在 lighthouse is warming up这一步上
-  
-![lighthouse](images/devtool-lighthouse.jpg)
-
 
 + 使用命令行， 全局安装lighthouse： npm install -g lighthouse即可，然后在终端输入： lighthouse url（想要测试的网址），eg： lighthouse https://www.baidu.com. 命令：lighthouse --help 可以查看可用的输入输出选项
 
 lighthouse 最终默认生成html文件，报告中会给出相应的修复方案，根据生成的报告结果，可以分析页面的性能，并对不足之处作出修改。示例如下：
 
-![lighthouse](images/lighthouse.jpg)
+![override](images/lighthouse.png)
 

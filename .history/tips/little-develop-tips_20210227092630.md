@@ -59,6 +59,7 @@ eg： http://www.baidu.com/js/a.js
 Lighthouse 是一个开源的自动化工具，根据lighthouse生成的报告来改进网络应用的质量。
 
 
+
 ### 使用方式
 
 + 打开devtool，点击audit后点击generate report即可，但是可能会经常碰到 卡顿在 lighthouse is warming up这一步上
