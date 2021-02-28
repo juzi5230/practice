@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <div id="app">
+    <h2>{{person.name}} -- {{person.age}}</h2>
+    <h3>{{person.fav}}</h3>
+    <div>
+      <li>1</li>
+      <li>2</li>
+      <li>3</li>
+    </div>
+    <h3>{{msg}}</h3>
+    <div v-text='msg'></div>
+    <div v-html='msg'></div>
+    <div v-text='person.fav'></div>
+    <div v-html='msgStr'></div>
+    <div v-html='person.fav'></div>
+    <input type="text" v-model='msg'>
+    <button v-on:click='handleClick'>click it</button>
+    <button @click='handleClick'>click it1</button>
+    <a v-bind:href="person.href">百度一下</a>
+    <a :href="person.href">百度一下1</a>
+  </div>
+  <script src="./CVue.js"></script>
+  <script src="./Observer.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script>
+    let vm = new CVue({
+      el: '#app',
+      data: {
+        person: {
+          name: 'cheng',
+          age: 18,
+          fav: 'book',
+          href: 'http://www.baidu.com'
+        },
+        msg: '学习mvvm实现原理',
+        msgStr: '学习mvvm实现原理.....'
+      },
+      methods: {
+        handleClick () {
+          console.log('触发了点击事件')
+          console.log(this.person)
+          this.person.fav = '1223333.....'
+        }
+      }
+    })
+  </script>
+</body>
+</html>

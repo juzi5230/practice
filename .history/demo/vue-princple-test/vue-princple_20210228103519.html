@@ -17,7 +17,7 @@
     <h3>{{msg}}</h3>
     <div v-text='msg'></div>
     <div v-text='person.fav'></div>
-    <div v-html='msg'></div>
+    <div v-html='msgStr'></div>
     <div v-html='person.fav'></div>
     <input type="text" v-model='msg'>
     <button v-on:click='handleClick'>click it</button>
@@ -26,6 +26,7 @@
     <a :href="person.href">百度一下1</a>
   </div>
   <script src="./CVue.js"></script>
+  <script src="./Observer.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
   <script>
     let vm = new CVue({
@@ -37,7 +38,8 @@
           fav: 'book',
           href: 'http://www.baidu.com'
         },
-        msg: '学习mvvm实现原理'
+        msg: '学习mvvm实现原理',
+        msgStr: '学习mvvm实现原理.....'
       },
       methods: {
         handleClick () {

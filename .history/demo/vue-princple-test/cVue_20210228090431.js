@@ -64,12 +64,10 @@ class Compile{
     const childNodes = fragment.childNodes
     childNodes.forEach(child => {
       if(this.isElementNode(child)) {
-        // console.log('元素节点', child)
-        this.compileElement(child)
+        this.compileElement(child) // 编译元素节点
       } else {
         // 文本节点 编译
-        // console.log('文本节点', child)
-        this.compileText(child)
+        this.compileText(child) // 编译文本节点
       }
       if(child.childNodes && child.childNodes.length) {
         this.compile(child)
@@ -125,6 +123,7 @@ class Compile{
     return f
   }
   isElementNode(node) {
+    console.log(node)
     return node.nodeType === 1
   }
 }
