@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>水平垂直居中</title>
+    <style>
+        /* body {
+            height: 500px;
+            overflow: hidden;
+        } */
+        .box-origin {
+            box-sizing: border-box;
+            width: 100px;
+            height: 100px;
+            background: cadetblue;
+        }
+        /* 方案一 需要知道 box 的宽度*/
+        .box {
+            background-color: aqua;
+            width: 100px;
+            height: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            margin-left: -50px;
+            margin-top: -25px;
+        }
+        /* 方案二 需要知道 box 的宽度 */
+        .box1 {
+            background-color: aqua;
+            width: 100px;
+            height: 50px;
+            position: absolute;
+            top: calc(50% - 50px);
+            left: calc(50% - 25px);
+        }
+        /* 方案三  transform css3 属性，兼容性不是很好*/
+        .box2 {
+            background-color: aqua;
+            width: 100px;
+            height: 50px;
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%); 
+        }
+        /* 方案四  必须知道宽高 */
+        .box3 {
+          width: 100px;
+          height: 50px;
+          background-color: aqua;
+          position: absolute;
+          top: 0;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          margin: auto;
+        }
+        /* 方案五 使用flex布局， 移动端经常使用*/
+        /* body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        } */
+        /* 方案六  要求父级元素有固定元素*/
+        body {
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            width: 500px;
+            height: 500px;
+            background: chartreuse;
+        }
+        .box4 {
+            display: inline-block;
+        }
+        .container {
+            display: flex;
+            min-height: 400px;
+            background: blue;
+            box-sizing: border-box;
+        }
+        .left {
+            flex: 0 0 200px;
+            background: blueviolet;
+        }
+        .right {
+            flex: 0 0 200px;
+            background: burlywood;
+        }
+        .center {
+            flex: 1;
+            background: chartreuse;
+        }
+    </style>
+</head>
+<body>
+  <div class="box-origin box4">
+     dlfjlasjf
+  </div>
+
+  <div class="container">
+    <div class="left"></div>
+    <div class="center"></div>
+    <div class="right"></div>
+  </div>
+</body>
+</html>
