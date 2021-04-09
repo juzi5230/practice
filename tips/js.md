@@ -609,3 +609,11 @@ console.dir() / dir()可以显示一个对象的所有属性和方法
 ## session、cookie
 
   服务器设置session， 服务端返回给客户端的信息，在响应头中带着set-cookie='connect.sid' 客户端会把信息种植到本地的cookie中，httponly， 客户端再次向服务器发送请求的时候，会默认在请求头cookie把connect.sid传递给服务器
+
+## decodeURI()与decodeURIComponent()
+
+参考链接： https://blog.csdn.net/qq_39712029/article/details/81003518
+
+decodeURI() => encodeURI()
+decodeURIComponent() => encodeURIComponent()
+区别：encodeURIComponent和decodeURIComponent可以编码和解码URI特殊字符（如#，/，￥等），而decodeURI则不能。
