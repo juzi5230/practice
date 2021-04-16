@@ -53,3 +53,22 @@ function curry(fn) {
   }
   return resultFn
 }
+
+// promise.all
+
+Promise.all = function(promiseArr){
+  let index = 0, result = []
+  return new Promise((resolve, reject) => {
+    promiseArr.forEach((p, i) => {
+       Promise.resolve(p).then(res => {
+         result[i] = res
+         index++
+         if(index === promiseArr.length) {
+           resolve(result)
+         }
+       }).catch(err => {
+         reject(err)
+       })
+     })
+  })
+}
