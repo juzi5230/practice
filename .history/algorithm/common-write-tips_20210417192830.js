@@ -103,6 +103,5 @@ class myPromise{
         })
       }
     })
-    return promise
   }
 }

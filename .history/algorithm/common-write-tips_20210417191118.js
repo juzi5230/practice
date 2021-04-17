@@ -87,22 +87,19 @@ class myPromise{
     }
   }
   then(onfulfilled, onRejected) {
-    const promise = new myPromise((resolve, reject) => {
-      if(this.status === 'resolve') {
+    if(this.status === 'resolve') {
+      onfulfilled(this.reason)
+    }
+    if(this.status === 'reject') {
+      onRejected()
+    }
+    if(this.status === 'pending') {
+      this.onResolveArr.push(() => {
         onfulfilled(this.reason)
-      }
-      if(this.status === 'reject') {
-        onRejected()
-      }
-      if(this.status === 'pending') {
-        this.onResolveArr.push(() => {
-          onfulfilled(this.reason)
-        })
-        this.onRejectArr.push(() => {
-          onRejected(this.reject)
-        })
-      }
-    })
-    return promise
+      })
+      this.onRejectArr.push(() => {
+        onRejected(this.reject)
+      })
+    }
   }
 }
