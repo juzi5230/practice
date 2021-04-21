@@ -33,3 +33,22 @@ function creatArr(i, j) {
     console.log(resArr)
     return resArr
   }
+
+  // 求斐波那契前n项的和
+
+  function fbnqSum(n) {
+    let a = 0
+    let b = 1
+    let k = 1
+    let res = 1
+    while(k < n) {
+      let temp = a + b
+      a = b
+      b = temp
+      res += b
+      k++
+    }
+    return res
+  }
+  
+  

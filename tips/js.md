@@ -196,7 +196,7 @@ showName();
 + 箭头函数不会创建自己的this
 + 箭头函数继承而来的this指向永远不变
 + call、apply、bind无法改变箭头函数中this的指向
-+ 不能作为构造哈拿书使用
++ 不能作为构造函数使用
 + 没有自己的arguments
 + 没有原型prototype
 + 不能用作generator函数，不能使用yeild关键字

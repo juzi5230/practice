@@ -72,3 +72,40 @@ Promise.all = function(promiseArr){
      })
   })
 }
+
+// instanceof
+function instanceOf(leftValue, rightValue) {
+  let right = rightValue.prototype
+  let left = leftValue.__proto__
+  while(true) {
+    if(right === null) return false
+    if(left === right) {
+      return true
+    }
+    left = left.__proto__
+  }
+}
+
+// jsonp
+function jsonP(url, data, callback) {
+  let res = ''
+  for(let key in data) {
+    if(data.hasOwnProperty(data[key])) {
+      res += `${key}=${data[key]}&`
+    }
+  }
+  let result = `${url}?${res}callback=${callback}`
+  return new Promise((resolve, reject) => {
+    let s = document.createElement('script')
+    s.src = result
+    document.body.appendChild(s)
+    window[callback] = function(data) {
+      if(data.code === '200') {
+        resolve(data)
+      } else {
+        reject(data)
+      }
+      document.removeChild(s)
+    }
+  })
+}
