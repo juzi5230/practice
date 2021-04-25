@@ -22,3 +22,20 @@ function frog2(n) {
   }
   return getResult(n)
 }
+
+// 使用动态规划
+
+function frogJump(steps) {
+  if(steps === 1) return 1
+  if(steps === 2) return 2
+  let jump1 = 1, jump2 = 2
+  let temp = 0
+  let k = 2
+  while(k < steps) {
+    temp = jump1
+    jump1 = jump2
+    jump2 = temp + jump1
+    k++
+  }
+  return jump2
+}
