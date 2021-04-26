@@ -7,13 +7,15 @@ Vue.use(VueRouter)
 const Animater = () => import('@/components/Animater.vue')
 const ImageShow = () => import('@/components/ImageShow.vue')
 const KeyIndex = () => import('@/components/KeyIndex.vue')
+const updateProps = () => import('@/components/updateProps.vue')
 // const Animater = () => import(/* webpackChunkName: "12" */'@/components/Animater.vue')
 // const ImageShow = () => import(/* webpackChunkName: "12" */'@/components/ImageShow.vue')
 const route:RouteConfig[] =
   [
     { path: '/', component: Animater },
     { path: '/ImageShow/:id', name: 'ImageShow/:id', component: ImageShow },
-    { path: '/keyIndex', component: KeyIndex }
+    { path: '/keyIndex', component: KeyIndex },
+    { path: '/updateProps', component: updateProps }
   ]
 
 export default new VueRouter({ routes: route })
