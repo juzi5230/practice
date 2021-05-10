@@ -617,3 +617,24 @@ console.dir() / dir()可以显示一个对象的所有属性和方法
 decodeURI() => encodeURI()
 decodeURIComponent() => encodeURIComponent()
 区别：encodeURIComponent和decodeURIComponent可以编码和解码URI特殊字符（如#，/，￥等），而decodeURI则不能。
+
+## cssText
+
+平常使用js修改页面样式时，会这样：
+
+```javascript
+  obj.style.left = "100px";
+```
+
+但是当要修改的样式比较多时，这种方法就不太合适了，使用cssText可解决
+
+```javascript
+  $i.style.cssText =
+   `z-index: 9999;
+    top: ${y - 20}px; // 此处需要注意，后面跟px时，不需要使用引号，也不需要使用 + 连接
+    left: ${x}px;
+    position: absolute;
+    font-weight: bold;
+    font-size: ${c[c_idx]}px;
+    color: ${b[b_idx]}`
+```
