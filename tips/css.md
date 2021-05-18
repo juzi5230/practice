@@ -465,3 +465,35 @@ css的渲染机制是从右向左查询， 第二种只需要查询一层，而�
 
 + 1 、 .box .a {}
 + 2、 a {}
+
+## css 选择器
+
+明明所有的文档你都看了，但是遇到相关的应用依然不确定是否是它！
+
+element3的icon样式中有这样的代码：
+
+```css
+  [class^='el-icon-'],
+  [class*=' el-icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'element-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+```
+
+一开始感觉好神奇， 貌似第一次见这种使用方法， 然而看了
+
+[w3c 参考链接](https://www.w3school.com.cn/cssref/css_selectors.asp)
+
+之后， 忽然觉得自己啥也不是， 明明那么基础的东西， 我却感觉很新奇 ？！ 伤害性不大，侮辱性极强！

@@ -638,3 +638,7 @@ decodeURIComponent() => encodeURIComponent()
     font-size: ${c[c_idx]}px;
     color: ${b[b_idx]}`
 ```
+
+## .native .stop
+
+https://blog.csdn.net/weixin_41646716/article/details/90069562
