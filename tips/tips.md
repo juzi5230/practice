@@ -160,7 +160,7 @@ console.log(s) // 1
 b. 利用 sass 、typeScript 等其他语言编译成 css 或 JS 后  
 c. 利用 webpack 等打包工具进行多文件合并后  
 
-> 在计算机科学中，抽象语法树（Abstract Syntax Tree，AST），或简称语法树（Syntax tree），是源代码语法结构的一种抽象表示。
+> 在计算机科学中，抽象语法树（Abstract Syntax Tree，AST），或简称语法树（Syntax tree），是源代码语法结构的一种抽象表示。（*<a href="#translate">translate</a>*）
 
 > 什么是Tree-shaking
 >>Tree-shaking原始的本意
@@ -268,3 +268,11 @@ test('hello');
 + 除了GET和HEAD请求外的同源请求
 
 使用iframe 实现了跨域，实际是绕过了跨域，实现了对应的效果。（参考链接： https://juejin.cn/post/6844903767226351623）
+
+<a id="translate">
+
++ Syntax: 语法
++ Asynchronous: 异步
++ synchronization： 同步
+
+</a>

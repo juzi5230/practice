@@ -3,7 +3,7 @@
 ## rem、em、px
 
 + 1、PX ：像素（Pixel）
-PX是相对长度单位，它是相对于显示器屏幕分辨率而言的。 
+PX是相对长度单位，它是相对于显示器屏幕分辨率而言的。
 优缺点：比较稳定和精确，但在浏览器中放大或缩放浏览页面时会出现页面混乱的情况。
 
 + 2、EM：是相对长度单位。
@@ -36,7 +36,7 @@ filter: greyscale(1);
 
    BEM的命名规矩很容易记：block-name__element-name--modifier-name，也就是模块名 + 元素名 + 修饰器名
 
-eg： 
+eg：
       page-btn__prev
       page-btn__list
 

@@ -642,3 +642,36 @@ decodeURIComponent() => encodeURIComponent()
 ## .native .stop
 
 https://blog.csdn.net/weixin_41646716/article/details/90069562
+
+## stringObject.localeCompare(target)
+
+说明比较结果的数字。如果 stringObject 小于 target，则 localeCompare() 返回小于 0 的数。如果 stringObject 大于 target，则该方法返回大于 0 的数。如果两个字符串相等，或根据本地排序规则没有区别，该方法返回 0。
+
+## sort
+
+sort() 方法用于对数组的元素进行排序, 如果没有传参
+
++ 如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序
++ 如果想按照其他标准进行排序，就需要提供比较函数
+
+```js
+[3, -2, -1].sort() // -1 -2 3  *********
+[3, -2, -1].sort((a, b) => { return a - b }) // -2 -1 3
+[3, -2, -1].sort((a, b) => { return b - a }) // 3 -1 -2
+```
+
+## ~
+
+利用符号进行的类型转换,转换成数字类型
+
+```js
+~~true == 1
+~~false == 0
+~~"" == 0
+~~[] == 0
+
+~~undefined ==0
+~~!undefined == 1
+~~null == 0
+~~!null == 1
+```
