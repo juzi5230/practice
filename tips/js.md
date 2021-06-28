@@ -681,3 +681,16 @@ sort() 方法用于对数组的元素进行排序, 如果没有传参
 ~~(12/10) // 1
 ~~(123/10) // 12
 ~~(129/10) // 12
+
+## replace
+
+在公司开发班牌页面时，使用班牌的返回键没有正常返回上一页面，本地使用window.history返回的length 为1， 但是班牌上打印结果是2。解决方法：
+
+```js
+  if (history.replaceState) {
+    history.replaceState({}, document.title, url);
+    location.reload(); //刷新
+  } else {
+    location.replace(url);
+  }
+```
