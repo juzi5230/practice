@@ -20,6 +20,7 @@
     <div>
       <div class="border-type inblock lightblue"></div>
     </div>
+    <div @click="showDialog">点击显示弹框，单例模式</div>
   </div>
 </template>
 
@@ -39,6 +40,13 @@ export default {
     }
   },
   methods: {
+    showDialog() {
+      console.log('...')
+      // this.$message.closeAll()
+      this.$message({
+        message: '123333'
+      })
+    },
     // 使用js和requestAnimationFrame实现动画效果， 使得动画效果的刷新频率和页面刷新频率同步，减少不必要的刷新（与使用setTimeout相比，使用setTimeout时，可能运行函数时，页面没有刷新，浪费cpu资源）
     step() {
       this.timestamp = new Date().getTime()
