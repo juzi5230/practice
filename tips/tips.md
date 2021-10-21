@@ -234,6 +234,16 @@ if(c_start == -1){
 
 + “/”：代表根目录
 
+```js
+解压zip文件： unzip fileName
+
+删除文件/文件夹： rm -rf Vehicle.zip
+
+新建文件 touch name
+
+新建文件夹 mkdir name
+```
+
 ## flow
 
 + Flow 是 Facebook 旗下一个为 JavaScript 进行静态类型检测的检测工具。它可以在 JavaScript 的项目中用来捕获常见的 bugs，比如隐式类型转换，空引用等等。
