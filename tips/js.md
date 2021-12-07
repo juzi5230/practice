@@ -694,3 +694,10 @@ sort() 方法用于对数组的元素进行排序, 如果没有传参
     location.replace(url);
   }
 ```
+
+## 数组元素类型转换
+
++ var arr = [1, 2, 3, 4, 5];
+arr.map(String);  
++ var a = ['1', '2', '3', '4', '5']
+a.map(Number); 
