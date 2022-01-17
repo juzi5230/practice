@@ -54,24 +54,23 @@ export default hot(module)(routerMap)
 
 ```
 server {
-    listen       9097;
+    listen 9097;
     server_name  localhost;
     server_name_in_redirect off;	
 	location / {
 		root /xx/xx/xx/xx;
         index index.html;
         try_files $uri  /index.html;	
-}
-location /ctgcpbj {
+    }
+    location /path1 { // 非根目录部署1
         alias /xx/xx/xx/xx/;
         index index.html index.htm;
-       try_files $uri /xx/index.html; 
-}
-location /ctgcpcq {
+        try_files $uri /xx/index.html;
+    }
+    location /path2 { // 非根目录部署2
         alias /xx/xx/xx/xx/;
         index index.html index.htm;
-       try_files $uri /xx/index.html;         
-
+        try_files $uri /xx/index.html;
+    }
 }
-
 ```
