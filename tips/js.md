@@ -707,3 +707,43 @@ a.map(Number);
 
 ## 聚类
 + 将物理或抽象对象的集合分成由类似的对象组成的多个类的过程被称为聚类。由聚类所生成的簇是一组数据对象的集合，这些对象与同一个簇中的对象彼此相似，与其他簇中的对象相异
+
+## 神奇的走马灯数142857
+
+[走马灯-百度百科：](https://baike.baidu.com/item/142857/1922511?fr=aladdin)
+
+
+## 函数链式调用、为原型及函数添加方法
+参考书目： JavaScript 设计模式-张容铭-人民邮电出版社
+[代码引用地址](https://blog.csdn.net/gxgalaxy/article/details/107688527)
+```
+<script>
+  // 抽象出一个统一添加方法的功能方法
+  Function.prototype.addMethod = function(name,fn){
+    this[name] = this.prototype[name] = fn;
+    return this;
+  }
+  var methods = new Function();
+  // 给自身添加方法
+  methods.addMethod('sayName', function(){
+    // 输出姓名
+    console.log('galaxy');
+    // 使用链式调用通过return this
+    return this;
+  })
+  methods.addMethod('sayEmail' ,function(){
+    // 输出Email
+    console.log('XXXXXXXXXX@qq.com');
+    return this;
+  })
+  // 给原型上添加方法
+  methods.prototype.sayHello = function(){
+    console.log('hello');
+  }
+  methods.sayName();
+  methods.sayEmail();
+  // 链式调用
+  methods.sayName().sayEmail();
+  methods.prototype.sayHello();
+  </script>
+```
