@@ -747,3 +747,40 @@ a.map(Number);
   methods.prototype.sayHello();
   </script>
 ```
+
+## 通过forEach 修改数组
+
+平时会使用forEach 循环来修改数组的值，如下所示是成功的：
+```js
+
+// 引用类型
+let a = [{a: 12, b: 123213}, {a: 1, b: 123213}, {a: 121, b: 123213}]
+a.forEach(item => item.a += 2)
+console.log(a) // 修改成功
+
+```
+但是今天摸鱼看到掘金上有个人说，使用forEach修改数组的值失败了，emmmmm，测试下：
+
+```js
+// 基础类型
+let arr = [1, 2, 3 ,4, 5 ,6]
+arr.forEach(item => item += 2)
+console.log(arr) // 1, 2, 3 ,4, 5 ,6
+
+```
+
+显然没有成功。
+
+那么怎么修改基础类型的数组呢? 答案是使用索引
+
+```js
+
+// 基础类型
+let arr = [1, 2, 3 ,4, 5 ,6]
+arr.forEach((item, index) => arr[index] = arr[index] + 2)
+
+```
+
+item 是形参，嗯。
+
+果然摸到鱼了～
