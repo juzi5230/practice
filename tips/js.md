@@ -784,3 +784,8 @@ arr.forEach((item, index) => arr[index] = arr[index] + 2)
 item 是形参，嗯。
 
 果然摸到鱼了～
+
+## MutationObserver 监听DOM树变化
+
+- 掘金看到的，网页添加水印，监听网页dom树变化，重新渲染水印， 防止水印被修改。
+[参考网址](https://juejin.cn/post/7074582817476182047)
