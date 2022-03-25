@@ -9,7 +9,7 @@
     "build": "vue-cli-service build",
     "patch": "park_name= node patch.js",
     "test:unit": "vue-cli-service test:unit",
-    "lint": "vue-cli-service lint"
+    "lint": "vue-cli-service lint --fix"
   },
   "dependencies": {
     "axios": "^0.21.1",
@@ -17,6 +17,8 @@
     "core-js": "^3.6.4",
     "element-ui": "^2.13.1",
     "eslint-plugin-html": "^6.0.2",
+    "three": "^0.138.3",
+    "three-js": "^79.0.0",
     "vant": "^2.4.7",
     "vue": "^2.6.11",
     "vue-property-decorator": "^8.4.1",
