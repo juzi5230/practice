@@ -47,3 +47,42 @@ tag主要用于发布版本的管理，一个版本发布之后，我们可以�
       git tag <tagName> //创建本地tag
 
       git push origin <tagName> //推送到远程仓库
+
+## ui组件库官网
+
+- vue： vue-press
+- react： vite-plugin-react-pages
+
+## 项目组件自动生成说明文档
+
+- docute - 无需编译的文档生成器，使用 markdown 格式撰写。一般的文档网站会选择使用 gitbook 或者 hexo 之类的静态博客生成器构建，但它们都需要把 markdown 文件编译成静态的 html 文件， docute 可以省去这一步，因为它在你访问的时候才请求相关文档然后解析为 html 展现出来。
+### 自动生成vue组件说明文档-vuese
+
+- [参考地址](https://blog.csdn.net/weixin_45730243/article/details/122220431)
+- [说明文档地址](https://vuese.github.io/website/)
+
+- 1、全局安装vuese/cli
+
+```js
+yarn global add @vuese/cli || npm i -g @vuese/cli
+```
+
+- 2、根目录下运行命令并生成说明文档
+
+```js
+vuese gen
+```
+
+- 3、创建服务器，打开生成的说明文档
+
+```js
+vuese serve --open
+```
+
+- 4、修改组件后，重新执行命令生2生成文档，步骤3对应的网页内容会同步修改
+
+- 5、如果只想预览一个组件的文档生成，可使用如下命令，该命令执行后，组件修改，文档会实时更新
+
+```js
+vuese preview src/components/Button/index.vue
+```
