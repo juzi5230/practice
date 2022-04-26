@@ -53,8 +53,6 @@ function curry(fn) {
   }
   return resultFn
 }
-
-
 class myPromise{
   constructor(excutor) {
     this.status = 'pending'
@@ -105,4 +103,22 @@ class myPromise{
     })
     return promise
   }
+}
+// promise.all
+
+Promise.all = function(promiseArr){
+  let index = 0, result = []
+  return new Promise((resolve, reject) => {
+    promiseArr.forEach((p, i) => {
+       Promise.resolve(p).then(res => {
+         result[i] = res
+         index++
+         if(index === promiseArr.length) {
+           resolve(result)
+         }
+       }).catch(err => {
+         reject(err)
+       })
+     })
+  })
 }

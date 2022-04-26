@@ -460,3 +460,15 @@ MVVM拆开来即为Model-View-ViewModel，有View，ViewModel，Model三部分�
 ##
 
 前端性能优化（减少操作DOM）， 因为频繁操作DOM会造成浏览器的回流或者重绘，因此需要这一层抽象，在patch更新过程中尽可能地一次性将差异更新到DOM中
+
+## keepAlive
+
++ keep-alive的生命周期
+   activated： 页面第一次进入的时候，钩子触发的顺序是created->mounted->activated
+   deactivated:  页面退出的时候会触发deactivated，当再次前进或者后退的时候只触发activated
+
++ include 字符串或正则表达式，只有名称匹配的组件会被缓存
++ exclude 字符串或正则表达式，任何名称匹配的组件都不会被缓存
++ max 数字，最多可以缓存多少组件实例
+
+参考链接： https://blog.csdn.net/titoni_yunruohan/article/details/83785039

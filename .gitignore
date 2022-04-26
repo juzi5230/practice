@@ -2,6 +2,7 @@ node_modules
 .DS_Store
 .cache
 dist
+.history/
 # Editor directories and files
 # .idea
 # .vscode
