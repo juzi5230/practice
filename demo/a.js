@@ -49,3 +49,6 @@ function getAllMonth(start, end) {
   return res
 }
 console.log(getAllMonth('2018-09', '2019-01'))
+
+
+

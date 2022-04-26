@@ -196,7 +196,7 @@ showName();
 + 箭头函数不会创建自己的this
 + 箭头函数继承而来的this指向永远不变
 + call、apply、bind无法改变箭头函数中this的指向
-+ 不能作为构造哈拿书使用
++ 不能作为构造函数使用
 + 没有自己的arguments
 + 没有原型prototype
 + 不能用作generator函数，不能使用yeild关键字
@@ -617,3 +617,175 @@ console.dir() / dir()可以显示一个对象的所有属性和方法
 decodeURI() => encodeURI()
 decodeURIComponent() => encodeURIComponent()
 区别：encodeURIComponent和decodeURIComponent可以编码和解码URI特殊字符（如#，/，￥等），而decodeURI则不能。
+
+## cssText
+
+平常使用js修改页面样式时，会这样：
+
+```javascript
+  obj.style.left = "100px";
+```
+
+但是当要修改的样式比较多时，这种方法就不太合适了，使用cssText可解决
+
+```javascript
+  $i.style.cssText =
+   `z-index: 9999;
+    top: ${y - 20}px; // 此处需要注意，后面跟px时，不需要使用引号，也不需要使用 + 连接
+    left: ${x}px;
+    position: absolute;
+    font-weight: bold;
+    font-size: ${c[c_idx]}px;
+    color: ${b[b_idx]}`
+```
+
+## .native .stop
+
+https://blog.csdn.net/weixin_41646716/article/details/90069562
+
+## stringObject.localeCompare(target)
+
+说明比较结果的数字。如果 stringObject 小于 target，则 localeCompare() 返回小于 0 的数。如果 stringObject 大于 target，则该方法返回大于 0 的数。如果两个字符串相等，或根据本地排序规则没有区别，该方法返回 0。
+
+## sort
+
+sort() 方法用于对数组的元素进行排序, 如果没有传参
+
++ 如果调用该方法时没有使用参数，将按字母顺序对数组中的元素进行排序
++ 如果想按照其他标准进行排序，就需要提供比较函数
+
+```js
+[3, -2, -1].sort() // -1 -2 3  *********
+[3, -2, -1].sort((a, b) => { return a - b }) // -2 -1 3
+[3, -2, -1].sort((a, b) => { return b - a }) // 3 -1 -2
+```
+
+## ~
+
+利用符号进行的类型转换,转换成数字类型
+
+```js
+~~true == 1
+~~false == 0
+~~"" == 0
+~~[] == 0
+
+~~undefined ==0
+~~!undefined == 1
+~~null == 0
+~~!null == 1
+```
+
+遇到一个使用类型： 取整
+
+~~(12/10) // 1
+~~(123/10) // 12
+~~(129/10) // 12
+
+## replace
+
+在公司开发班牌页面时，使用班牌的返回键没有正常返回上一页面，本地使用window.history返回的length 为1， 但是班牌上打印结果是2。解决方法：
+
+```js
+  if (history.replaceState) {
+    history.replaceState({}, document.title, url);
+    location.reload(); //刷新
+  } else {
+    location.replace(url);
+  }
+```
+
+## 数组元素类型转换
+
++ var arr = [1, 2, 3, 4, 5];
+arr.map(String);  
++ var a = ['1', '2', '3', '4', '5']
+a.map(Number); 
+
+## 数据分析
+机器学习和数据挖掘的算法重合度很高， 稍微复杂点的数据挖掘算法很多都叫机器学习
+
+## 聚类
++ 将物理或抽象对象的集合分成由类似的对象组成的多个类的过程被称为聚类。由聚类所生成的簇是一组数据对象的集合，这些对象与同一个簇中的对象彼此相似，与其他簇中的对象相异
+
+## 神奇的走马灯数142857
+
+[走马灯-百度百科：](https://baike.baidu.com/item/142857/1922511?fr=aladdin)
+
+
+## 函数链式调用、为原型及函数添加方法
+参考书目： JavaScript 设计模式-张容铭-人民邮电出版社
+[代码引用地址](https://blog.csdn.net/gxgalaxy/article/details/107688527)
+```
+<script>
+  // 抽象出一个统一添加方法的功能方法
+  Function.prototype.addMethod = function(name,fn){
+    this[name] = this.prototype[name] = fn;
+    return this;
+  }
+  var methods = new Function();
+  // 给自身添加方法
+  methods.addMethod('sayName', function(){
+    // 输出姓名
+    console.log('galaxy');
+    // 使用链式调用通过return this
+    return this;
+  })
+  methods.addMethod('sayEmail' ,function(){
+    // 输出Email
+    console.log('XXXXXXXXXX@qq.com');
+    return this;
+  })
+  // 给原型上添加方法
+  methods.prototype.sayHello = function(){
+    console.log('hello');
+  }
+  methods.sayName();
+  methods.sayEmail();
+  // 链式调用
+  methods.sayName().sayEmail();
+  methods.prototype.sayHello();
+  </script>
+```
+
+## 通过forEach 修改数组
+
+平时会使用forEach 循环来修改数组的值，如下所示是成功的：
+```js
+
+// 引用类型
+let a = [{a: 12, b: 123213}, {a: 1, b: 123213}, {a: 121, b: 123213}]
+a.forEach(item => item.a += 2)
+console.log(a) // 修改成功
+
+```
+但是今天摸鱼看到掘金上有个人说，使用forEach修改数组的值失败了，emmmmm，测试下：
+
+```js
+// 基础类型
+let arr = [1, 2, 3 ,4, 5 ,6]
+arr.forEach(item => item += 2)
+console.log(arr) // 1, 2, 3 ,4, 5 ,6
+
+```
+
+显然没有成功。
+
+那么怎么修改基础类型的数组呢? 答案是使用索引
+
+```js
+
+// 基础类型
+let arr = [1, 2, 3 ,4, 5 ,6]
+arr.forEach((item, index) => arr[index] = arr[index] + 2)
+
+```
+
+item 是形参，嗯。
+
+果然摸到鱼了～
+
+## MutationObserver 监听DOM树变化
+
+- 掘金看到的，网页添加水印，监听网页dom树变化，重新渲染水印， 防止水印被修改。
+[参考网址](https://juejin.cn/post/7074582817476182047)

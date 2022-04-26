@@ -141,3 +141,20 @@ npm update xx
 + < 2G
 + querystring
 + querystring.parse(data)
+
+### package.json
+
+#### 依赖符号的区分
+
++ 指定具体的版本号，比如就是'3.4.5'
++ 指定主版本号和次版本号： “~3.4.5” 表示 安装3.4.x的最新版本，可以是3.4.6，3.4.7， ......3.4.99，但是不安装3.5.x的版本，也就是安装时不大于主版本号和次版本号
++ 指定主版本号： “^3.4.5”表示 安装3.4.5以上的版本，可以是3.4.x，3.5.x，3.6.x，3.x.x，但是不安装4.x.x的版本，也就是安装时不大于主版本号
+
+### error
+
++ has been blocked by CORS policy: Request header field th-auth is not allowed by Access-Control-Allow-Headers in preflight response
+
+```
+    res.header("Access-Control-Allow-Headers", "X-Requested-With, th-auth"); // 添加th-auth
+
+```

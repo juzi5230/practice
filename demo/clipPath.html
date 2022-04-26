@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="{CHARSET}">
+    <title>利用 clip-path 实现环形进度条</title>
+    <style type="text/css">
+
+.shadow {
+	width: 100px;
+	height: 100px;
+	display: relative;
+	border-radius: 50%;
+	background: conic-gradient(#ddff5c 0%, #28d4c3 50%, #85ea8e 75%, #1d335c 75%, #1d335c 100%);
+	mask: radial-gradient(transparent 44px, #000 45px);
+}
+.shadow::before {
+	content: '';
+    position: absolute;
+	left: 48px;
+	top: 0px;
+	width: 5px;
+	height: 5px;
+	background: #ddff5c;
+	border-radius: 50%;
+}
+.shadow::after {
+	content: '';
+	position: absolute;
+	left: 0px;
+	top: 45px;
+	width: 8px;
+	height: 8px;
+	background: #85ea8e;
+	border-radius: 50%;
+}
+.shadow.test1 {
+	background: conic-gradient(#ddff5c 0%, #28d4c3 50%, #85ea8e 75%, #1d335c 100%);
+
+}
+.clips {
+    width: 200px;
+    height: 200px;
+    background-image: url(./img/girl.jpeg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    clip-path: polygon(50% 0, 70% 30%, 100% 30%, 80% 60% , 100% 100%, 50% 80%, 0 100%, 20% 60%, 0 30%, 30% 30%);
+}
+    </style>
+</head>
+<body>
+    <div class="shadow"></div>
+	<div class="shadow test1"></div>
+    <div class="clips"></div>
+</body>
+</html>

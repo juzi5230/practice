@@ -3,7 +3,7 @@
 ## rem、em、px
 
 + 1、PX ：像素（Pixel）
-PX是相对长度单位，它是相对于显示器屏幕分辨率而言的。 
+PX是相对长度单位，它是相对于显示器屏幕分辨率而言的。
 优缺点：比较稳定和精确，但在浏览器中放大或缩放浏览页面时会出现页面混乱的情况。
 
 + 2、EM：是相对长度单位。
@@ -36,7 +36,7 @@ filter: greyscale(1);
 
    BEM的命名规矩很容易记：block-name__element-name--modifier-name，也就是模块名 + 元素名 + 修饰器名
 
-eg： 
+eg：
       page-btn__prev
       page-btn__list
 
@@ -465,3 +465,38 @@ css的渲染机制是从右向左查询， 第二种只需要查询一层，而�
 
 + 1 、 .box .a {}
 + 2、 a {}
+
+## css 选择器
+
+明明所有的文档你都看了，但是遇到相关的应用依然不确定是否是它！
+
+element3的icon样式中有这样的代码：
+
+```css
+  [class^='el-icon-'],
+  [class*=' el-icon-'] {
+  /* use !important to prevent issues with browser extensions that change fonts */
+    font-family: 'element-icons' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: baseline;
+    display: inline-block;
+  
+    /* Better Font Rendering =========== */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+```
+
+一开始感觉好神奇， 貌似第一次见这种使用方法， 然而看了
+
+[w3c 参考链接](https://www.w3school.com.cn/cssref/css_selectors.asp)
+
+之后， 忽然觉得自己啥也不是， 明明那么基础的东西， 我却感觉很新奇 ？！ 伤害性不大，侮辱性极强！
+
+## backdrop-filter
+backdrop-filter CSS 属性可以让你为一个元素后面区域添加图形效果（如模糊或颜色偏移）。 因为它适用于元素背后的所有元素，为了看到效果，必须使元素或其背景至少部分透明

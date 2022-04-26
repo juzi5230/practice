@@ -472,3 +472,22 @@ MVVM拆开来即为Model-View-ViewModel，有View，ViewModel，Model三部分�
 + max 数字，最多可以缓存多少组件实例
 
 参考链接： https://blog.csdn.net/titoni_yunruohan/article/details/83785039
+
+## vue 构建命令
+
+vue create: 是vue-cli3.x的初始化命令
+vue init: 是vue-cli2.x的初始化命令
+
+## v-bind
+
+常用方式：有两种，当然两个方式可以同时使用，亲测有效
+```javascript
+// 方式1    在子组件中通过 props 获取type属性 
+ v-bind:type='type' 
+ :type='type'
+
+// 方式2  一次绑定多个属性
+// 绑定一个全是 attribute 的对象, 同样适用props获取相关 id、other-attr等属性
+<div v-bind="{ id: someProp, 'other-attr': otherProp }"></div>
+
+```

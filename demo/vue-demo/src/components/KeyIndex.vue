@@ -7,6 +7,7 @@
       </li>
     </ul>
     <button @click="handleDelete">delete</button>
+    <button @click="changeRoute">下一页</button>
   </div>
 </template>
 
@@ -20,6 +21,11 @@ export default {
   methods: {
     handleDelete() {
       this.arr.splice(0, 1)
+    },
+    changeRoute() {
+      this.$router.push({
+        path: '/threeJsDemo'
+      })
     }
   }
 //   components: {
