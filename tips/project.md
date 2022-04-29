@@ -87,6 +87,19 @@ vuese serve --open
 vuese preview src/components/Button/index.vue
 ```
 
+- 6、 添加配置文件.vueserc
+
+```js
+{
+  "include": ["packages/*.vue"],
+  "outDir": "website",
+  "markdownDir": "components",
+  "babelParserPlugins": {
+    "jsx": false
+  }
+}
+```
+
 ### 自动生成react组件说明文档
 
 - 工具1: react-docgen，[参考网址](https://blog.csdn.net/qq_41903941/article/details/107999548)
