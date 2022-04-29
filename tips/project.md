@@ -86,3 +86,7 @@ vuese serve --open
 ```js
 vuese preview src/components/Button/index.vue
 ```
+
+### 自动生成react组件说明文档
+
+- 工具1: react-docgen，[参考网址](https://blog.csdn.net/qq_41903941/article/details/107999548)
