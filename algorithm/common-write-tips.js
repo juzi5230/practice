@@ -53,7 +53,57 @@ function curry(fn) {
   }
   return resultFn
 }
-
+class myPromise{
+  constructor(excutor) {
+    this.status = 'pending'
+    this.reason = ''
+    this.reject = ''
+    this.onRejectArr = []
+    this.onResolveArr = []
+    let resolve = (reason) => {
+      if(this.status === 'pending') {
+        this.status = 'resolve'
+        this.reason = reason
+        this.onResolveArr.forEach(fn => {
+          fn()
+        });
+      }
+    }
+    let reject = (reject) => {
+      if(this.status === 'pending') {
+        this.status = 'reject'
+        this.reject = reject
+        this.onRejectArr.forEach(fn => {
+          fn()
+        });
+      }
+    }
+    try {
+      excutor(resolve, reject)
+    } catch (err) {
+      reject(err)
+    }
+  }
+  then(onfulfilled, onRejected) {
+    const promise = new myPromise((resolve, reject) => {
+      if(this.status === 'resolve') {
+        onfulfilled(this.reason)
+      }
+      if(this.status === 'reject') {
+        onRejected()
+      }
+      if(this.status === 'pending') {
+        this.onResolveArr.push(() => {
+          onfulfilled(this.reason)
+        })
+        this.onRejectArr.push(() => {
+          onRejected(this.reject)
+        })
+      }
+    })
+    return promise
+  }
+}
 // promise.all
 
 Promise.all = function(promiseArr){
