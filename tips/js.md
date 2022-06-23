@@ -789,3 +789,15 @@ item 是形参，嗯。
 
 - 掘金看到的，网页添加水印，监听网页dom树变化，重新渲染水印， 防止水印被修改。
 [参考网址](https://juejin.cn/post/7074582817476182047)
+
+## window.performance.now()
+
+- 返回值表示为从time origin之后到当前调用时经过的时间, time origin相当于文档生命周期的起始时间，[锚](https://developer.mozilla.org/en-US/docs/Web/API/DOMHighResTimeStamp#the_time_origin) 
+
+- window.performance.now()返回的时间戳没有被限制在一毫秒的精确度内，相反，它们以浮点数的形式表示时间，精度最高可达微秒级。
+
+- 另外一个不同点是，window.performance.now()是以一个恒定的速率慢慢增加的，它不会受到系统时间的影响（系统时钟可能会被手动调整或被 NTP 等软件篡改）。另外，performance.timing.navigationStart + performance.now() 约等于 Date.now()。
+
+## 页面性能指标获取
+
+[参考网站](https://github.com/zxl-lxz/Notes/blob/master/Performance%20optimization/%E6%80%A7%E8%83%BD%E4%BC%98%E5%8C%96%E6%8C%87%E6%A0%87/index.md)

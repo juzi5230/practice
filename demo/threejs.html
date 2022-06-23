@@ -24,10 +24,17 @@
 			renderer.setSize( window.innerWidth, window.innerHeight );
 			document.body.appendChild( renderer.domElement );
 
-			var geometry = new THREE.BoxGeometry( 5, 5, 1 );
+			var geometry = new THREE.BoxGeometry( 3, 3, 3 );
 			var material = new THREE.MeshBasicMaterial( { color: 0x00ffff } );
-			var cube = new THREE.Mesh( geometry, material );
+
+			var loader = new THREE.TextureLoader();
+			let one = loader.load( './img/girl.jpeg');
+			const material1 = new THREE.MeshBasicMaterial( { map: one} );
+            const materials = [material1, material1, material1, material1, material1, material1]
+
+			var cube = new THREE.Mesh( geometry, materials );
 			scene.add( cube );
+
 
 			camera.position.z = 5;
 
@@ -35,16 +42,16 @@
             scene.add(directionalLight);
             directionalLight.position.set(2, 5, 5);
 
-			// var animate = function () {
-			// 	requestAnimationFrame( animate );
+			var animate = function () {
+				requestAnimationFrame( animate );
 
-			// 	cube.rotation.x += 0.01;
-			// 	cube.rotation.y += 0.01;
+				cube.rotation.x += 0.01;
+				cube.rotation.y += 0.01;
 
-			// 	renderer.render( scene, camera );
-			// };
+				renderer.render( scene, camera );
+			};
 
-			// animate();
+			animate();
 		</script>
 	</body>
 </html>

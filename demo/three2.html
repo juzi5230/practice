@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+ 
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <script type="text/javascript" src="./static/js/three.js"></script>
+    <title>Document</title>
+</head>
+ 
+<body onload="init()">
+    <canvas id="mainCanvas" width="800px" height="600px"></canvas>
+</body>
+<script>
+    function init() {
+        var renderer = new THREE.WebGLRenderer({
+            canvas: document.getElementById('mainCanvas')
+        });
+        renderer.setClearColor(0x000000);
+        var scene = new THREE.Scene();
+        var aspect = window.innerWidth / window.innerHeight;
+        var camera = new THREE.OrthographicCamera(-2 * aspect, 2 * aspect, -1.5 * aspect, 1.5 * aspect, 1, 500);
+        camera.position.set(200, 200, 200);
+        scene.add(camera);
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+        var cube = new THREE.Mesh(new THREE.SphereGeometry(2, 50, 50),
+            new THREE.MeshBasicMaterial({
+                color: 0xaaaaaa,
+                wireframe: false
+            })
+        )
+        scene.add(cube);
+        renderer.render(scene, camera);
+ 
+    }
+</script>
+ 
+</html>

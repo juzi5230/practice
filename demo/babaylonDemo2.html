@@ -1,0 +1,285 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <title>Babylon.js sample code</title>
+
+    <!-- Babylon.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+    <script src="https://preview.babylonjs.com/ammo.js"></script>
+    <script src="https://preview.babylonjs.com/cannon.js"></script>
+    <script src="https://preview.babylonjs.com/Oimo.js"></script>
+    <script src="https://preview.babylonjs.com/earcut.min.js"></script>
+    <script src="https://preview.babylonjs.com/babylon.js"></script>
+    <script src="https://preview.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+    <script src="https://preview.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+    <script src="https://preview.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+    <script src="https://preview.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+    <script src="https://preview.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+    <script src="https://preview.babylonjs.com/gui/babylon.gui.min.js"></script>
+    <script src="https://preview.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
+
+    <style>
+        html,
+        body {
+            overflow: hidden;
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        #renderCanvas {
+            width: 100%;
+            height: 100%;
+            touch-action: none;
+        }
+    </style>
+</head>
+
+<body>
+    <canvas id="renderCanvas"></canvas>
+    <!-- <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
+
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function () {
+            return new BABYLON.Engine(canvas, true, {
+                preserveDrawingBuffer: true,
+                stencil: true,
+                disableWebGL2Support: false
+            });
+        };
+        const createScene = function () {
+
+            const scene = new BABYLON.Scene(engine);
+
+            const camera = new BABYLON.ArcRotateCamera("camera", -Math.PI / 1.5, Math.PI / 2.2, 15, new BABYLON
+                .Vector3(0, 0, 0));
+            camera.attachControl(canvas, true);
+            const light = new BABYLON.HemisphericLight("light", new BABYLON.Vector3(1, 1, 0));
+
+            BABYLON.SceneLoader.ImportMeshAsync("", "https://assets.babylonjs.com/meshes/", "village.glb");
+
+            const walk = function (turn, dist) {
+                this.turn = turn;
+                this.dist = dist;
+            }
+
+            const track = [];
+            track.push(new walk(86, 7));
+            track.push(new walk(-85, 14.8));
+            track.push(new walk(-93, 16.5));
+            track.push(new walk(48, 25.5));
+            track.push(new walk(-112, 30.5));
+            track.push(new walk(-72, 33.2));
+            track.push(new walk(42, 37.5));
+            track.push(new walk(-98, 45.2));
+            track.push(new walk(0, 47))
+
+            // Dude
+            BABYLON.SceneLoader.ImportMeshAsync("him", "./7/scenes/", "Dude.babylon", scene).then((result) => {
+                var dude = result.meshes[0];
+                dude.scaling = new BABYLON.Vector3(0.008, 0.008, 0.008);
+
+                dude.position = new BABYLON.Vector3(-6, 0, 0);
+                dude.rotate(BABYLON.Axis.Y, BABYLON.Tools.ToRadians(-95), BABYLON.Space.LOCAL);
+                const startRotation = dude.rotationQuaternion.clone();
+
+                scene.beginAnimation(result.skeletons[0], 0, 100, true, 1.0);
+
+                let distance = 0;
+                let step = 0.015;
+                let p = 0;
+
+                scene.onBeforeRenderObservable.add(() => {
+                    dude.movePOV(0, 0, step);
+                    distance += step;
+
+                    if (distance > track[p].dist) {
+
+                        dude.rotate(BABYLON.Axis.Y, BABYLON.Tools.ToRadians(track[p].turn), BABYLON
+                            .Space.LOCAL);
+                        p += 1;
+                        p %= track.length;
+                        if (p === 0) {
+                            distance = 0;
+                            dude.position = new BABYLON.Vector3(-6, 0, 0);
+                            dude.rotationQuaternion = startRotation.clone();
+                        }
+                    }
+
+                })
+            });
+
+            return scene;
+        };
+        window.initFunction = async function () {
+
+
+            var asyncEngineCreation = async function () {
+                try {
+                    return createDefaultEngine();
+                } catch (e) {
+                    console.log(
+                        "the available createEngine function failed. Creating the default engine instead"
+                        );
+                    return createDefaultEngine();
+                }
+            }
+
+            window.engine = await asyncEngineCreation();
+            if (!engine) throw 'engine should not be null.';
+            startRenderLoop(engine, canvas);
+            window.scene = createScene();
+        };
+        initFunction().then(() => {
+            sceneToRender = scene
+        });
+
+        // Resize
+        window.addEventListener("resize", function () {
+            engine.resize();
+        });
+    </script> -->
+    <script>
+        'use strict';
+function TestGeometries (scene) {
+
+  // 创建一堆材质
+  const material1 = new BABYLON.StandardMaterial("texture1", scene);
+  material1.diffuseColor = new BABYLON.Color3(0.0, 0.7, 0.95); //漫射色
+
+  const material2 = material1.clone()
+  // material2.emissiveColor = new BABYLON.Color3(.2, .8, .3); //发光色
+  material2.ambientColor = new BABYLON.Color3(.1, .3, .0); //发光色
+  material2.bumpTexture = new BABYLON.Texture("img/bump.png", scene);  //凹凸贴图
+
+
+
+
+
+  const material3 = material1.clone()
+  material3.specularColor = new BABYLON.Color3(0.8, 0.2, 0.7);  //反射色
+  material3.alpha = 0.6;  //调整透明度
+
+  const material4 = material1.clone()
+  material4.diffuseTexture = new BABYLON.Texture('http://www.babylonjs-playground.com/textures/tree.png', scene)
+  material4.diffuseTexture.hasAlpha = true; //显示为透明
+  material4.backFaceCulling = false; //使透明在背面也显示贴图，而不是裁切后显示为空
+
+
+  const material5 = material1.clone()
+  material5.diffuseColor = new BABYLON.Color3(1.0, 0.2, 0.15); //漫射色
+  material5.reflectionTexture = new BABYLON.Texture("http://www.babylonjs-playground.com/textures/tree.png", scene); // 反射贴图
+  material5.reflectionTexture.coordinatesMode = BABYLON.Texture.SPHERICAL_MODE; // 反射模式
+
+
+  const materialWireframe = new BABYLON.StandardMaterial("materialWireframe", scene);
+  materialWireframe.wireframe = true  // 显示网格
+
+
+  const materialGrass = new BABYLON.StandardMaterial("materialGrass", scene);
+  materialGrass.diffuseTexture = new BABYLON.Texture("http://www.babylonjs-playground.com/textures/grass.jpg", scene);
+  materialGrass.diffuseTexture.uScale = 5.0;//垂直方向重复5次
+  materialGrass.diffuseTexture.vScale = 5.0;//水平方向重复5次
+
+
+  // 创建一个盒子
+  //参数为: 名字,盒子大小, 它们将放到场景, 是否可更新?(如果该网格后面必须被更新) 和可选的面朝向(参见下面). 如果你需要默认表现那么最后两个参数可以忽略: BABYLON.Mesh.CreateBox("box", 6.0, scene);
+  const box = BABYLON.Mesh.CreateBox("box", 1.0, scene, false, BABYLON.Mesh.DEFAULTSIDE);
+  // box.position.x = -1;  //移动一下它的默认位置，x轴移到-3的位置
+
+
+  //Apply the materials to meshes
+  box.material = material1;
+
+
+  // 创建一个球体
+//参数为: 名字, 细分段数 (高度细节或不需), 大小, 将被放到的场景, 是否可更新?(如果该网格后面必须被更新) 和可选的面朝向(参见下面). 如果你需要默认的表现那么最后两个参数可以忽略: BABYLON.Mesh.CreateSphere("sphere", 10.0, 10.0, scene);
+  const sphere = BABYLON.Mesh.CreateSphere("sphere", 8.0, 1.0, scene, false,  BABYLON.Mesh.DEFAULTSIDE);
+  sphere.position.x = -1.5;  //移动一下x轴的默认位置
+  sphere.material = material2
+
+
+  // 创建一个平面 (注意这个面是竖立着的)
+  //参数为: 名字, 大小, 和将被放到的场景, 是否可更新?(如果该网格后面必须被更新) 和可选的面朝向
+  const plane = BABYLON.Mesh.CreatePlane("plane", 10.0, scene, false, BABYLON.Mesh.DOUBLESIDE);  //这里怕看不出来用了双面贴图
+  // const plane = BABYLON.Mesh.CreatePlane("plane", 10.0, scene);
+  plane.position.y = -1;
+  plane.rotation.x = Math.PI / 2  //转动x轴成平面
+  plane.material = materialGrass
+
+
+  // 创建一个盘片 或着一个规则多边形 这里创建了一个8边型
+  const disc = BABYLON.Mesh.CreateDisc("disc", 1, 8, scene, false, BABYLON.Mesh.DOUBLESIDE);
+  // 参数为: 名字, 半径, 边数, 场景, 可更新否和可选的朝向(参见下面). 如果你需要默认的表现,那么最后两个参数参数可以忽略:
+  // const disc = BABYLON.Mesh.CreateDisc("disc", 1, 8, scene);
+  disc.position.x = -3;
+  disc.rotation.x = Math.PI / 2  //转动x轴成平面
+  disc.material = material3
+
+
+  //创建一个圆柱体
+  // 参数为: 名称, 高度, 顶直径, 底直径, 边数, 高向细分度, 场景, 可更新否和可选的朝向(参见下面). 如果你需要默认表现,那么最后两个参数可以忽略:
+  const cylinder = BABYLON.Mesh.CreateCylinder("cylinder", 3, 1, 1, 6, 1, scene);
+  cylinder.position.x = 1.5;
+  cylinder.material = material4
+
+  // 创建一个环体
+  // var torus = BABYLON.Mesh.CreateTorus("torus", 5, 1, 10, scene, false, BABYLON.Mesh.DEFAULTSIDE);
+  // 参数为: 名称, 直径, 厚度, 边数(高度细节或不是), 场景, 可更新否和可选的朝向(参见下面). 如果你使用默认表现那么最后两个参数可忽略 :
+  const torus = BABYLON.Mesh.CreateTorus("torus", 1, 0.5, 10, scene);
+  torus.position.x = 3;
+  torus.material = material5
+
+  // 创建一个结
+  // const knot = BABYLON.Mesh.CreateTorusKnot("knot", 2, 0.5, 128, 64, 2, 3, scene, false, BABYLON.Mesh.DEFAULTSIDE);
+  // 参数为: 名称, 半径, tube, 半径上分段数, tubularSegments, p, q, 场景, 可更新否和可选的朝向(参见下面). 如果你使用默认的表现那么最后的两个参数可以忽略 :
+  const knot = BABYLON.Mesh.CreateTorusKnot("knot", 1, 0.2, 32, 16, 2, 3, scene);
+  knot.position.x = 5.5;
+  knot.material = materialWireframe  // 赋予材质
+
+
+  // 创建线
+  // 参数为: 名称, [都好分隔的向量数组], 场景.
+  const lines = BABYLON.Mesh.CreateLines("lines", [
+    new BABYLON.Vector3(-2, 0, 0),
+    new BABYLON.Vector3(2, 0, 0),
+    new BABYLON.Vector3(0, 0, -2),
+    new BABYLON.Vector3(0, 0, 2),
+    new BABYLON.Vector3(-2, 0, 0)
+  ], scene);
+  lines.position.y = 3
+
+
+  //绘制点划线
+  // 参数为 : 名称, [三元向量数组], 划线大小, 间隙大小, 段划线数, 场景. 作为许多线段, 每条段先都是以三元向量组的方式呈现在空间里. 上面函数设置了这条点划线里线段的数量, 每段都是由两个连续三元向量定义. 划线大小 和 间隙大小 是指点划线里每个划线和之间间隙的相对大小.
+  const dashedlines = BABYLON.Mesh.CreateDashedLines("dashedLines",
+    [
+      new BABYLON.Vector3(-2, 0, 0),
+      new BABYLON.Vector3(2, 0, 0),
+      new BABYLON.Vector3(0, 0, -2),
+      new BABYLON.Vector3(0, 0, 2)
+    ]
+    , 1, 1, 100, scene);
+  dashedlines.position.x = -4
+  dashedlines.position.y = 3
+
+}
+    </script>
+</body>
+
+</html>
