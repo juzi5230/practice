@@ -73,6 +73,7 @@ color为0-1的小数
 - Dawn 是基于c++的一个开源项目，它是负责chrome的底层的webGPU的适配工作-底层模块，WebGPU 是一个正在开发中的新一代 Web 图形标准，而 Dawn 是一个它的开源跨平台实现。webgpu.h 定义了 C 接口到 WebGPU IDL 的一对一映射，Dawn 提供了实现。Dawn 也作为 Chromium 项目中 WebGPU 的底层实现。
 ![webGPU_process](images/webGPU_process.jpg)
 ![webGPU_process1](images/webGPU_process1.jpg)
+![webGPU_bind](images/bind.png)
 
 - chrome 查看渲染性能指标： 打开控制台-> ... -> 更多工具 -> 渲染 -> 选中帧渲染统计数据
 - chrome 浏览器 -> 窗口 -> 任务管理器 -> 查看各个页面cpu占用、内存的使用情况
@@ -113,3 +114,16 @@ color为0-1的小数
 - https://toji.github.io/webgpu-shadow-playground/
 - https://toji.github.io/webgpu-metaballs/
 - https://contrast.orillusion.com/
+
+
+
+## setPipeline、setVertexBuffer、setBindGroup
+
+尽量复用，减少对性能的影响。原则上绘制过程中应该尽量减少切换GPU的状态
+
+setPipeline > setVertexBuffer > setBindGroup
+
+setPipeline： 切换管线影响最大，会切换整个vertexShader、fragmentShader、深度测试、图形组装、颜色混合等相关配置
+setVertexBuffer： 会根据管线配置去识别和转换顶点数据，shader内部还要对应的生成一些局部变量，频繁切换影响渲染效率
+setBindGroup： 作为外部或全局变量的引入，对管线本身的配置没有影响，大多数情况下只是内存指针的拷贝或重新定向而已，是一种效率很高的操作
+
