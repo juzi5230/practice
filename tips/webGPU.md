@@ -43,6 +43,8 @@ color为0-1的小数
 - 在原生 GPU API 中，当缓冲区被映射时，CPU 可以访问其内容,导致 CPU 和 GPU 之间的数据竞争; GPUBuffer 映射是作为 CPU 和 GPU 之间的所有权转移来完成的,在每一瞬间，只有两者中的一个可以访问它，因此不可能进行竞争,目前，可映射缓冲区只能用于传输数据(3.5.1[锚](https://www.orillusion.com/zh/explainer.html#buffer-mapping-ownership))
 - WebGPU 没有“默认”绘图缓冲区, WebGPU 设备可以连接到任意数量的画布（零个或多个）并在每一帧渲染到任意数量的画布
 
+- ![webgl_history](images/webgl_history.jpg)
+
 
 ### webGPU相比webGL的优势
 
@@ -74,6 +76,12 @@ color为0-1的小数
 ![webGPU_process](images/webGPU_process.jpg)
 ![webGPU_process1](images/webGPU_process1.jpg)
 ![webGPU_bind](images/bind.png)
+
+
+
+- 整个渲染管线是串行的，每个步骤相互依赖，里面有严格的顺序，没办法跳过或同时执行， 这部分是由cpu程序控制的，也就是系统底层的图形学api（DX/Metal/Vulkan）
+![webGPU_pipline](images/webgpu_pipline.jpg)
+
 
 - chrome 查看渲染性能指标： 打开控制台-> ... -> 更多工具 -> 渲染 -> 选中帧渲染统计数据
 - chrome 浏览器 -> 窗口 -> 任务管理器 -> 查看各个页面cpu占用、内存的使用情况
