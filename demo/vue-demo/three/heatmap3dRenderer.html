@@ -1,0 +1,345 @@
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>三维热力</title>
+    <style>
+        html,
+        body,
+        #viewDiv {
+            padding: 0;
+            margin: 0;
+            height: 100%;
+            width: 100%;
+        }
+        #heatmapSettingcontainerid {
+            position: absolute;
+            margin-right: 10px;
+            height: 200px;
+            width: 300px;
+            margin-top: 10px;
+            display: flex;
+            flex-flow: column;
+
+        }
+        .heatmapSettingcontainer h6 {
+            width: 80px;
+            text-align: center;
+        }
+
+        .heatmapScalez {
+            display: flex;
+            flex-flow: row;
+            width: 300px;
+            height: 25px;
+            color: #fff;
+            font-size: 20px;
+        }
+
+        .heatmapScalez .hmscalez {
+            width: 300px;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+        .heatmapaltitude {
+            margin-top: 20px;
+            display: flex;
+            flex-flow: row;
+            width: 300px;
+            height: 25px;
+            color: #fff;
+            font-size: 20px;
+        }
+        .heatmapaltitude .hmaltitude {
+            width: 300px;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+
+        .heatmapopacity {
+            margin-top: 20px;
+            display: flex;
+            flex-flow: row;
+            width: 300px;
+            height: 25px;
+            color: #fff;
+            font-size: 20px;
+        }
+        .heatmapopacity .hmopacity {
+            width: 300px;
+            margin-left: 20px;
+            margin-top: 20px;
+        }
+        .heatmapwireframe {
+            margin-top: 20px;
+            display: flex;
+            flex-flow: row;
+            width: 300px;
+            height: 25px;
+            color: #fff;
+            font-size: 20px;
+        }
+        .heatmapwireframe input {
+            margin-top: 30px;
+        }
+    </style>
+    <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css" />
+    <script>
+        var dojoConfig = {
+            parseOnLoad: true,
+            packages: [{
+                name: "utils",
+                // location: location.pathname.replace(/\/[^/]+$/, "") + "../../../js"
+                location: location.origin + location.pathname.replace(/\/[^/]+$/, "") + "/js"
+            }]
+        };
+    </script>
+    <script src="./js/d3.min.js"></script>
+    <script src="./js/three109.min.js"></script>
+    <script src="https://js.arcgis.com/4.18/"></script>
+    <script>
+        require([
+            'esri/Map',
+            'esri/views/SceneView',
+            'js/heatmap3dRenderer.js',
+            'esri/Camera',
+            "esri/widgets/Slider",
+            "esri/geometry/support/webMercatorUtils",
+            'esri/views/3d/externalRenderers'
+        ], function (
+            Map,
+            SceneView,
+            heatmap3dRenderer,
+            Camera,
+            Slider,
+            webMercatorUtils,
+            externalRenderers
+        ) {
+            var map = new Map({
+                basemap: "streets-night-vector"
+            });
+            var view = new SceneView({
+                container: "viewDiv",
+                map: map,
+                spatialReference: {
+                    wkid: 102100
+                },
+                camera: new Camera({
+                    fov: 55,
+                    heading: 354.8039981352895,
+                    position: {
+                        x: 12842049.75757965,
+                        y: 4357905.974048459,
+                        z: 13105902.456496853,
+                        spatialReference: {
+                            wkid: 102100
+                        }
+                    },
+                    tilt: 1.0503329942559791
+                }),
+                viewingMode: 'local'
+            });
+
+            let heatmap3dRd = null
+            view.when(function () {
+                view.on('click', (event) => {
+                    console.log(event)
+                })
+                loadRender();
+                // loadsettingui();
+            });
+
+            function loadsettingui() {
+                view.ui.add('heatmapSettingcontainerid', "top-right");
+                const Scalezslider = new Slider({
+                    container: 'heatmapScalezslider',
+                    min: 1,
+                    max: 10000,
+                    visibleElements: {
+                        labels: true
+                    },
+                    precision: 1,
+                    values: [1000]
+                });
+
+                Scalezslider.on("thumb-drag", function (event) {
+                    const value = parseInt(event.value);
+                    if (!heatmap3dRd) return;
+                    heatmap3dRd.setscaleZ(value)
+                });
+                const slideraltitude = new Slider({
+                    container: 'heatmapaltitudeslider',
+                    min: 0,
+                    max: 10000,
+                    visibleElements: {
+                        labels: true
+                    },
+                    precision: 1,
+                    values: [1]
+                });
+
+                slideraltitude.on("thumb-drag", function (event) {
+                    const value = parseInt(event.value);
+                    if (!heatmap3dRd) return;
+                    heatmap3dRd.setaltitude(value)
+                });
+
+                const slideropacity = new Slider({
+                    container: 'heatmapopacityslider',
+                    min: 0,
+                    max: 1,
+                    visibleElements: {
+                        labels: true
+                    },
+                    precision: 10,
+                    values: [1]
+                });
+
+                slideropacity.on("thumb-drag", function (event) {
+                    const value = parseInt(event.value);
+                    if (!heatmap3dRd) return;
+                    heatmap3dRd.setopacity(value)
+                });
+
+                document.getElementById("hmwireframe").addEventListener("click", function () {
+                    heatmap3dRd.setwireframe()
+                });
+            }
+
+            function loadRender() {
+                d3.csv('./data/heatmap3dRenderer.txt',
+                    (error, response) => {
+                        // debugger
+                        let data = response.map(d => {
+                            const xy = webMercatorUtils.lngLatToXY(d.lng, d.lat)
+                            return {
+                                coordinate: [Number(xy[0]), Number(xy[1])],
+                                // value: Math.random() * 10,
+                                // count: Math.random() * 1000,
+                                count: 1,
+                            };
+                        });
+                        const options = {
+                            gridScale: 2,
+                            size: 2,
+                            gradient: {
+                                0.25: 'rgb(0,0,200)',
+                                0.55: 'rgb(0,255,0)',
+                                0.85: 'yellow',
+                                1.0: 'rgb(255,0,0)'
+                            },
+                            // gradient: {
+                            //     0.25: 'rgb(0,255,0)',
+                            //     0.55: 'yellow',
+                            //     0.85: 'rgb(255,165,0)',
+                            //     1.0: 'rgb(255,0,0)'
+                            // },
+                            altitude: 0,
+                            scaleZ: 1000,
+                            opacity: 0.5,
+                            wireframe: false,
+                            color: 'rgb(255,255,255)'
+                        }
+                        const options1 = {
+                            gridScale: 2,
+                            size: 2,
+                            gradient: {
+                                0.25: 'rgb(0,0,200)',
+                                0.55: 'rgb(0,255,0)',
+                                0.85: 'yellow',
+                                1.0: 'rgb(255,0,0)'
+                            },
+                            // gradient: {
+                            //     0.25: 'rgb(0,255,0)',
+                            //     0.55: 'yellow',
+                            //     0.85: 'rgb(255,165,0)',
+                            //     1.0: 'rgb(255,0,0)'
+                            // },
+                            altitude: 0,
+                            scaleZ: 1000,
+                            opacity: 0.5,
+                            wireframe: false,
+                            color: 'rgb(255,255,255)'
+                        }
+                        const options2 = {
+                            gridScale: 2,
+                            size: 2,
+                            gradient: {
+                                0.25: 'rgb(0,0,200)',
+                                0.55: 'rgb(0,255,0)',
+                                0.85: 'yellow',
+                                1.0: 'rgb(255,0,0)'
+                            },
+                            // gradient: {
+                            //     0.25: 'rgb(0,255,0)',
+                            //     0.55: 'yellow',
+                            //     0.85: 'rgb(255,165,0)',
+                            //     1.0: 'rgb(255,0,0)'
+                            // },
+                            altitude: 0,
+                            scaleZ: 1000,
+                            opacity: 0.5,
+                            wireframe: false,
+                            color: 'rgb(255,255,255)'
+                        }
+                        const options3 = {
+                            gridScale: 2,
+                            size: 2,
+                            gradient: {
+                                0.25: 'rgb(0,0,200)',
+                                0.55: 'rgb(0,255,0)',
+                                0.85: 'yellow',
+                                1.0: 'rgb(255,0,0)'
+                            },
+                            // gradient: {
+                            //     0.25: 'rgb(0,255,0)',
+                            //     0.55: 'yellow',
+                            //     0.85: 'rgb(255,165,0)',
+                            //     1.0: 'rgb(255,0,0)'
+                            // },
+                            altitude: 1000,
+                            scaleZ: 1000,
+                            opacity: 0.5,
+                            wireframe: false,
+                            color: 'rgb(255,255,255)'
+                        }
+                        heatmap3dRd1 = new heatmap3dRenderer(view, data, options1);
+                        heatmap3dRd2 = new heatmap3dRenderer(view, data, options2);
+                        heatmap3dRd3 = new heatmap3dRenderer(view, data, options3);
+                        externalRenderers.add(view, heatmap3dRd1);
+                        externalRenderers.add(view, heatmap3dRd2);
+                        externalRenderers.add(view, heatmap3dRd3);
+                    });
+            }
+        })
+    </script>
+</head>
+<body>
+    <div id="viewDiv"></div>
+    <div id="heatmapSettingcontainerid" class="heatmapSettingcontainer">
+        <div class='heatmapScalez'>
+            <h6>Scalez</h6>
+            <div id='heatmapScalezslider' class="hmscalez">
+
+            </div>
+        </div>
+        <div class='heatmapaltitude'>
+            <h6>altitude</h6>
+            <div id='heatmapaltitudeslider' class="hmaltitude">
+
+            </div>
+        </div>
+        <div class='heatmapopacity'>
+            <h6>透明度</h6>
+            <div id='heatmapopacityslider' class="hmopacity">
+
+            </div>
+        </div>
+        <div class='heatmapwireframe'>
+            <h6>线框</h6>
+            <input type="checkbox" id='hmwireframe' title="wireframe" />
+        </div>
+    </div>
+</body>
+</html>

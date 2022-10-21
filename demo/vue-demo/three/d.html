@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>07SimpleHeatMapInThreejsCSDN</title>
+	<style>
+	</style>
+        <script src="../node_modules/three/build/three.js"></script>
+        <script src="../node_modules/three/examples/js/libs/stats.min.js"></script>
+        <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/controls/OrbitControls.js"></script>
+        <script src="../node_modules/three/examples/js/loaders/OBJLoader.js"></script>
+        <script src="../node_modules/heatmap.js/build/heatmap.js"></script>
+        <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
+        <!-- <script src="./node_modules/heatmap.js/build/heatmap.js"></script> -->
+    
+</head>
+<body>
+ 
+<div id="container" >
+ 
+</div>
+<div>
+	<canvas style="height: 900px; width: 100%;" id="heatmap"></canvas>
+ 
+</div>
+ 
+</body>
+<script>
+ 
+ 
+	let renderer, scene, camera;
+	let heatmapInstance;
+	let texture;
+	let points;
+	let mesh;
+ 
+	const TemperatureColorStops = {
+		1.0: '#f00',
+		0.9: '#e2fa00',
+		0.6: '#33f900',
+		0.3: '#0349df',
+		0.0: '#0f00ff'
+	};
+ 
+	init();
+	animate();
+ 
+	function init() {
+ 
+		initRender();
+		initCameraAndScene();
+		initLight();
+		addPluginHeatmap();
+ 
+		// control 鼠标控制旋转移动
+		const contorl = new THREE.OrbitControls( camera, renderer.domElement );
+        onWindowResize()
+		// window
+		window.addEventListener( 'resize', onWindowResize, false );
+ 
+	}
+ 
+	// 初始化 Renderer
+	function initRender() {
+ 
+		const container = document.getElementById( 'container' );
+		renderer = new THREE.WebGLRenderer( { antialias: true } );
+		renderer.setPixelRatio( window.devicePixelRatio );
+		renderer.setSize( container.innerWidth, container.innerHeight );
+		renderer.setClearColor( '#ccc' );
+		container.appendChild( renderer.domElement );
+ 
+	}
+ 
+	// 初始化场景和相机
+	function initCameraAndScene() {
+ 
+		scene = new THREE.Scene();
+ 
+		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
+		camera.position.set( 0, 0, 50 );
+ 
+		scene.add( camera );
+ 
+	}
+ 
+	// 光照
+	function initLight() {
+ 
+		// 基本的半球光，类似环境光
+		const hemiLight = new THREE.HemisphereLight( '#ffffff',
+			'#444444', 0.5 );
+		hemiLight.position.set( 0, 400, 0 );
+		scene.add( hemiLight );
+ 
+		// 添加平行光
+		const dirLight = new THREE.DirectionalLight( 0xffffff, 0.8 );
+		dirLight.position.set( 0, 200, 100 );
+		dirLight.castShadow = true;
+		dirLight.shadow.camera.top = 180;
+		dirLight.shadow.camera.bottom = - 100;
+		dirLight.shadow.camera.left = - 120;
+		dirLight.shadow.camera.right = 120;
+		scene.add( dirLight );
+ 
+	}
+ 
+	// 窗口更新
+	function onWindowResize() {
+ 
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+ 
+		renderer.setSize( window.innerWidth, window.innerHeight );
+ 
+	}
+ 
+	function animate() {
+ 
+		requestAnimationFrame( animate );
+		renderer.render( scene, camera );
+ 
+	}
+ 
+	// 创建热力图
+	function addPluginHeatmap() {
+ 
+		// 创建一个heatmap实例对象
+		// “h337” 是heatmap.js全局对象的名称.可以使用它来创建热点图实例
+		// 这里直接指定热点图渲染的div了.heatmap支持自定义的样式方案,网页外包接活具体可看官网api
+		heatmapInstance = h337.create( {
+ 
+			container: document.getElementById( 'heatmap' ),
+ 
+			//backgroundColor:'red',    // '#121212'    'rgba(0,102,256,0.2)'
+			gradient: TemperatureColorStops,
+			radius: 50,	 // [0,+∞)
+			opacity: .5,
+			blur: '.8',
+ 
+		} );
+ 
+		setHeatMapData();
+ 
+		// 获取 heatmap
+		texture = new THREE.Texture( heatmapInstance._renderer.canvas );
+		const material = new THREE.MeshLambertMaterial( {
+ 
+			map: texture,
+			transparent: true,
+			opacity: 1
+ 
+		} );
+ 
+ 
+		mesh = new THREE.Mesh( new THREE.PlaneGeometry( 10, 10, 10 ), material );
+		scene.add( mesh );
+ 
+ 
+		// 更新图片
+		if ( texture ) {
+ 
+			texture.needsUpdate = true;
+ 
+		}
+ 
+	}
+ 
+	// 设置热力图位置温度数据
+	function setHeatMapData() {
+ 
+		//构建一些随机数据点,网页切图价格这里替换成你的业务数据
+		points = [];
+		let max = 0;
+		const width = document.body.clientWidth;
+		const height = document.body.clientHeight;
+		let len = 500;
+		// 随机位置点设置温度值
+		while ( len -- ) {
+ 
+			var val = Math.floor( Math.random() * 25 + 10 );
+			max = Math.max( max, val );
+			var point = {
+				x: Math.floor( Math.random() * width ),
+				y: Math.floor( Math.random() * height ),
+				value: val
+			};
+			points.push( point );
+ 
+		}
+ 
+		// 准备 heatmap 的数据
+		const data = {
+			max: max,
+ 
+			data: points
+		};
+		//因为data是一组数据,web切图报价所以直接setData
+		heatmapInstance.setData( data ); //数据绑定还可以使用
+ 
+	}
+ 
+</script>
+ 
+</html>
