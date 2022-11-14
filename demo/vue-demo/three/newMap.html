@@ -5,15 +5,6 @@
 	<title>07SimpleHeatMapInThreejsCSDN</title>
 	<style>
 	</style>
-        <script src="./node_modules/three/build/three.js"></script>
-        <script src="./node_modules/three/examples/js/libs/stats.min.js"></script>
-        <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/controls/OrbitControls.js"></script>
-        <script src="./node_modules/three/examples/js/loaders/OBJLoader.js"></script>
-        <!-- <script src="./node_modules/heatmap.js/build/heatmap.js"></script> -->
-        <script src="./js/heatmapTest.js"></script>
-        <script src="./node_modules/three/examples/js/controls/OrbitControls.js"></script>
-        <!-- <script src="./node_modules/heatmap.js/build/heatmap.js"></script> -->
-    
 </head>
 <body>
  
@@ -26,7 +17,28 @@
 </div>
  
 </body>
-<script>
+<!-- <script src="heatmap.js"></script> -->
+<script src="./js/three.js"></script>
+<script src="./js/heatmapTest.js"></script>
+<!-- <script src="./js/OrbitControls.js"></script> -->
+<!-- <script src="./js/three.module.js"></script>
+<script src="./js/OrbitControls.js"></script> -->
+<script src="./node_modules/three/examples/js/controls/OrbitControls.js"></script>
+
+<!-- <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/controls/OrbitControls.js"></script> -->
+
+<!-- <script type="importmap">
+			{
+				"imports": {
+					"three": "./"
+				}
+			}
+		</script> -->
+ 
+<script type="module">
+ 
+	// import * as THREE from 'three';
+	// import { OrbitControls } from './js/OrbitControls.js';
  
  
 	let renderer, scene, camera;
@@ -53,46 +65,14 @@
 		initLight();
 		addPluginHeatmap();
  
-
-
-
-		var geometry = new THREE.BoxGeometry( 3, 3, 3 );
-			var material = new THREE.MeshBasicMaterial( { color: 0x00ffff } );
-
-			var loader = new THREE.TextureLoader();
-			let one = loader.load( './data/girl.jpeg');
-			const material1 = new THREE.MeshBasicMaterial( { map: one} );
-            const materials = [material1, material1, material1, material1, material1, material1]
-
-			var cube = new THREE.Mesh( geometry, materials );
-			scene.add( cube );
-
-
-
-			// var animate = function () {
-			// 	requestAnimationFrame( animate );
-
-			// 	cube.rotation.x += 0.01;
-			// 	cube.rotation.y += 0.01;
-			// 	camera.position.z
-
-			// 	renderer.render( scene, camera );
-			// };
-
-			// animate();
-
-
-
-
 		// control 鼠标控制旋转移动
-		const contorl = new THREE.OrbitControls( camera, renderer.domElement );
-        onWindowResize()
+		// const contorl = new OrbitControls( camera, renderer.domElement );
+ 
 		// window
 		window.addEventListener( 'resize', onWindowResize, false );
  
 	}
  
-
 	// 初始化 Renderer
 	function initRender() {
  
@@ -111,7 +91,7 @@
 		scene = new THREE.Scene();
  
 		camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 1000 );
-		camera.position.set( 0, 0, 20 );
+		camera.position.set( 0, 0, 50 );
  
 		scene.add( camera );
  
@@ -168,7 +148,7 @@
 			//backgroundColor:'red',    // '#121212'    'rgba(0,102,256,0.2)'
 			gradient: TemperatureColorStops,
 			radius: 50,	 // [0,+∞)
-			opacity: .2,
+			opacity: .5,
 			blur: '.8',
  
 		} );
@@ -184,30 +164,11 @@
 			opacity: 1
  
 		} );
-		let height = 10
-		// // for(let i = 0 ; i < height; i++) {
-		// 	mesh = new THREE.Mesh( new THREE.PlaneGeometry( 10, 10, 10 ), material );
-		// 	// mesh.scale.z = 1000
-		// 	// mesh.position.z = i * 0.5
-		// 	scene.add( mesh );
-		// // }
  
-
-
-		var geometry = new THREE.BoxGeometry( 5, 5, 5 );
-			// var material = new THREE.MeshBasicMaterial( { color: 0x00ffff } );
-
-			var loader = new THREE.TextureLoader();
-			// let one = loader.load( './data/girl.jpeg');
-			// const material1 = new THREE.MeshBasicMaterial( { map: one} );
-            const materials = [material, material, material, material, material, material]
-
-			var cube = new THREE.Mesh( geometry, materials );
-			scene.add( cube );
-
-
-
-
+ 
+		mesh = new THREE.Mesh( new THREE.PlaneGeometry( 10, 10, 10 ), material );
+		scene.add( mesh );
+ 
  
 		// 更新图片
 		if ( texture ) {
@@ -226,7 +187,7 @@
 		let max = 0;
 		const width = document.body.clientWidth;
 		const height = document.body.clientHeight;
-		let len = 1500;
+		let len = 500;
 		// 随机位置点设置温度值
 		while ( len -- ) {
  
@@ -235,7 +196,6 @@
 			var point = {
 				x: Math.floor( Math.random() * width ),
 				y: Math.floor( Math.random() * height ),
-				z: 100,
 				value: val
 			};
 			points.push( point );

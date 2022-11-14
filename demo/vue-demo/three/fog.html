@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>圆柱体</title>
+  <style>
+    #canvas{
+      width:1100px;
+      height:600px;
+      border:1px solid;
+    }
+  </style>
+  <script type="text/javascript" src="./js/three.js"></script>
+  <script>
+//    渲染器
+    var renderer;
+    function init_renderer(){
+      width = document.getElementById("canvas").clientWidth;
+      height = document.getElementById("canvas").clientHeight;
+      renderer = new THREE.WebGLRenderer({  //生成渲染对象
+        antialias : true  //去锯齿
+      });
+      renderer.setSize(width,height);//设置渲染的宽度和高度；
+      document.getElementById("canvas").appendChild(renderer.domElement);
+      renderer.setClearColor(0xEEEEEE,1);//设置渲染的颜色；
+    }
+//    场景
+    var scene;
+    function init_scene(){
+      scene = new THREE.Scene();
+    }
+//   圆柱体
+var cylinder;
+function init_cylinder(){
+var cylinder = new THREE.CylinderGeometry(80,50,300,50,50);
+var texture = THREE.ImageUtils.loadTexture("./data/girl.jpeg",null,function(t)//图片地址可使用本地,同根目录下文件夹即可
+    {
+    });
+var material = new THREE.MeshLambertMaterial({map:texture});  //材料
+cube = new THREE.Mesh(cylinder,material);
+cube.position.set(0,0,5);   //设置几何体的位置（x,y,z）
+      scene.add(cube);
+}
+
+//    相机
+    var camera;
+    function init_camera(){
+//     camera = new THREE.PerspectiveCamera(100,width/height,1,10000);  //透视相机
+camera = new THREE.OrthographicCamera( width / - 2, width / 2, height / 2, height / - 2, 1, 1000) //正投影相机
+      // （可视角度，可视范围的长宽比，相对于深度剪切面的近的距离 必须为正数，相对于深度剪切面的远的距离 必须为正数）
+      camera.position.x =600
+      camera.position.y = 100;
+      camera.position.z = 100;
+
+
+      camera.up.x = -2;//设置相机的上为「x」轴方向
+      camera.up.y = 2;//设置相机的上为「y」轴方向
+      camera.up.z = 0;//设置相机的上为「z」轴方向
+      camera.lookAt({x:0,y:0,z:0}); //设置视野的中心坐标
+    }
+//    光源
+    var light;
+    function init_light(){
+      light = new THREE.DirectionalLight(0xffffff,1);//设置平行光源 (光颜色，光强度)
+      light.position.set(200,100,50);//设置光源向量 (x,y,z)
+      scene.add(light);
+    }
+
+
+    function ThreeJs_Main(){
+      init_renderer();//渲染
+      init_scene();//场景
+      init_cylinder();//圆柱体
+      init_camera();//相机
+      init_light();//光源
+      renderer.clear();
+      animation()
+      renderer.render(scene,camera);
+    }
+    function animation(){
+
+ //x,y,z为旋转的轴 后边数字为速度
+
+//      cube.rotation.x += 0.01;
+
+ cube.rotation.y += 0.01;
+
+//     cube.rotation.z += 0.01;
+     renderer.render(scene,camera);
+        requestAnimationFrame(animation);
+      }
+  </script>
+</head>
+<body onload="ThreeJs_Main()">
+  <div id="canvas"></div>
+</body>
+</html>

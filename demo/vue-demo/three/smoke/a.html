@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>threejs</title>
+  <style>
+    body {
+      padding: 0;
+      margin: 0
+    }
+
+    canvas {
+      width: 100%;
+      height: 100%;
+      background: #fff;
+    }
+  </style>
+</head>
+
+<body>
+<!-- <div id="heatmap"></div> -->
+<canvas style="height: 900px; width: 100%;" id="heatmap"></canvas>
+
+</body>
+<script src="../js/heatmapTest.js"></script>
+<script type='module'>
+  import * as THREE from 'https://cdn.skypack.dev/three@v0.129.0';
+  import { OrbitControls } from 'https://cdn.skypack.dev/three@v0.129.0/examples/jsm/controls/OrbitControls.js';
+
+  // 喜欢的同学给个星星吧 (^_−)☆
+	const TemperatureColorStops = {
+		1.0: '#f00',
+		0.9: '#e2fa00',
+		0.6: '#33f900',
+		0.3: '#0349df',
+		0.0: '#0f00ff'
+	};
+	let renderer, scene, camera;
+	let heatmapInstance;
+	let texture;
+	let pointsData;
+	let mesh;
+
+  (async function () {
+    //创建渲染器
+    var renderer = new THREE.WebGLRenderer();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.shadowMap.enabled = true;
+    renderer.setClearColor('#fff', 1);
+    document.body.appendChild(renderer.domElement);
+
+
+    //创建场景
+    var scene = new THREE.Scene();
+
+
+    //创建相机
+    var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
+    camera.position.z = 2300; //设置相机位置
+    camera.position.y = 2300; //设置相机位置
+    //camera.lookAt(new )
+    scene.add(camera)
+
+    addPluginHeatmap()
+    // 添加点光源
+    let light1 = new THREE.PointLight('#fff');
+    light1.position.set(0, 1160, 22160);
+    // scene.add(light1)
+
+
+    // 添加环境光
+    let ambient = new THREE.AmbientLight('#fff', 0.5);
+    scene.add(ambient)
+
+
+    // 添加辅助线
+    let axisHelper = new THREE.AxisHelper(500);
+    scene.add(axisHelper);
+
+
+    // 创建控制器
+    let controls = new OrbitControls(camera, renderer.domElement)
+
+
+    // 渲染函数
+    function render() {
+      controls.update() // Update controls
+      // 渲染场景
+      renderer.render(scene, camera);
+      requestAnimationFrame(render)
+    }
+    requestAnimationFrame(render)// 发起渲染
+
+
+    // 加载纹理图
+    const promiseStar = new Promise((resolve, reject) => {
+      new THREE.TextureLoader().load("./texture-smoke.png", function (texture) {
+        resolve(texture)
+      });
+    })
+    const [state, textureStar, err] = await promiseStar.then(rs => [true, rs, null], err => [false, null, err])
+    if (!state) return
+
+
+
+    var canvas=document.createElement("canvas");
+canvas.width=256;
+canvas.height=256;
+var context=canvas.getContext('2d');
+
+// var ctx = canvas.getContext("2d");
+// 				ctx.beginPath();
+// 				ctx.moveTo(100,100);
+// 				ctx.arc(100,100,50,315*Math.PI/180,45*Math.PI/180,true);
+// 				ctx.closePath();
+// 				ctx.stroke();
+context.clearRect(0,0,256,256);
+context.fillStyle='green';
+context.fillRect(10,10,150,100);
+var canvasTexture=new THREE.CanvasTexture(canvas);
+
+
+
+    // 先创建一个空的缓冲几何体
+    const geometry = new THREE.BufferGeometry();
+    geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([]), 3)); // 一个顶点由3个坐标构成
+    geometry.setAttribute('a_opacity', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的透明度，用1个浮点数表示
+    geometry.setAttribute('a_size', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的初始大小，用1个浮点数表示
+    geometry.setAttribute('a_scale', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的放大量，用1个浮点数表示
+
+    console.log('textureStar', textureStar)
+    // 创建材质
+    const material = new THREE.PointsMaterial({
+      color: '#666',
+      map: canvasTexture, // 纹理图
+      transparent: true,// 开启透明度
+      depthWrite: false, // 禁止深度写入
+    });
+
+
+    // 修正着色器
+    material.onBeforeCompile = function (shader) {
+      const vertexShader_attribute = `
+        attribute float a_opacity;
+        attribute float a_size;
+        attribute float a_scale;
+        varying float v_opacity;
+        void main() {
+          v_opacity = a_opacity;
+        `
+      const vertexShader_size = `
+        gl_PointSize = a_size * a_scale;
+        `
+      shader.vertexShader = shader.vertexShader.replace('void main() {', vertexShader_attribute)
+      shader.vertexShader = shader.vertexShader.replace('gl_PointSize = size;', vertexShader_size)
+
+      const fragmentShader_varying = `
+        varying float v_opacity;
+        void main() {          
+      `
+      const fragmentShader_opacity = `
+        gl_FragColor = vec4( outgoingLight, diffuseColor.a * v_opacity );   
+        // gl_FragColor = vec4(1.0, 1.0, 1.0, 1.0);      
+      `
+      shader.fragmentShader = shader.fragmentShader.replace('void main() {', fragmentShader_varying)
+      shader.fragmentShader = shader.fragmentShader.replace('gl_FragColor = vec4( outgoingLight, diffuseColor.a );', fragmentShader_opacity)
+
+    }
+
+
+    // 创建点，并添加进场景
+    const points = new THREE.Points(geometry, material);
+    scene.add(points);
+
+
+    // 同时在场景中添加一个平面，做参考面
+    // const planeGeometry = new THREE.PlaneGeometry(6000, 3000)
+    // const planeMaterial = new THREE.MeshBasicMaterial({
+    //   color: '#D2B48C',
+    //   side: THREE.DoubleSide
+    // })
+    // const plane = new THREE.Mesh(planeGeometry, planeMaterial)
+    // plane.rotateX(Math.PI / 180 * -90)
+    // scene.add(plane) // 添加平面
+    function addPluginHeatmap() {
+ 
+ // 创建一个heatmap实例对象
+ // “h337” 是heatmap.js全局对象的名称.可以使用它来创建热点图实例
+ // 这里直接指定热点图渲染的div了.heatmap支持自定义的样式方案,网页外包接活具体可看官网api
+ heatmapInstance = h337.create( {
+
+   container: document.getElementById( 'heatmap' ),
+
+   //backgroundColor:'red',    // '#121212'    'rgba(0,102,256,0.2)'
+   gradient: TemperatureColorStops,
+   radius: 50,	 // [0,+∞)
+   opacity: .5,
+   blur: '.8',
+
+ } );
+
+ setHeatMapData();
+
+ // 获取 heatmap
+ texture = new THREE.Texture( heatmapInstance._renderer.canvas );
+ const material = new THREE.MeshLambertMaterial( {
+
+   map: texture,
+   transparent: true,
+   opacity: 1
+
+ } );
+
+
+ mesh = new THREE.Mesh( new THREE.PlaneGeometry( 10, 10, 10 ), material );
+ scene.add( mesh );
+
+
+ // 更新图片
+ if ( texture ) {
+
+   texture.needsUpdate = true;
+
+ }
+
+}
+
+// 设置热力图位置温度数据
+function setHeatMapData() {
+
+ //构建一些随机数据点,网页切图价格这里替换成你的业务数据
+ pointsData = [];
+ let max = 0;
+ const width = document.body.clientWidth;
+ const height = document.body.clientHeight;
+ let len = 500;
+ // 随机位置点设置温度值
+ while ( len -- ) {
+
+   var val = Math.floor( Math.random() * 25 + 10 );
+   max = Math.max( max, val );
+   var point = {
+     x: Math.floor( Math.random() * width ),
+     y: Math.floor( Math.random() * height ),
+     value: val
+   };
+   pointsData.push( point );
+
+ }
+
+ // 准备 heatmap 的数据
+ const data = {
+   max: max,
+
+   data: pointsData
+ };
+ //因为data是一组数据,web切图报价所以直接setData
+ heatmapInstance.setData( data ); //数据绑定还可以使用
+
+}
+
+    // 定义Partical类
+    class Partical {
+      constructor(range = 100, center = { x: 0, y: 0, z: 0 }) {
+        this.range = range; // 粒子的分布半径
+        this.center = center // 粒子的分布中心
+        this.life = 5000; // 粒子的存活时间，毫秒
+        this.createTime = Date.now(); // 粒子创建时间
+        this.updateTime = Date.now(); // 上次更新时间
+        this.size = 500 // 粒子大小
+
+        // 粒子透明度，及系数
+        this.opacityFactor = 0.2
+        this.opacity = 1 * this.opacityFactor
+
+        // 粒子放大量，及放大系数
+        this.scaleFactor = 2
+        this.scale = 1 + this.scaleFactor * (this.updateTime - this.createTime) / this.life // 初始1，到达生命周期时为3
+
+        // 粒子位置
+        this.position = {
+          x: Math.random() * 2 * this.range + this.center.x - this.range,
+          y: this.center.y,
+          z: Math.random() * 2 * this.range + this.center.z - this.range,
+        }
+
+        // 水平方向的扩散
+        let speedAround = Math.random() * 40
+        if (speedAround < 20) speedAround -= 50
+        if (speedAround > 20) speedAround += 10
+
+        // 粒子的扩散速度
+        this.speed = {
+          // x: speedAround,
+          // y: Math.random() * 100 + 300,
+          // z: speedAround,
+          x: 0,
+          y: 0,
+          z: 0
+        }
+
+      }
+    }
+
+
+    // 创建粒子
+    let particals = []
+    // setInterval(() => {
+      particals.push(new Partical(10, { x: 0, y: 100, z: 0 }))
+    // }, 500)
+    //particals.push(new Partical(10, { x: 0, y: 100, z: 0 }))
+
+
+    // 校验粒子，并更新粒子位置等数据
+    setInterval(() => {
+
+      // 遍历粒子,收集属性
+      const positionList = []
+      const opacityList = []
+      const scaleList = []
+      const sizeList = []
+      particals.forEach(partical => {
+        const { x, y, z } = partical.position
+        positionList.push(x, y, z)
+        opacityList.push(partical.opacity)
+        scaleList.push(partical.scale)
+        sizeList.push(partical.size)
+      })
+
+      // 粒子属性写入
+      geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array(positionList), 3));
+      geometry.setAttribute('a_opacity', new THREE.BufferAttribute(new Float32Array(opacityList), 1));
+      geometry.setAttribute('a_scale', new THREE.BufferAttribute(new Float32Array(scaleList), 1));
+      geometry.setAttribute('a_size', new THREE.BufferAttribute(new Float32Array(sizeList), 1));
+
+    }, 20)
+
+  })()
+
+</script>
+
+
+</html>

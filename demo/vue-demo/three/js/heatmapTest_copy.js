@@ -276,18 +276,13 @@
       var y = radius;
       tplCanvas.width = tplCanvas.height = radius*2;
   
-      if (blurFactor == 1) { /// 绘制实心圆
-        tplCtx.beginPath();
-        tplCtx.arc(x, y, radius, 0, 2 * Math.PI, false);
-        tplCtx.fillStyle = 'rgba(0,0,0,1)';
-        tplCtx.fill();
-      } else { /// 添加渐变圆，一般热力图使用这种形式
+       /// 添加渐变圆，一般热力图使用这种形式
         var gradient = tplCtx.createRadialGradient(x, y, radius*blurFactor, x, y, radius);
         gradient.addColorStop(0, 'rgba(0,0,0,1)');
         gradient.addColorStop(1, 'rgba(0,0,0,0)');
         tplCtx.fillStyle = gradient;
         tplCtx.fillRect(0, 0, 2*radius, 2*radius);
-      }
+      
   
   
   
@@ -702,7 +697,10 @@
         } else {
           return null;
         }
-      }
+      },
+      // getTexture: function () {
+      //   return this.canvas
+      // }
     };
   
     return Heatmap;
@@ -713,6 +711,7 @@
   // core
   var heatmapFactory = {
     create: function(config) {
+
       return new Heatmap(config);
     },
     register: function(pluginKey, plugin) {
