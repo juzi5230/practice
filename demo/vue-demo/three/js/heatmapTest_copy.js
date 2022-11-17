@@ -520,7 +520,7 @@
           imgData[i] = useGradientOpacity ? palette[offset + 3] : finalAlpha;
   
         }
-  
+  console.log('????????????')
         img.data = imgData;
         this.ctx.putImageData(img, x, y);
   
@@ -710,6 +710,7 @@
   
   // core
   var heatmapFactory = {
+    getCanvas() {},
     create: function(config) {
 
       return new Heatmap(config);

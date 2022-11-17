@@ -9,37 +9,149 @@
       margin: 0
     }
 
+    /* canvas {
+      width: 100%;
+      height: 100%;
+      background: #fff;
+    } */
     canvas {
       width: 50%;
       height: 100%;
       background: #000;
     }
-    /* #myCanvas {
-      width: 100px;
-      height: 100px;
-    } */
   </style>
 </head>
 
 <body>
-<canvas id="myCanvas"></canvas>
-<canvas id="mapCanvas"></canvas>
+    <canvas id="myCanvas"></canvas>
+    <canvas id="mapCanvas"></canvas>
 </body>
 <script type='module'>
   import * as THREE from 'https://cdn.skypack.dev/three@v0.129.0';
   import { OrbitControls } from 'https://cdn.skypack.dev/three@v0.129.0/examples/jsm/controls/OrbitControls.js';
 
-    var canvas = document.getElementById("myCanvas");
+  const segments = 30
+    const w = 256
+    const h = 256
+
+    // 随机给出温度值 储存在2维数组
+    let getTemperature = ()=> {
+      let  temperatureArray=new Array()
+      for(let i = 0; i < segments; i++) {
+          temperatureArray[i] = parseInt(Math.random() * 25 + 10)
+      }
+      return temperatureArray
+    }
+
+    // 绘制辐射圆
+    let drawCircular = (context,opts) => {
+      let {x, y, radius, weight} = opts
+      radius = parseInt(radius * weight)
+
+      // 创建圆设置填充色
+      let rGradient = context.createRadialGradient(x, y, 0, x, y, radius)
+      rGradient.addColorStop(0, "rgba(255, 0, 0, 1)")
+      rGradient.addColorStop(1, "rgba(0, 255, 0, 0)")
+      context.fillStyle = rGradient
+
+      // 设置globalAlpha
+      context.globalAlpha = weight
+      context.beginPath()
+      context.arc(x, y, radius, 0, 2 * Math.PI)
+      context.closePath()
+
+      context.fill()
+    }
+
+    let getPaletteMap = () => {
+      //颜色条的颜色分布
+      let colorStops = {
+          1.0: "#f00",
+          0.8: "#e2fa00",
+          0.6: "#33f900",
+          0.3: "#0349df",
+          0.0: "#fff"
+      }
+
+      //颜色条的大小
+      let width = 256, height = 10
+
+      // 创建canvas
+      let paletteCanvas = document.createElement("canvas")
+      paletteCanvas.width = width
+      paletteCanvas.height = height
+      paletteCanvas.style.position = 'absolute'
+      paletteCanvas.style.top = '0'
+      paletteCanvas.style.right = '0'
+      let ctx = paletteCanvas.getContext("2d")
+
+      // 创建线性渐变色
+      let linearGradient = ctx.createLinearGradient(0, 0, width, 0)
+      for (const key in colorStops) {
+          linearGradient.addColorStop(key, colorStops[key])
+      }
+
+      // 绘制渐变色条
+      ctx.fillStyle = linearGradient
+      ctx.fillRect(0, 0, width, height)
+
+      document.body.appendChild(paletteCanvas)
+
+      let paletteTexture = new THREE.Texture(paletteCanvas)
+      paletteTexture.minFilter = THREE.NearestFilter
+      paletteTexture.needsUpdate = true
+
+      return paletteTexture
+    }
+
+    // 获取透明度阶梯图
+    let getAlphaScaleMap = (width,height) => {
+        let canvas = document.createElement("canvas")
+        canvas.width = width
+        canvas.height = height
+
+        let context = canvas.getContext("2d")
+
+        // 随机生成温度
+        let tenperature = getTemperature()
+
+        // 绘制透明度阶梯图
+        for(let i = 0; i < segments; i++) {
+
+          // 计算出当前温度占标准温度的权值
+          let weight = tenperature[i] / 35
+
+          drawCircular(context,{
+              x: Math.random() * w,
+              y: Math.random() * h,
+              radius: 80,
+              weight: weight
+          })
+        }
+
+        let tex = new THREE.Texture(canvas)
+        tex.minFilter = THREE.NearestFilter
+        tex.needsUpdate = true
+        return tex
+    }
+
+
+
+
+
+
+
+
+
+  var canvas = document.getElementById("myCanvas");
     var ctx
     if(canvas.getContext){
       ctx = canvas.getContext("2d");
       ctx.arc(50, 50, 50, 0, Math.PI * 2, false);
       var canvasGradient = ctx.createRadialGradient(50, 50, 0, 50, 50, 50);
       canvasGradient.addColorStop(0, "red");
-      canvasGradient.addColorStop(0.25, "orange");
       canvasGradient.addColorStop(0.5, "yellow");
-      canvasGradient.addColorStop(0.75, "green");
-      canvasGradient.addColorStop(1, "white");
+      canvasGradient.addColorStop(1, "green");
       ctx.fillStyle = canvasGradient;
       ctx.fill();
     }
@@ -58,7 +170,7 @@
 
     let greyImgData = ctxgrey.getImageData(0,0,100, 100)
 
-console.log('>>>>>>>>>>>>>>>>>>>>>>>>', greyImgData)
+console.log(greyImgData)
 
 
     let imgData = ctx.getImageData(0, 0, 100, 100)
@@ -66,23 +178,17 @@ console.log('>>>>>>>>>>>>>>>>>>>>>>>>', greyImgData)
 
   for (var i=0;i<imgData.data.length;i+=4)
 {
-    // if(imgData.data[i + 3] === 0) {
-    //   // imgData.data[i + 3] = 200
-    // } else {
+    if(imgData.data[i + 3] === 0) {
+      // imgData.data[i + 3] = 200
+    } else {
 	    // imgData.data[i+0]=255 * Math.random();
 	    // imgData.data[i+1]=255 * Math.random();
 	    // imgData.data[i+2]=255 * Math.random();
 	    imgData.data[i+3]= greyImgData.data[i+3];
-      // if(imgData.data[i + 3] === 0) {
-        // imgData.data[i+0]=255;
-	      //     imgData.data[i+1]=255;
-	      //     imgData.data[i+2]=255;
-      // }
-    // }
+    }
 }
   // ctx.fillStyle = 'rgba(0,0,0,0)'
 ctx.putImageData(imgData, 0, 0);
-
 
 
   // 喜欢的同学给个星星吧 (^_−)☆
@@ -102,7 +208,7 @@ ctx.putImageData(imgData, 0, 0);
 
     //创建相机
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
-    camera.position.z = 0; //设置相机位置
+    camera.position.z = 2300; //设置相机位置
     camera.position.y = 2300; //设置相机位置
     //camera.lookAt(new )
     scene.add(camera)
@@ -138,21 +244,13 @@ ctx.putImageData(imgData, 0, 0);
     requestAnimationFrame(render)// 发起渲染
 
 
-
-
-
-
-
-
     // 加载纹理图
     const promiseStar = new Promise((resolve, reject) => {
-      console.log(canvas)
-      var texture = new THREE.CanvasTexture(canvas);
+        var texture = new THREE.CanvasTexture(canvas);
       resolve(texture)
-      // new THREE.TextureLoader().load("./texture-smoke.png", function (texture) {
-      //   console.log('>>>>>>>>>>>>>', texture)
-      //   // resolve(texture)
-      // });
+    //   new THREE.TextureLoader().load("./texture-smoke.png", function (texture) {
+    //     resolve(texture)
+    //   });
     })
     const [state, textureStar, err] = await promiseStar.then(rs => [true, rs, null], err => [false, null, err])
     if (!state) return
@@ -163,12 +261,12 @@ ctx.putImageData(imgData, 0, 0);
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([]), 3)); // 一个顶点由3个坐标构成
     geometry.setAttribute('a_opacity', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的透明度，用1个浮点数表示
     geometry.setAttribute('a_size', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的初始大小，用1个浮点数表示
-    geometry.setAttribute('a_scale', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的放大量，用1个浮点数表示
+    geometry.setAttribute('a_scale', new THREE.BufferAttribute(new Float32Array([]), 10)); // 点的放大量，用1个浮点数表示
 
 
     // 创建材质
     const material = new THREE.PointsMaterial({
-      color: '#ffffff',
+      color: '#666',
       map: textureStar, // 纹理图
       transparent: true,// 开启透明度
       depthWrite: false, // 禁止深度写入
@@ -204,8 +302,7 @@ ctx.putImageData(imgData, 0, 0);
 
 
     // 创建点，并添加进场景
-    const points = new THREE.PointCloud(geometry, material);
-    console.log('???????????????????')
+    const points = new THREE.Points(geometry, material);
     scene.add(points);
 
 
@@ -231,70 +328,77 @@ ctx.putImageData(imgData, 0, 0);
         this.size = 500 // 粒子大小
 
         // 粒子透明度，及系数
-        this.opacityFactor = 0.5
+        this.opacityFactor = 0.4
         this.opacity = 1 * this.opacityFactor
 
         // 粒子放大量，及放大系数
         this.scaleFactor = 2
-        // this.scale = 1 + this.scaleFactor * (this.updateTime - this.createTime) / this.life // 初始1，到达生命周期时为3
-        this.scale = 8
+        this.scale = 1 + this.scaleFactor * (this.updateTime - this.createTime) / this.life // 初始1，到达生命周期时为3
+
         // 粒子位置
         this.position = {
           x: Math.random() * 2 * this.range + this.center.x - this.range,
           y: this.center.y,
-          // y: 0,
           z: Math.random() * 2 * this.range + this.center.z - this.range,
+        }
+
+        // 水平方向的扩散
+        let speedAround = Math.random() * 40
+        if (speedAround < 20) speedAround -= 50
+        if (speedAround > 20) speedAround += 10
+
+        // 粒子的扩散速度
+        this.speed = {
+          x: speedAround,
+          y: Math.random() * 100 + 300,
+          z: speedAround,
         }
 
       }
 
       // 更新粒子
-      // update() {
-      //   const now = Date.now()
-      //   const time = now - this.updateTime
+      update() {
+        const now = Date.now()
+        const time = now - this.updateTime
 
-      //   // 更新位置
-      //   // this.position.x += this.speed.x * time / 1000
-      //   // this.position.y += this.speed.y * time / 1000
-      //   // this.position.z += this.speed.z * time / 1000
+        // 更新位置
+        this.position.x += this.speed.x * time / 1000
+        this.position.y += this.speed.y * time / 1000
+        this.position.z += this.speed.z * time / 1000
 
-      //   // 计算粒子透明度
-      //   // this.opacity = 1 - (now - this.createTime) / this.life
-      //   // this.opacity *= this.opacityFactor
-      //   // if (this.opacity < 0) this.opacity = 0
+        // 计算粒子透明度
+        this.opacity = 1 - (now - this.createTime) / this.life
+        this.opacity *= this.opacityFactor
+        if (this.opacity < 0) this.opacity = 0
 
-      //   // 计算放大量
-      //   // this.scale = 1 + this.scaleFactor * (now - this.createTime) / this.life
-      //   // if (this.scale > 1 + this.scaleFactor) this.scale = 1 + this.scaleFactor
-
-      //   // 重置更新时间
-      //   this.updateTime = now
-      // }
+        // 计算放大量
+        this.scale = 1 + this.scaleFactor * (now - this.createTime) / this.life
+        if (this.scale > 1 + this.scaleFactor) this.scale = 1 + this.scaleFactor
+        console.log(this.scale)
+        // 重置更新时间
+        this.updateTime = now
+      }
     }
 
 
     // 创建粒子
     let particals = []
-    // setInterval(() => {
-    //   particals.push(new Partical(10, { x: 0, y: 100, z: 0 }))
-    // }, 500)
-    for(let i =0; i < 50; i++) {
-      for(let j = 0; j < 50; j++) {
-        particals.push(new Partical(10, { x: -1500 + i * 300, y: 0, z:  -500 + j * 300 }))
-      }
-    }
+    setInterval(() => {
+      particals.push(new Partical(10, { x: 0, y: 100, z: 0 }))
+    }, 500)
+    //particals.push(new Partical(10, { x: 0, y: 100, z: 0 }))
 
 
     // 校验粒子，并更新粒子位置等数据
-    // setInterval(() => {
-      // particals = particals.filter(partical => {
-      //   // partical.update()
-      //   if (partical.updateTime - partical.createTime > partical.life) {
-      //     return false
-      //   } else {
-      //     return true
-      //   }
-      // })
+    setInterval(() => {
+      particals = particals.filter(partical => {
+        partical.update()
+        if (partical.updateTime - partical.createTime > partical.life) {
+          return false
+        } else {
+          return true
+        }
+      })
       if (!particals.length) return
 
       // 遍历粒子,收集属性
@@ -316,7 +420,7 @@ ctx.putImageData(imgData, 0, 0);
       geometry.setAttribute('a_scale', new THREE.BufferAttribute(new Float32Array(scaleList), 1));
       geometry.setAttribute('a_size', new THREE.BufferAttribute(new Float32Array(sizeList), 1));
 
-    // }, 20)
+    }, 20)
 
   })()
 

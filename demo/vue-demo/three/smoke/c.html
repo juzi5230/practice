@@ -34,18 +34,18 @@
     }
 
   </script>
-  <script src="./node_modules/three/build/three.js"></script>
-  <script src="./node_modules/three/examples/js/libs/stats.min.js"></script>
+  <script src="../node_modules/three/build/three.js"></script>
+  <script src="../node_modules/three/examples/js/libs/stats.min.js"></script>
   <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/controls/OrbitControls.js"></script>
-  <script src="./node_modules/three/examples/js/loaders/OBJLoader.js"></script>
-  <script src="./node_modules/heatmap.js/build/heatmap.js"></script>
-  <script src="./node_modules/three/examples/js/controls/OrbitControls.js"></script>
-  <script src="./node_modules/heatmap.js/build/heatmap.js"></script>
+  <script src="../node_modules/three/examples/js/loaders/OBJLoader.js"></script>
+  <script src="../node_modules/heatmap.js/build/heatmap.js"></script>
+  <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
+  <script src="../node_modules/heatmap.js/build/heatmap.js"></script>
 <script type="module">
     // import * as THREE from '../../build/three.module.js'
     // import { OrbitControls } from '../jsm/controls/OrbitControls.js';
 
-    const segments = 30
+    const segments = 500
     const w = 256
     const h = 256
 
@@ -139,10 +139,11 @@
           drawCircular(context,{
               x: Math.random() * w,
               y: Math.random() * h,
-              radius: 80,
+              radius: 20,
               weight: weight
           })
         }
+
 
         let tex = new THREE.Texture(canvas)
         tex.minFilter = THREE.NearestFilter
@@ -167,10 +168,12 @@
       camera.position.set(0, 0, 3000)
 
       scene.add( new THREE.AmbientLight( 0xeef0ff ) )
-
+      let axisHelper = new THREE.AxisHelper(500);
+      scene.add(axisHelper);
       let heatMapGeo = new THREE.PlaneBufferGeometry(1500, 1500)
 
       let heatMapMaterial = new THREE.ShaderMaterial({
+        side: THREE.DoubleSide,
         transparent: true,
         vertexShader: document.getElementById( 'vertexshader' ).textContent,
         fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
@@ -186,10 +189,20 @@
         }
       })
 
+    //   const material = new THREE.PointsMaterial({
+    //     color: '#ffffff',
+    //     map: heatMapMaterial, // 纹理图
+    //     transparent: true,// 开启透明度
+    //     depthWrite: false, // 禁止深度写入
+    //   });
+    //   var geometry = new THREE.BufferGeometry();
+    //   const points = new THREE.PointCloud(geometry, heatMapMaterial);
+    //   console.log('???????????????????')
+    //   scene.add(points);
+
+
       let heatMapPlane = new THREE.Mesh(heatMapGeo, heatMapMaterial)
       scene.add(heatMapPlane)
-    //   const points = new THREE.Points(heatMapGeo, heatMapMaterial);
-    // scene.add(points);
 
       let contorl = new THREE.OrbitControls(camera, renderer.domElement)
 

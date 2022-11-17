@@ -92,7 +92,7 @@
     geometry.setAttribute('position', new THREE.BufferAttribute(new Float32Array([]), 3)); // 一个顶点由3个坐标构成
     geometry.setAttribute('a_opacity', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的透明度，用1个浮点数表示
     geometry.setAttribute('a_size', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的初始大小，用1个浮点数表示
-    geometry.setAttribute('a_scale', new THREE.BufferAttribute(new Float32Array([]), 1)); // 点的放大量，用1个浮点数表示
+    geometry.setAttribute('a_scale', new THREE.BufferAttribute(new Float32Array([]), 10)); // 点的放大量，用1个浮点数表示
 
 
     // 创建材质

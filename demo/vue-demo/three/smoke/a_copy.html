@@ -36,10 +36,8 @@
       ctx.arc(50, 50, 50, 0, Math.PI * 2, false);
       var canvasGradient = ctx.createRadialGradient(50, 50, 0, 50, 50, 50);
       canvasGradient.addColorStop(0, "red");
-      canvasGradient.addColorStop(0.25, "orange");
-      canvasGradient.addColorStop(0.5, "yellow");
-      canvasGradient.addColorStop(0.75, "green");
-      canvasGradient.addColorStop(1, "white");
+      // canvasGradient.addColorStop(0.5, "yellow");
+      canvasGradient.addColorStop(1, "green");
       ctx.fillStyle = canvasGradient;
       ctx.fill();
     }
@@ -58,7 +56,7 @@
 
     let greyImgData = ctxgrey.getImageData(0,0,100, 100)
 
-console.log('>>>>>>>>>>>>>>>>>>>>>>>>', greyImgData)
+console.log(greyImgData)
 
 
     let imgData = ctx.getImageData(0, 0, 100, 100)
@@ -66,19 +64,14 @@ console.log('>>>>>>>>>>>>>>>>>>>>>>>>', greyImgData)
 
   for (var i=0;i<imgData.data.length;i+=4)
 {
-    // if(imgData.data[i + 3] === 0) {
-    //   // imgData.data[i + 3] = 200
-    // } else {
+    if(imgData.data[i + 3] === 0) {
+      // imgData.data[i + 3] = 200
+    } else {
 	    // imgData.data[i+0]=255 * Math.random();
 	    // imgData.data[i+1]=255 * Math.random();
 	    // imgData.data[i+2]=255 * Math.random();
 	    imgData.data[i+3]= greyImgData.data[i+3];
-      // if(imgData.data[i + 3] === 0) {
-        // imgData.data[i+0]=255;
-	      //     imgData.data[i+1]=255;
-	      //     imgData.data[i+2]=255;
-      // }
-    // }
+    }
 }
   // ctx.fillStyle = 'rgba(0,0,0,0)'
 ctx.putImageData(imgData, 0, 0);
@@ -102,7 +95,7 @@ ctx.putImageData(imgData, 0, 0);
 
     //创建相机
     var camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 100000);
-    camera.position.z = 0; //设置相机位置
+    camera.position.z = 2300; //设置相机位置
     camera.position.y = 2300; //设置相机位置
     //camera.lookAt(new )
     scene.add(camera)
@@ -231,7 +224,7 @@ ctx.putImageData(imgData, 0, 0);
         this.size = 500 // 粒子大小
 
         // 粒子透明度，及系数
-        this.opacityFactor = 0.5
+        this.opacityFactor = 0.4
         this.opacity = 1 * this.opacityFactor
 
         // 粒子放大量，及放大系数
@@ -278,10 +271,8 @@ ctx.putImageData(imgData, 0, 0);
     // setInterval(() => {
     //   particals.push(new Partical(10, { x: 0, y: 100, z: 0 }))
     // }, 500)
-    for(let i =0; i < 50; i++) {
-      for(let j = 0; j < 50; j++) {
-        particals.push(new Partical(10, { x: -1500 + i * 300, y: 0, z:  -500 + j * 300 }))
-      }
+    for(let i =0; i < 20; i++) {
+      particals.push(new Partical(10, { x: i * 200, y: 100, z: Math.random() * 1000 }))
     }
 
 
