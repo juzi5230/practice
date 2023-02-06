@@ -140,12 +140,12 @@ ctx.putImageData(imgData, 0, 0);
     // 加载纹理图
     const promiseStar = new Promise((resolve, reject) => {
       console.log(canvas)
-      var texture = new THREE.CanvasTexture(canvas);
-      resolve(texture)
-      // new THREE.TextureLoader().load("./texture-smoke.png", function (texture) {
-      //   console.log('>>>>>>>>>>>>>', texture)
-      //   // resolve(texture)
-      // });
+      // var texture = new THREE.CanvasTexture(canvas);
+      // resolve(texture)
+      new THREE.TextureLoader().load("./texture-smoke.png", function (texture) {
+        console.log('>>>>>>>>>>>>>', texture)
+        // resolve(texture)
+      });
     })
     const [state, textureStar, err] = await promiseStar.then(rs => [true, rs, null], err => [false, null, err])
     if (!state) return

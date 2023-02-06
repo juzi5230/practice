@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>热力图</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+    <script src="../node_modules/three/build/three.js"></script>
+    <script src="../node_modules/three/examples/js/libs/stats.min.js"></script>
+
+    <script src="../OrbitControls.js"></script>
+    <script src="../node_modules/three/examples/js/loaders/OBJLoader.js"></script>
+    <script src="../node_modules/heatmap.js/build/heatmap.js"></script>
+    <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
+    <script src="../node_modules/heatmap.js/build/heatmap.js"></script>
+
+</head>
+
+<body>
+<div id="heatmap"  style="width:800px; height: 800px;"></div>
+<div id="greymap" style="width:800px; height: 800px;"></div>
+<script type="x-shader/x-vertex" id="vertexshader">
+
+    varying vec2 vUv;
+    uniform float Zscale;
+    uniform sampler2D greyMap;
+    void main() {
+     vUv = uv;
+    vec4 frgColor = texture2D(greyMap, uv);
+    float height = Zscale * frgColor.a;
+    vec3 transformed = vec3( position.x, height, position.y);
+    gl_Position = projectionMatrix * modelViewMatrix * vec4(transformed, 1.0);
+
+    }
+
+  </script>
+
+<!-- <script type="x-shader/x-fragment" id="fragmentshader">
+
+    #ifdef GL_ES
+    precision highp float;
+    #endif
+    varying vec2 vUv;
+    uniform sampler2D heatMap;
+    uniform vec3 u_color;//基础颜色
+    uniform float u_opacity; // 透明度
+    void main() {
+      //vec4 alphaColor = texture2D(heatMap, vUv);
+      // gl_FragColor = alphaColor;
+       gl_FragColor = vec4(u_color, u_opacity) * texture2D(heatMap, vUv);
+    }
+
+  </script> -->
+<script type="x-shader/x-fragment" id="fragmentshader">
+    #ifdef GL_ES
+    precision highp float;
+    #endif
+    varying vec2 vUv;
+    uniform sampler2D heatMap;
+    // uniform sampler2D opacityMap;
+    uniform vec3 u_color;//基础颜色
+    uniform float u_opacity; // 透明度
+    void main() {
+      //vec4 alphaColor = texture2D(heatMap, vUv);
+      // gl_FragColor = alphaColor;
+      // gl_FragColor = vec4(u_color, u_opacity) * texture2D(heatMap, vUv) * texture2D(opacityMap, vUv);
+      // gl_FragColor = texture2D(heatMap, vUv) * texture2D(opacityMap, vUv);
+      
+      // vec4 frgColor = texture2D(opacityMap, vUv);
+      // gl_FragColor = vec4(u_color, frgColor.a) * texture2D(heatMap, vUv);
+
+      // gl_FragColor = texture2D(opacityMap, vUv);
+
+
+    // float opacity = fract(sin(gl_FragCoord.x * gl_FragCoord.y)*10000.0);
+      //  gl_FragColor = vec4(u_color, opacity) * texture2D(heatMap, vUv);
+      //  gl_FragColor = vec4(u_color, u_opacity) * texture2D(heatMap, vUv);
+
+
+
+
+      vec4 sum = vec4( 0.0 );
+      float v = 0.02;
+      float h = 0.02;
+
+//纵向高斯模糊
+sum = texture2D( heatMap, vec2( vUv.x, vUv.y - 4.0 * v ) ) * (0.051/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y - 3.0 * v ) ) * (0.0918/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y - 2.0 * v ) ) * (0.12245/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y - 1.0 * v ) ) * (0.1531/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y ) ) * (0.1633/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y + 1.0 * v ) ) * (0.1531/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y + 2.0 * v ) ) * (0.12245/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y + 3.0 * v ) ) * (0.0918/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y + 4.0 * v ) ) * (0.051/2.0);
+
+//横向高斯模糊
+sum += texture2D( heatMap, vec2( vUv.x - 4.0 * h, vUv.y ) ) * (0.051/2.0);
+sum += texture2D( heatMap, vec2( vUv.x - 3.0 * h, vUv.y ) ) * (0.0918/2.0);
+sum += texture2D( heatMap, vec2( vUv.x - 2.0 * h, vUv.y ) ) * (0.12245/2.0);
+sum += texture2D( heatMap, vec2( vUv.x - 1.0 * h, vUv.y ) ) * (0.1531/2.0);
+sum += texture2D( heatMap, vec2( vUv.x, vUv.y ) ) * (0.1633/2.0);
+sum += texture2D( heatMap, vec2( vUv.x + 1.0 * h, vUv.y ) ) * (0.1531/2.0);
+sum += texture2D( heatMap, vec2( vUv.x + 2.0 * h, vUv.y ) ) * (0.12245/2.0);
+sum += texture2D( heatMap, vec2( vUv.x + 3.0 * h, vUv.y ) ) * (0.0918/2.0);
+sum += texture2D( heatMap, vec2( vUv.x + 4.0 * h, vUv.y ) ) * (0.051/2.0);
+// if (gl_FragCoord.x < 400.0 ) {
+//   gl_FragColor = vec4( 0.0, 0.0, 0.0, 0.0 );
+// } else {
+  gl_FragColor = sum;
+// }
+    }
+  </script>
+
+<script type="module">
+    var heatmap = h337.create({
+        container: document.getElementById('heatmap')
+    });
+    let len = 100;
+    let width = 500;
+    let height = 500;
+    let points = [];
+    let max = 0;
+    while (len--) {
+        var val = Math.floor(Math.random() * 100);
+        max = Math.max(max, val);
+        var point = {
+            x: Math.floor(Math.random() * width),
+            y: Math.floor(Math.random() * height),
+            value: val
+        };
+        points.push(point);
+    }
+    heatmap.setData({
+        max: max,
+        data: points
+    });
+    // 灰度图
+    var greymap = h337.create({
+        container: document.getElementById('greymap'),
+        gradient: {
+            '0': 'black',
+            '1.0': 'white'
+        }
+    });
+
+    greymap.setData({
+        max: max,
+        data: points
+    });
+
+
+
+    let renderer,scene,camera
+
+    init()
+    animate()
+
+    function init() {
+        renderer = new THREE.WebGLRenderer({ antialias:true })
+        renderer.setPixelRatio( window.devicePixelRatio )
+        renderer.setSize(window.innerWidth, window.innerHeight)
+        document.body.appendChild( renderer.domElement )
+
+        scene = new THREE.Scene()
+
+        camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 )
+        camera.position.set(0, 0, 3000)
+
+        scene.add( new THREE.AmbientLight( 0xeef0ff ) )
+
+        let heatMapGeo = new THREE.PlaneBufferGeometry(800, 800,300,300)
+
+
+        let heatMapMaterial = new THREE.ShaderMaterial({
+            transparent: true,
+            vertexShader: document.getElementById( 'vertexshader' ).textContent,
+            fragmentShader: document.getElementById( 'fragmentshader' ).textContent,
+            uniforms: {
+                'heatMap' : {
+                    value: {value: undefined}
+                },
+                'greyMap' : {
+                    value: {value: undefined}
+                },
+                Zscale: {value: 1000.0},
+                u_color:{value: new THREE.Color('rgb(255, 255, 255)')
+                },
+                u_opacity:{
+                    value:1.0
+                }
+            }
+        });
+
+        let texture = new THREE.Texture(heatmap._config.container.children[0]);
+        texture.needsUpdate = true;
+        let texture2 = new THREE.Texture(greymap._config.container.children[0]);
+        texture2.needsUpdate = true;
+        heatMapMaterial.uniforms.heatMap.value = texture;
+        heatMapMaterial.side = THREE.DoubleSide; // 双面渲染
+        heatMapMaterial.uniforms.greyMap.value = texture2;
+        // heatMapGeo.geometry.verticesNeedUpdate = true
+        // let position = heatMapGeo.attributes.position;
+        // position.dynamic = true;//设置planeGeometry为动态的，这样才允许改变其中的顶点
+        // position.needsUpdate = true;//更新位置
+        let heatMapPlane = new THREE.Mesh(heatMapGeo, heatMapMaterial)
+        scene.add(heatMapPlane)
+
+        let contorl = new THREE.OrbitControls(camera, renderer.domElement)
+
+        window.addEventListener( 'resize', onWindowResize, false )
+    }
+
+    function onWindowResize() {
+
+        camera.aspect = window.innerWidth / window.innerHeight
+        camera.updateProjectionMatrix()
+
+        renderer.setSize( window.innerWidth, window.innerHeight )
+
+    }
+
+    function animate() {
+        requestAnimationFrame(animate)
+        renderer.render(scene, camera)
+
+    }
+
+</script>
+</body>
+</html>
+

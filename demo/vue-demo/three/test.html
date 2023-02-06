@@ -1,147 +1,131 @@
-## index-backup.html
-
 <!DOCTYPE html>
-<html>
-
+<html lang="en">
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-    <title>Extrude building footprints based on real world heights | Sample | ArcGIS API for JavaScript 4.18</title>
-    <link rel="stylesheet" href="https://js.arcgis.com/4.18/esri/themes/light/main.css" />
-    <script src="https://js.arcgis.com/4.18/"></script>
+  <meta charset="UTF-8">
+  <title>圆柱体</title>
+  <style>
+    #canvas{
+      width:1100px;
+      height:600px;
+      border:1px solid;
+    }
+  </style>
+  <script type="text/javascript" src="./js/three.js"></script>
+  <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
 
-    <style>
-        html,
-        body,
-        #viewDiv {
-            padding: 0;
-            margin: 0;
-            height: 100%;
-            width: 100%;
-        }
-    </style>
+  <script>
+let camera, scene, renderer;
 
-    <script>
-        require(["esri/WebScene", "esri/views/SceneView", "esri/layers/FeatureLayer", "esri/widgets/Legend"], function(
-            WebScene,
-            SceneView,
-            FeatureLayer,
-            Legend
-        ) {
-            /*****************************************************************
-             * Create a function that generates symbols for extruded polygons.
-             *****************************************************************/
+let points;
 
-            function getSymbol(color) {
-                return {
-                    type: "polygon-3d", 		// autocasts as new PolygonSymbol3D()
-                    symbolLayers: [{
-                        type: "extrude", 		// autocasts as new ExtrudeSymbol3DLayer()
-                        material: {
-                            color: color
-                        },
-                        edges: {
-                            type: "solid",
-                            color: "#999",
-                            size: 0.5
-                        }
-                    }]
-                };
-            }
+window.onload = function () {
+    init();
+    animate();
+}
 
-            /*****************************************************************
-             * Set each unique value directly in the renderer's constructor.
-             * At least one field must be used (in this case the "DESCLU" field).
-             * The label property of each unique value will be used to indicate
-             * the field value and symbol in the legend.
-             *
-             * The size visual variable sets the height of each building as it
-             * exists in the real world according to the "ELEVATION" field.
-             *****************************************************************/
+function init() {
 
-            const renderer = {
-                type: "unique-value", 			// autocasts as new UniqueValueRenderer()
-                defaultSymbol: getSymbol("#FFFFFF"),
-                defaultLabel: "Other",
-                field: "TYPE",
-                uniqueValueInfos: [{
-                    value: "Residential",
-                    symbol: getSymbol("#A7C636"),
-                    label: "Residential"
-                }, {
-                    value: "Commercial",
-                    symbol: getSymbol("#FC921F"),
-                    label: "Commercial"
-                }, {
-                    value: "Hotel/Motel",
-                    symbol: getSymbol("#ED5151"),
-                    label: "Hotel/Motel"
-                }, {
-                    value: "Apartment Rentals",
-                    symbol: getSymbol("#149ECE"),
-                    label: "Apartment Rentals"
-                }],
-                visualVariables: [{
-                    type: "size",
-                    field: "HEIGHT",
-                    valueUnit: "meters" 		// Converts and extrudes all data values in meters
-                }]
-            };
 
-            // Set the renderer on the layer
-            const buildingsLayer = new FeatureLayer({
-                url: "https://services.arcgis.com/V6ZHFr6zdgNZuVG0/arcgis/rest/services/building_footprints_height/FeatureServer",
-                renderer: renderer,
-                elevationInfo: {
-                    mode: "on-the-ground"
-                },
-                title: "Extruded building footprints",
-                popupTemplate: {
-                    // autocasts as new PopupTemplate()
-                    title: "{TYPE}",
-                    content: [{
-                        type: "fields",
-                        fieldInfos: [{
-                            fieldName: "TYPE",
-                            label: "Type"
-                        }, {
-                            fieldName: "HEIGHT",
-                            label: "Height"
-                        }]
-                    }]
-                },
-                outFields: ["TYPE", "HEIGHT"]
-            });
+  camera = new THREE.PerspectiveCamera( 27, window.innerWidth / window.innerHeight, 5, 3500 );
+  camera.position.z = 2750;
 
-            const map = new WebScene({
-                portalItem: {
-                    id: "397c462348464d069a7a63b97644086e"
-                }
-            });
+  scene = new THREE.Scene();
+  scene.background = new THREE.Color( 0x050505 );
+  scene.fog = new THREE.Fog( 0x050505, 2000, 3500 );
 
-            map.add(buildingsLayer);
+  const particles = 500000;
 
-            const view = new SceneView({
-                container: "viewDiv",
-                map: map,
-                camera: {
-                    position: [-75.09519011, 38.32524201, 682.98652],
-                    heading: 53.86,
-                    tilt: 48.52
-                }
-            });
+  const geometry = new THREE.BufferGeometry();
 
-            // const legend = new Legend({
-            //     view: view
-            // });
+  const positions = [];
+  const colors = [];
 
-            // view.ui.add(legend, "bottom-right");
-        });
-    </script>
+  const color = new THREE.Color();
+
+  const n = 1000, n2 = n / 2; // particles spread in the cube
+
+  for ( let i = 0; i < particles; i ++ ) {
+
+    // positions
+
+    const x = Math.random() * n - n2;
+    const y = Math.random() * n - n2;
+    const z = Math.random() * n - n2;
+
+    positions.push( x, y, z );
+
+    // colors
+
+    const vx = ( x / n ) + 0.5;
+    const vy = ( y / n ) + 0.5;
+    const vz = ( z / n ) + 0.5;
+
+    color.setRGB( vx, vy, vz );
+
+    colors.push( color.r, color.g, color.b );
+
+  }
+
+  geometry.setAttribute( 'position', new THREE.Float32BufferAttribute( positions, 3 ) );
+  geometry.setAttribute( 'color', new THREE.Float32BufferAttribute( colors, 3 ) );
+
+  //
+
+  const material = new THREE.PointsMaterial( { size: 1, vertexColors: true, 
+      transparent: true,// 开启透明度
+      depthWrite: true, // 禁止深度写入
+    } );
+
+  points = new THREE.Points( geometry, material );
+  scene.add( points );
+
+  //
+
+  renderer = new THREE.WebGLRenderer();
+  renderer.setPixelRatio( window.devicePixelRatio );
+  renderer.setSize( window.innerWidth, window.innerHeight );
+  document.body.appendChild( renderer.domElement );
+
+
+  //
+  let contorl = new THREE.OrbitControls(camera, renderer.domElement)
+
+  window.addEventListener( 'resize', onWindowResize );
+
+}
+
+function onWindowResize() {
+
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+
+  renderer.setSize( window.innerWidth, window.innerHeight );
+
+}
+
+//
+
+function animate() {
+
+  requestAnimationFrame( animate );
+
+  render();
+
+}
+
+function render() {
+
+  const time = Date.now() * 0.001;
+
+//   points.rotation.x = time * 0.25;
+//   points.rotation.y = time * 0.5;
+
+  renderer.render( scene, camera );
+
+}
+  </script>
 </head>
-
 <body>
-    <div id="viewDiv"></div>
+  <!-- <div id="canvas"></div> -->
 </body>
-
 </html>
