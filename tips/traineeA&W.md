@@ -64,6 +64,31 @@ box-sizing: content-box|border-box|inherit;
 inherit
 从父元素继承 box-sizing 属性的值，若未设置，默认为 content-box
 
+
+# 两栏布局
+
+https://juejin.cn/post/7085974846458298382
+
+# 样式的权重优先级
+
+!important > 行内样式 > id > class > tag 样式的权重可以叠加
+
+```js
+第一等级：代表内联样式，如style="…"，权值为 1000
+
+第二等级：代表id选择器，如#box{…}，权值为100
+
+第三等级：代表类，伪类和属性选择器，如.classname{…}，权值为10
+
+第四等级：代表标签选择器和伪元素选择器，如div{…}，权值为1
+
+注意：1、!important 的权重是无穷大，无条件优先。
+
+     2、继承 与 通配选择器的权重是0。
+```
+
+
+
 # 8、响应式布局有几种办法
 
 ```js
@@ -149,12 +174,15 @@ vuex -->
 Object.assign() 浅
 JSON.parse(JOSN.stringify()) 深
 
+https://juejin.cn/post/6844904197595332622
 
 # 15、组件之间传值的方式
 
 https://juejin.cn/post/7110223595359436813
 
-
+# vue相关 
+（20 -22题）
+https://juejin.cn/post/7073869980411887652
 
 
 # 16、项目中常用的npm命令
@@ -165,6 +193,21 @@ npm run build
 
 
 
+# 常见的git操作
+（66）
+https://juejin.cn/post/7073869980411887652
+
+
+# Loader和Plugin 有什么区别
+（15）
+https://juejin.cn/post/7073869980411887652
+
+# http 状态码
+（65）
+https://juejin.cn/post/7073869980411887652
+
+
+
 # 17、一般开发用的什么浏览器，用到了哪些功能，调试bug的方法
 
 快速定位一个元素的样式信息、接口信息查看
@@ -172,22 +215,6 @@ npm run build
 
 
 
-
-张丰硕，代码合并等使用的命令行，上传下载的实现逻辑，常用的数据结构有哪些，数组去重
-
-
-
-
-
-王永帅，常用的git命令，冒泡排序，vue的生命周期有哪些
-
-watch 监听变化，有哪些属性，监听对象时怎么写，
-        immediate: false,
-        deep: true
-
-
-
-谭颖，搭建脚手架用到了哪些技术，有什么收获，自动构建部署具体是怎么做的, 冒泡排序
 
 
 
