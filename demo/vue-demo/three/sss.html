@@ -1,17 +1,39 @@
 <!DOCTYPE html>
+
+<html>
+
+<head>
+  <title>光圈扩散</title>
+  <!-- <script type="text/javascript" src="../three/build/three.js"></script>
+  <script type="text/javascript" src="../three/examples/js/controls/OrbitControls.js"></script>
+  <script type="text/javascript" src="../three/examples/js/libs/stats.min.js"></script>
+ -->
+
+  <script src="../node_modules/three/build/three.js"></script>
+  <script src="../node_modules/three/examples/js/libs/stats.min.js"></script>
+  <script src="http://www.yanhuangxueyuan.com/versions/threejsR92/examples/js/controls/OrbitControls.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <title>热力图</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
-    <script src="../node_modules/three/build/three.js"></script>
-    <script src="../node_modules/three/examples/js/libs/stats.min.js"></script>
+    <!-- <script src="../node_modules/three/build/three.js"></script> -->
+    <!-- <script src="../node_modules/three/examples/js/libs/stats.min.js"></script> -->
 
-    <script src="../OrbitControls.js"></script>
-    <script src="../node_modules/three/examples/js/loaders/OBJLoader.js"></script>
-    <script src="../node_modules/heatmap.js/build/heatmap.js"></script>
-    <script src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
-    <script src="../node_modules/heatmap.js/build/heatmap.js"></script>
+    <!-- <script src="../OrbitControls.js"></script> -->
+    <script src="./js/OBJLoader.js"></script>
+    <script src="./js/heatmap.js"></script>
+    <script src="./js/OrbitControls.js"></script>
+    <script src="./js/heatmap.js"></script>
 
 </head>
 
@@ -51,7 +73,7 @@
 
   </script>
 
-<script type="module">
+<script >
     var heatmap = h337.create({
         container: document.getElementById('heatmap')
     });
@@ -61,7 +83,8 @@
     let points = [];
     let max = 0;
 
-    point = [
+    points = [
+      // {"x": 5, "y": 5, "value": 0},
     {
         "x": -18.165949404239655,
         "y": 16.735283768270165,
@@ -383,17 +406,24 @@
         "value": 8.597196522767597
     }
 ]
-points = []    
-while (len--) {
-        var val = Math.floor(Math.random() * 100);
-        max = Math.max(max, val);
-        var point = {
-            x: Math.floor(Math.random() * width),
-            y: Math.floor(Math.random() * height),
-            value: val
-        };
-        points.push(point);
-    }
+// points = []    
+// while (len--) {
+//         var val = Math.floor(Math.random() * 100);
+//         max = Math.max(max, val);
+//         var point = {
+//             x: Math.floor(Math.random() * width),
+//             y: Math.floor(Math.random() * height),
+//             value: val
+//         };
+//         points.push(point);
+//     }
+for (let i = 0; i < points.length; i++) {
+  points[i].x += 250
+  points[i].y += 250
+  points[i].x = points[i].x.toFixed()
+  points[i].y = points[i].y.toFixed()
+}
+console.log('>>>>>>>>>.', points)
     heatmap.setData({
         max: max,
         data: points
