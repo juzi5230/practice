@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+ 
+<html>
+ 
+<head>
+  <title>Example 12 - buildingSweepingLight</title>
+  <script type="text/javascript" src="./js/three.js"></script>
+  <script type="text/javascript" src="../node_modules/three/examples/js/controls/OrbitControls.js"></script>
+  <script type="text/javascript" src="./js/stats.min.js"></script>
+ 
+ 
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+  </style>
+</head>
+ 
+<body>
+ 
+  <div id="Stats-output"></div>
+  <div id="WebGL-output"></div>
+ 
+  <script type="text/javascript">
+    let stats, controls;
+    let camera, scene, renderer;
+    let buildingSweepingLightShader = {
+      uniforms: {
+        "boxH": {
+          type: "f",
+          value: -10.0
+        }
+      },
+      vertexShader: `
+      varying vec3 vColor;
+      varying float v_pz;
+      void main(){
+        v_pz = position.y;
+        vColor = color;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+      }
+    `,
+      fragmentShader: `
+      uniform float boxH;
+      varying vec3 vColor;
+      varying float v_pz;
+      float plot(float pct){
+        return smoothstep(pct-8.0,pct,v_pz) - smoothstep(pct,pct+0.02,v_pz);
+      }
+      void main(){
+        float f1 = plot(boxH);
+        vec4 b1 = mix(vec4(0.9,0.2,1.0,0.1),vec4(f1,f1,f1,1.0),0.1);
+ 
+        gl_FragColor = mix(vec4(vColor,1.0),b1,f1);
+        gl_FragColor = vec4(vec3(gl_FragColor),0.9);
+ 
+      }
+    `
+    };
+ 
+    const material = new THREE.ShaderMaterial({
+      uniforms: buildingSweepingLightShader.uniforms,
+      vertexShader: buildingSweepingLightShader.vertexShader,
+      fragmentShader: buildingSweepingLightShader.fragmentShader,
+      vertexColors: buildingSweepingLightShader
+    })
+    material.needsUpdate = true
+ 
+    function initScene() {
+      scene = new THREE.Scene();
+    }
+ 
+    function initCamera() {
+      camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
+      camera.position.set(30, 40, 80)
+      camera.lookAt(new THREE.Vector3(0, 0, 0));
+    }
+ 
+    function initLight() {
+      //添加环境光
+      var ambientLight = new THREE.AmbientLight(0xffffff);
+      scene.add(ambientLight);
+ 
+      var spotLight = new THREE.SpotLight(0xffffff);
+      spotLight.position.set(5, 10, 20);
+      spotLight.castShadow = true;
+      scene.add(spotLight);
+    }
+ 
+ 
+    function initModel() {
+      //创建60个立方体模拟楼宇
+      for (let i = 0; i < 60; i++) {
+        const height = Math.random() * 10 + 2
+        const width = 3
+        const cubeGeom = new THREE.BoxBufferGeometry(width, height, width)
+        cubeGeom.setAttribute('color', new THREE.BufferAttribute(new Float32Array(24 * 3), 3))
+        const colors = cubeGeom.attributes.color
+        let r = Math.random() * 0.2,
+          g = Math.random() * 0.1,
+          b = Math.random() * 0.8
+        //设置立方体六个面24个顶点的颜色  
+        for (let i = 0; i < 24; i++) {
+          colors.setXYZ(i, r, g, 0.6)
+        }
+        //重置立方体顶部四边形的四个顶点的颜色
+        const k = 2
+        colors.setXYZ(k * 4 + 0, .0, g, 1.0)
+        colors.setXYZ(k * 4 + 1, .0, g, 1.0)
+        colors.setXYZ(k * 4 + 2, .0, g, 1.0)
+        colors.setXYZ(k * 4 + 3, .0, g, 1.0)
+        const cube = new THREE.Mesh(cubeGeom, material)
+        cube.position.set(Math.random() * 100 - 50, height / 2, Math.random() * 100 - 50)
+        scene.add(cube)
+ 
+        //绘制边框线
+        const lineGeom = new THREE.EdgesGeometry(cubeGeom)
+        const lineMaterial = new THREE.LineBasicMaterial({
+          color: 0x018BF5,
+          linewidth: 1,
+          linecap: 'round',
+          linejoin: 'round'
+        })
+        const line = new THREE.LineSegments(lineGeom, lineMaterial)
+        line.scale.copy(cube.scale)
+        line.rotation.copy(cube.rotation)
+        line.position.copy(cube.position)
+        scene.add(line)
+      }
+    }
+ 
+    function initRender() {
+ 
+      renderer = new THREE.WebGLRenderer({
+        antialias: true,
+        alpha: true
+      })
+      renderer.setPixelRatio(window.devicePixelRatio);
+      renderer.setSize(window.innerWidth, window.innerHeight);
+      renderer.setClearColor(0x0f2d48, 1) // 设置背景颜色
+      renderer.toneMapping = THREE.ACESFilmicToneMapping;
+      document.getElementById("WebGL-output").appendChild(renderer.domElement);
+    }
+ 
+    //初始化轨道控制器
+    function initControls() {
+      clock = new THREE.Clock() // 创建THREE.Clock对象，用于计算上次调用经过的时间
+      controls = new THREE.OrbitControls(camera, renderer.domElement)
+    }
+ 
+    function init() {
+      initScene();
+      initCamera();
+      initLight();
+      initRender();
+      initStats();
+      initControls();
+      initModel();
+      render();
+    }
+ 
+    function updateFun() {
+      stats.update();
+      const delta = clock.getDelta() // 获取自上次调用的时间差
+      controls.update(delta) // 相机更新
+ 
+      buildingSweepingLightShader.uniforms.boxH.value += 0.1
+      if (buildingSweepingLightShader.uniforms.boxH.value > 10) {
+        buildingSweepingLightShader.uniforms.boxH.value = -10
+      }
+    }
+ 
+    function render() {
+ 
+      updateFun()
+      requestAnimationFrame(render);
+      renderer.render(scene, camera);
+    }
+ 
+    function initStats() {
+      stats = new Stats();
+      stats.setMode(0); // 0: fps, 1: ms
+ 
+      document.getElementById("Stats-output").appendChild(stats.domElement);
+    }
+ 
+    window.onload = init;
+  </script>
+</body>
+ 
+</html>
